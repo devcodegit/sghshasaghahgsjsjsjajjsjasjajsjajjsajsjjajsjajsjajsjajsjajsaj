@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/Style">
+        <file>Style/x100/style.css</file>
+        <file>Style/x125/style.css</file>
+    </qresource>
+    <qresource prefix="/Icon">
+        <file>Image/arrow-point-to-right.svg</file>
+    </qresource>
+</RCC>
