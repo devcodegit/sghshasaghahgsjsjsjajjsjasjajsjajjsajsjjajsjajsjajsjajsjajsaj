@@ -7,6 +7,7 @@ class QFrame;
 class QVBoxLayout;
 class STabWidget;
 class PageSearch;
+class SConstantMenu;
 
 class SMainWindow : public SWidget
 {
@@ -35,6 +36,7 @@ private:
     QFrame *_pMidleResult = 0;
     STabWidget *tab = 0;
     PageSearch *pageSearch = 0;
+    SConstantMenu *menu = 0;
 };
 
 #endif // SMAINWINDOW_H
