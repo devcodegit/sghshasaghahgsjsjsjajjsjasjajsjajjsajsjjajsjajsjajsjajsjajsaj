@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QWidget>
 #include <QStyle>
+#include <QFile>
 #include <QDebug>
 
 StyleSheetManager *StyleSheetManager::Instance = NULL;
