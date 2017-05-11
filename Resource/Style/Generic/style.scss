@@ -1,3 +1,17 @@
+#TransWg {
+    background-color: transparent;
+    border: 0px;
+}
+
+/* Font defines */
+$FF1: "Segoe UI";
+$FF2: "Segoe UI Semibold";
+
+/* Import part files */
+@import "_labelStyle.scss";
+@import "_frameStyle.scss";
+
+
 #HeaderMainWindow
 {
     background: linear-gradient(red, yellow);

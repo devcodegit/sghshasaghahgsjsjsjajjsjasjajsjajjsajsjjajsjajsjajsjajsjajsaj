@@ -9,7 +9,9 @@ SOURCES += \
     SourceCode/gui/smainwindow.cpp \
     SourceCode/ssingleapp.cpp \
     SourceCode/style-sheet-manager.cpp \
-    SourceCode/gui/CustomControl/sbuttonoption.cpp
+    SourceCode/gui/CustomControl/sbuttonoption.cpp \
+    SourceCode/gui/CustomControl/stabwidget.cpp \
+    SourceCode/gui/page-search.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -17,7 +19,9 @@ HEADERS += \
     SourceCode/ssingleapp.h \
     SourceCode/style-sheet-manager.h \
     SourceCode/uiconst.h \
-    SourceCode/gui/CustomControl/sbuttonoption.h
+    SourceCode/gui/CustomControl/sbuttonoption.h \
+    SourceCode/gui/CustomControl/stabwidget.h \
+    SourceCode/gui/page-search.h
 
 RESOURCES += \
     Resource/resource.qrc

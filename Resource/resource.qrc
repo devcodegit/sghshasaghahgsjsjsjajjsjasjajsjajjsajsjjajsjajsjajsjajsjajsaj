@@ -6,4 +6,10 @@
     <qresource prefix="/Icon">
         <file>Image/arrow-point-to-right.svg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>Fonts/segoeui.ttf</file>
+        <file>Fonts/segoeuib.ttf</file>
+        <file>Fonts/SEGUIEMJ.TTF</file>
+        <file>Fonts/seguisb.ttf</file>
+    </qresource>
 </RCC>
