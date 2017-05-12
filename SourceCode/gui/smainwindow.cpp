@@ -55,11 +55,17 @@ void SMainWindow::createMidle()
 
         menu = new SConstantMenu(_pMidleOption);
         menu->setFixedWidth(SIZE_WIDTH_OPTION);
+
         QWidget *w = new QWidget;
         w->setFixedSize(100,100);
-        w->setStyleSheet("border: 1px solid red;");
+        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
+
+        QWidget *w2 = new QWidget;
+        w2->setFixedSize(100,100);
+        w2->setStyleSheet("border: 1px solid blue;");
+
         menu->addItem("Tittle 1", w);
-        menu->addItem("Tittle 2");
+        menu->addItem("Tittle 2", w2);
         menu->move(0,0);
         menu->show();
     }

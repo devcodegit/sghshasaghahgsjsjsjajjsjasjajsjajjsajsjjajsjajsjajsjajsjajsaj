@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QTimer>
 
 class QFrame;
 class QVBoxLayout;
@@ -21,10 +22,16 @@ signals:
 
 public slots:
 
+private slots:
+    void onHidePreview();
+
 private:
     QFrame *preview = 0;
     QVBoxLayout *itemLayout = 0;
     QMap<QFrame*, QWidget*> mapItemContent;
+    QWidget *currentPreview = 0;
+    QTimer leaveItemTimer, leavePreviewTimer;
+    bool enteredPreview = false;
 
 
 private:

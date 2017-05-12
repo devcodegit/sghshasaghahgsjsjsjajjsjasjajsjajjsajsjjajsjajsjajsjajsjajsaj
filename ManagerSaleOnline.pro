@@ -11,7 +11,8 @@ SOURCES += \
     SourceCode/style-sheet-manager.cpp \
     SourceCode/gui/CustomControl/sbuttonoption.cpp \
     SourceCode/gui/CustomControl/stabwidget.cpp \
-    SourceCode/gui/page-search.cpp
+    SourceCode/gui/page-search.cpp \
+    SourceCode/gui/CustomControl/sconstantmenu.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -21,7 +22,8 @@ HEADERS += \
     SourceCode/uiconst.h \
     SourceCode/gui/CustomControl/sbuttonoption.h \
     SourceCode/gui/CustomControl/stabwidget.h \
-    SourceCode/gui/page-search.h
+    SourceCode/gui/page-search.h \
+    SourceCode/gui/CustomControl/sconstantmenu.h
 
 RESOURCES += \
     Resource/resource.qrc
