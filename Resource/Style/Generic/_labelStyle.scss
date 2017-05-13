@@ -2,3 +2,12 @@
 	color: #111111;
 	font: 12px $FF1;
 }
+
+#PageLbl {
+	font: 14px $FF1;
+	color: blue;
+}
+
+#PageLbl[state=highlight] {
+	font: 14px $FF2;
+}

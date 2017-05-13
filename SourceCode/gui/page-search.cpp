@@ -1,4 +1,5 @@
 #include "page-search.h"
+#include "CustomControl/page-navigation.h"
 #include <QScrollArea>
 #include <QBoxLayout>
 #include <QLineEdit>
@@ -13,7 +14,7 @@
 PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setSpacing(0);
+    mainLayout->setSpacing(8);
     mainLayout->setMargin(0);
 
     QHBoxLayout *searchLayout = new QHBoxLayout(this);
@@ -27,9 +28,13 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     searchLayout->addWidget(searchLineEdit, 1);
     searchLayout->addWidget(searchButton, 0, Qt::AlignRight);
 
+    pageNavigation = new PageNavigation(this);
+    pageNavigation->setRange(1,10,4);
+
     resultFrame = new QFrame(this);
     resultFrame->installEventFilter(this);;
     mainLayout->addLayout(searchLayout);
+    mainLayout->addWidget(pageNavigation);
     mainLayout->addWidget(resultFrame, 1);
 
     /*Model*/

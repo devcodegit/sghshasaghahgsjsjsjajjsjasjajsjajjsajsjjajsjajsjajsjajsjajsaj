@@ -5,6 +5,10 @@
     </qresource>
     <qresource prefix="/Icon">
         <file>Image/arrow-point-to-right.svg</file>
+        <file>Image/last.svg</file>
+        <file>Image/next.svg</file>
+        <file>Image/previous.svg</file>
+        <file>Image/top.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

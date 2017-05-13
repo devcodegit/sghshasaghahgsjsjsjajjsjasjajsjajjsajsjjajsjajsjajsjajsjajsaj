@@ -42,7 +42,6 @@ bool SConstantMenu::eventFilter(QObject *object, QEvent *event)
         if(event->type() == QEvent::Enter) {
             QWidget *preview = mapItemContent.value((QFrame*)object, 0);
             if(preview) {
-                qDebug () << "enter_item";
                 if(leaveItemTimer.isActive()) leaveItemTimer.stop();
                 if(currentPreview) currentPreview->hide();
                 currentPreview = preview;
@@ -54,7 +53,6 @@ bool SConstantMenu::eventFilter(QObject *object, QEvent *event)
         else if(event->type() == QEvent::Leave) {
             QWidget *preview = mapItemContent.value((QFrame*)object, 0);
             if(preview) {
-                qDebug () << "leave_item";
                 leaveItemTimer.start();
             }
         }
@@ -68,12 +66,10 @@ bool SConstantMenu::eventFilter(QObject *object, QEvent *event)
     }
     else if(object == currentPreview) {
         if(event->type() == QEvent::Enter) {
-            qDebug () << "enter_preview";
             enteredPreview = true;
             if(leavePreviewTimer.isActive()) leavePreviewTimer.stop();
         }
         else if(event->type() == QEvent::Leave) {
-            qDebug () << "leave_preview";
             enteredPreview = false;
             if(leavePreviewTimer.isActive()) leavePreviewTimer.stop();
             leavePreviewTimer.start();

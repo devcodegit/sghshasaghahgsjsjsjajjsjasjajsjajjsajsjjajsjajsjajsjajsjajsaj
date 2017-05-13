@@ -12,7 +12,8 @@ SOURCES += \
     SourceCode/gui/CustomControl/sbuttonoption.cpp \
     SourceCode/gui/CustomControl/stabwidget.cpp \
     SourceCode/gui/page-search.cpp \
-    SourceCode/gui/CustomControl/sconstantmenu.cpp
+    SourceCode/gui/CustomControl/sconstantmenu.cpp \
+    SourceCode/gui/CustomControl/page-navigation.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -23,7 +24,8 @@ HEADERS += \
     SourceCode/gui/CustomControl/sbuttonoption.h \
     SourceCode/gui/CustomControl/stabwidget.h \
     SourceCode/gui/page-search.h \
-    SourceCode/gui/CustomControl/sconstantmenu.h
+    SourceCode/gui/CustomControl/sconstantmenu.h \
+    SourceCode/gui/CustomControl/page-navigation.h
 
 RESOURCES += \
     Resource/resource.qrc

@@ -9,6 +9,7 @@ class QPushButton;
 class QFrame;
 class QStandardItemModel;
 class QTableView;
+class PageNavigation;
 
 class PageSearch : public QWidget
 {
@@ -32,6 +33,7 @@ private:
     QPushButton *searchButton = 0;
     QStandardItemModel *model = 0;
     QTableView *tableView = 0;
+    PageNavigation *pageNavigation = 0;
 
 private:
     void readData(); //for testing
