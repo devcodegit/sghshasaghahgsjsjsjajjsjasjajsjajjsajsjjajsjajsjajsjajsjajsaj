@@ -46,6 +46,7 @@ public:
     void setRange(int from, int to, int range = -1);
 
 signals:
+    void jumping(int page);
 
 public slots:
 private slots:

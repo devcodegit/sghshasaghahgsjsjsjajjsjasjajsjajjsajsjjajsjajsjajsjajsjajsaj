@@ -8,8 +8,10 @@ class QLineEdit;
 class QPushButton;
 class QFrame;
 class QStandardItemModel;
-class QTableView;
+class STableView;
 class PageNavigation;
+class SFilterInfo;
+//class STableView;
 
 class PageSearch : public QWidget
 {
@@ -26,14 +28,19 @@ public slots:
 
 private slots:
     void onSearch();
+    void onJumping(int page);
 
 private:
     QFrame *resultFrame = 0;
     QLineEdit *searchLineEdit = 0;
     QPushButton *searchButton = 0;
     QStandardItemModel *model = 0;
-    QTableView *tableView = 0;
+    STableView *tableView = 0;
     PageNavigation *pageNavigation = 0;
+    SFilterInfo *filterInfo = 0;
+//    STableView *qmlTableView = 0;
+    QStringList testList;
+    QStringList header;
 
 private:
     void readData(); //for testing

@@ -66,6 +66,7 @@ void PageNavigation::onDirectingToPage(int page)
             break;
         }
     }
+    emit jumping(page);
 }
 
 void PageNavigation::onNext()
@@ -145,8 +146,9 @@ void PageNavigation::moveRange(int from, int to)
         item->setId(i);
         item->show();
     }
-    currentItem = listItem.at(currentPage - from );
+    currentItem = listItem.at(currentPage - from);
     currentItem->setHighlight();
+    emit jumping(currentItem->getId());
 }
 
 PageItem::PageItem(Type type, QWidget *parent) : type(type), QLabel(parent)
