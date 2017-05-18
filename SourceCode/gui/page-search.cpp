@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QVariant>
 
+
 #define MAX_RESULT 50
 PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 {
@@ -24,14 +25,24 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     mainLayout->setMargin(0);
 
     QHBoxLayout *searchLayout = new QHBoxLayout(this);
-    searchLayout->setSpacing(0);
+    searchLayout->setSpacing(8);
     searchLayout->setMargin(0);
 
-    searchLineEdit = new QLineEdit(this);
-    searchButton = new QPushButton("Search", this);
+    line1 = new QLineEdit(this);
+    line1->setPlaceholderText("Số đơn hàng");
+    line2 = new QLineEdit(this);
+    line2->setPlaceholderText("Khách hàng");
+    line3 = new QLineEdit(this);
+    line3->setPlaceholderText("Sản phẩm");
+    line4 = new QLineEdit(this);
+    line4->setPlaceholderText("Thanh toán");
+    searchButton = new QPushButton("Tìm kiếm", this);
     searchButton->setFixedSize(100, 20);
     connect(searchButton, &QPushButton::clicked, this, &PageSearch::onSearch);
-    searchLayout->addWidget(searchLineEdit, 1);
+    searchLayout->addWidget(line1, 1);
+    searchLayout->addWidget(line2, 1);
+    searchLayout->addWidget(line3, 1);
+    searchLayout->addWidget(line4, 1);
     searchLayout->addWidget(searchButton, 0, Qt::AlignRight);
 
     pageNavigation = new PageNavigation(this);
@@ -46,8 +57,8 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     resultFrame = new QFrame(this);
     resultFrame->installEventFilter(this);
     mainLayout->addLayout(searchLayout);
-    mainLayout->addWidget(pageNavigation);
     mainLayout->addWidget(filterInfo);
+    mainLayout->addWidget(pageNavigation);
     mainLayout->addWidget(resultFrame, 1);
 
     /*Model*/
@@ -74,6 +85,8 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
 
 void PageSearch::onSearch()
 {
+
+
 }
 
 void PageSearch::onJumping(int page)

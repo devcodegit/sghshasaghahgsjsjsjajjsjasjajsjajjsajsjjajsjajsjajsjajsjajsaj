@@ -32,7 +32,7 @@ private slots:
 
 private:
     QFrame *resultFrame = 0;
-    QLineEdit *searchLineEdit = 0;
+    QLineEdit *line1 = 0, *line2 = 0, *line3 = 0, *line4 = 0;
     QPushButton *searchButton = 0;
     QStandardItemModel *model = 0;
     STableView *tableView = 0;

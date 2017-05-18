@@ -19,7 +19,8 @@ SOURCES += \
     SourceCode/gui/CustomControl/sitemdelegate.cpp \
     SourceCode/gui/CustomControl/stableview.cpp \
     SourceCode/gui/CustomControl/sfilter-info.cpp \
-    SourceCode/gui/CustomControl/flowlayout.cpp
+    SourceCode/gui/CustomControl/flowlayout.cpp \
+    SourceCode/gui/CustomControl/verticalscrollbar.cpp
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
     SourceCode/gui/smainwindow.h \
@@ -36,7 +37,8 @@ HEADERS += \
     SourceCode/gui/CustomControl/cache.h \
     SourceCode/gui/CustomControl/stableview.h \
     SourceCode/gui/CustomControl/sfilter-info.h \
-    SourceCode/gui/CustomControl/flowlayout.h
+    SourceCode/gui/CustomControl/flowlayout.h \
+    SourceCode/gui/CustomControl/verticalscrollbar.h
 
 RESOURCES += \
     Resource/resource.qrc

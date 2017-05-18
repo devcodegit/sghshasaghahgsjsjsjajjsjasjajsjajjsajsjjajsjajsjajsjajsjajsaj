@@ -8,6 +8,7 @@ class QSvgWidget;
 class QLabel;
 class FlowLayout;
 class QScrollArea;
+class VerticalScrollbar;
 
 class FilterItem : public QWidget
 {
@@ -51,12 +52,14 @@ public slots:
 
 private slots:
     void onRemoveItem();
+    void onScrollValueChanged(int value);
 
 private:
     QList<FilterItem*> listItems;
     FlowLayout *filterItemLayout;
     QWidget *scroll;
     QScrollArea *scrollArea;
+    VerticalScrollbar *scrollBar;
 
 private:
     FilterItem *getItem();

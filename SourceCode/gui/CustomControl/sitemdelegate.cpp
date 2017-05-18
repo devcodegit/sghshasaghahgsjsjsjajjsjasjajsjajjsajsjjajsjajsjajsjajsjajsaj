@@ -14,12 +14,6 @@ SItemDelegate::SItemDelegate(QWidget *parent) : QStyledItemDelegate(parent)
 void SItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     if(index.column() == 3) {
-//        QPushButton *cellUI = new QPushButton;
-//        cellUI->setText(index.data().toString());
-//        cellUI->setFixedSize(option.rect.size());
-//        QPixmap pixmap(cellUI->size());
-//        cellUI->render(&pixmap);
-//        painter->drawPixmap(option.rect, pixmap);
         emit paintItem(option, index);
     }
 //    else {

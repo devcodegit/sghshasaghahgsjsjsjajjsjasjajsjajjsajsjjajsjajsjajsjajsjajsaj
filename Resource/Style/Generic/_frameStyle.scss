@@ -6,3 +6,25 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
+
+#VerticalScroll_Thumb{
+    background: #abc4cc;
+    border: 0px;
+    border-radius: 3;
+}
+
+#VerticalScroll_Thumb[State=Press]{
+    background: #99afb7;
+}
+
+#VerticalScroll_Thumb[State=Release]{
+    background: #abc4cc;
+}
+
+#VerticalScroll_Thumb[State=PhotoViewRelease]{
+    background: rgba(white, 0.3);
+}
+
+#VerticalScroll_Thumb[State=PhotoViewPress]{
+    background: rgba(white, 0.25);
+}

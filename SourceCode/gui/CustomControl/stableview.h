@@ -4,6 +4,8 @@
 #include <QTableView>
 #include <QStyledItemDelegate>
 #include <QModelIndex>
+#include <QMap>
+#include <QStyleOptionViewItem>
 
 class SItemDelegate;
 
@@ -13,14 +15,22 @@ class STableView : public QTableView
 public:
     explicit STableView(QWidget *parent = 0);
 
+protected slots:
+    void rowResized(int row,  int oldHeight, int newHeight);
+    void columnResized(int column, int oldWidth, int newWidth);
+
 signals:
 
 public slots:
 private slots:
     void onPaintItem(const QStyleOptionViewItem &option, const QModelIndex &index);
+    void onPressed(const QModelIndex &index);
+    void onScrollBarValueChanged(int value);
 
 private:
     SItemDelegate* delegate;
+    QMap<QModelIndex, QStyleOptionViewItem> mapIndexOption;
+    int currentValue = 0;
 };
 
 #endif // STABLEVIEW_H

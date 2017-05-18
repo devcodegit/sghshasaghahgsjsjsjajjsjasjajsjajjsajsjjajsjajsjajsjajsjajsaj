@@ -1,5 +1,6 @@
 #include "sfilter-info.h"
 #include "flowlayout.h"
+#include "verticalscrollbar.h"
 #include <QBoxLayout>
 #include <QFrame>
 #include <QLabel>
@@ -7,6 +8,7 @@
 #include <QEvent>
 #include <QResizeEvent>
 #include <QScrollArea>
+#include <QScrollBar>
 
 SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
 {
@@ -17,8 +19,15 @@ SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
     scrollArea->setFocusPolicy(Qt::NoFocus);
     scrollArea->setWidget(scroll);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setWidgetResizable(true);
+    connect(scrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onScrollValueChanged(int)));
     setFixedHeight(50);
+
+    scrollBar = new VerticalScrollbar(scrollArea, scrollArea->verticalScrollBar());
+    scrollBar->setMargin(0);
+    scrollBar->update(true);
+    scrollBar->setMinHeight(30);
 }
 
 void SFilterInfo::addItem(const QString &title)
@@ -33,11 +42,18 @@ void SFilterInfo::resizeEvent(QResizeEvent *event)
 {
     scrollArea->setFixedSize(event->size());
     scroll->setFixedWidth(event->size().width());
+    scrollBar->setSpace(0, event->size().height());
+    scrollBar->update(true);
 }
 
 void SFilterInfo::onRemoveItem()
 {
     filterItemLayout->removeWidget((QWidget*)sender());
+}
+
+void SFilterInfo::onScrollValueChanged(int value)
+{
+    scrollBar->setValue(value);
 }
 
 FilterItem *SFilterInfo::getItem()
