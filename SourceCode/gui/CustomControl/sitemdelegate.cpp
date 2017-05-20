@@ -16,9 +16,18 @@ void SItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     if(index.column() == 3) {
         emit paintItem(option, index);
     }
-//    else {
-        QStyledItemDelegate::paint(painter, option, index);
-//    }
+    QColor color;
+    if(index.row() %2 == 0) {
+        color = QColor("#e2e6ea");
+    }
+    else {
+        color = QColor(Qt::white);
+    }
+    if( option.state & QStyle::State_Selected ) {
+        painter->fillRect( option.rect, option.palette.highlight());
+    }
+    painter->fillRect(option.rect, color);
+    QStyledItemDelegate::paint(painter, option, index);
 }
 
 QSize SItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const

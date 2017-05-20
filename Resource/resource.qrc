@@ -11,6 +11,8 @@
         <file>Image/top.svg</file>
         <file>Image/frame_icon_close_12x10_white_hover.svg</file>
         <file>Image/frame_icon_close_hover_12x10_gray.svg</file>
+        <file>Image/avatar_user_default.png</file>
+        <file>Image/exit.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

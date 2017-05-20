@@ -11,3 +11,11 @@
 #PageLbl[state=highlight] {
 	font: 14px $FF2;
 }
+
+#TitleBarDialog
+{
+	font: 13px $FF1;
+	color: #111111;
+	background-color: $cHeader;
+	border-bottom: 1px solid $cLineHeader;
+}

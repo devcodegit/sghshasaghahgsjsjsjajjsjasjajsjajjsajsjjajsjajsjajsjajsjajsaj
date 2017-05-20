@@ -12,6 +12,7 @@ class STableView;
 class PageNavigation;
 class SFilterInfo;
 //class STableView;
+class DetailWidget;
 
 class PageSearch : public QWidget
 {
@@ -29,6 +30,7 @@ public slots:
 private slots:
     void onSearch();
     void onJumping(int page);
+    void onShowInfo();
 
 private:
     QFrame *resultFrame = 0;
@@ -38,6 +40,7 @@ private:
     STableView *tableView = 0;
     PageNavigation *pageNavigation = 0;
     SFilterInfo *filterInfo = 0;
+    DetailWidget *infoDialog  = 0;
 //    STableView *qmlTableView = 0;
     QStringList testList;
     QStringList header;

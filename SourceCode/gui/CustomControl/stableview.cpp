@@ -40,7 +40,7 @@ void STableView::onPaintItem(const QStyleOptionViewItem &option, const QModelInd
 //    button->show();
 //    button->setGeometry(option.rect);
     mapIndexOption.insert(index, option);
-    qDebug () << "paint____" << index << option.rect;
+//    qDebug () << "paint____" << index << option.rect;
 
 }
 
@@ -50,6 +50,7 @@ void STableView::onPressed(const QModelIndex &index)
     for(QMap<QModelIndex, QStyleOptionViewItem>::iterator it = mapIndexOption.begin(); it != mapIndexOption.end(); it++) {
         qDebug () << "here" << it.value() << it.key();
     }
+    emit itemClicked();
 //    int height = 0;
 //    int _index = currentValue;
 //    while(true) {

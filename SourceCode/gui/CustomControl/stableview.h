@@ -20,6 +20,7 @@ protected slots:
     void columnResized(int column, int oldWidth, int newWidth);
 
 signals:
+    void itemClicked();
 
 public slots:
 private slots:

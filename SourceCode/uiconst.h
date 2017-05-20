@@ -2,7 +2,7 @@
 #define UICONST_H
 
 // header
-#define SIZE_HEIGHT_HEADER              100
+#define SIZE_HEIGHT_HEADER              50
 
 // midle
 #define SIZE_WIDTH_OPTION               245

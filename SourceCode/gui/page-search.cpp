@@ -3,6 +3,8 @@
 //#include "CustomControl/stable-view.h"
 #include "CustomControl/stableview.h"
 #include "CustomControl/sfilter-info.h"
+#include "CustomControl/detailwidget.h"
+#include "../uimodel.h"
 #include <QScrollArea>
 #include <QBoxLayout>
 #include <QLineEdit>
@@ -26,7 +28,7 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 
     QHBoxLayout *searchLayout = new QHBoxLayout(this);
     searchLayout->setSpacing(8);
-    searchLayout->setMargin(0);
+    searchLayout->setMargin(8);
 
     line1 = new QLineEdit(this);
     line1->setPlaceholderText("Số đơn hàng");
@@ -67,9 +69,11 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     tableView = new STableView(resultFrame);
     tableView->setModel(model);
     tableView->show();
+    connect(tableView, SIGNAL(itemClicked()), this, SLOT(onShowInfo()));
 
 //    qmlTableView = new STableView;
 //    qmlTableView->show();
+
 
 }
 
@@ -105,22 +109,34 @@ void PageSearch::onJumping(int page)
     }
 }
 
+void PageSearch::onShowInfo()
+{
+    if(!infoDialog) infoDialog = new DetailWidget;
+    qDebug () << "onShowInfo();" << UIModel::instance()->getMainWindow()->size() << UIModel::instance()->getMainWindow();
+    infoDialog->setParent(UIModel::instance()->getMainWindow());
+    infoDialog->show();
+    infoDialog->setFocus();
+}
+
 void PageSearch::readData()
 {
     QFile file("D://example//TestTable//grades.txt");
     testList.clear();
     if (file.open(QFile::ReadOnly)) {
-          QString line = file.readLine(200);
-          header = line.simplified().split(",");
-          while(file.canReadLine()){
-                line = file.readLine(200);
-                if(!line.startsWith("#") && line.contains(",")){
-                      testList.append(line);
-                }
-          }
+        int isHeader = true;
+        QTextStream in(&file);
+        while(!in.atEnd()){
+            QString line = file.readLine();
+            if(isHeader) {
+                header = line.simplified().split(",");
+                isHeader = false;
+            }
+            else testList.append(line);
+        }
     }
     file.close();
     int listLen = testList.length();
+    qDebug () << "readData" << listLen;
     int numPage = listLen/MAX_RESULT + ((listLen%MAX_RESULT > 0) ? 1 : 0);
     pageNavigation->setRange(1,numPage,4);
     onJumping(1);

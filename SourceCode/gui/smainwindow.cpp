@@ -3,10 +3,15 @@
 
 #include "CustomControl/sconstantmenu.h"
 #include "CustomControl/stabwidget.h"
+#include "../uimodel.h"
 #include "page-search.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
+#include <QLabel>
+#include <QPushButton>
+
+#define AVATAR_SIZE 30
 
 SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 {
@@ -17,6 +22,8 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
     _pvLayout->setAlignment(Qt::AlignTop);
     createHeader();
     createMidle();
+
+    UIModel::instance()->setMainWindow(this);
 }
 
 void SMainWindow::resizeEvent(QResizeEvent *ev)
@@ -33,6 +40,23 @@ void SMainWindow::createHeader()
         _pHeader->setObjectName("HeaderMainWindow");
         _pHeader->setFixedHeight(SIZE_HEIGHT_HEADER);
         _pvLayout->addWidget(_pHeader, 1);
+
+
+        QHBoxLayout *layout = new QHBoxLayout(_pHeader);
+        layout->setSpacing(8);
+        layout->setMargin(0);
+        layout->setAlignment(Qt::AlignRight);
+
+        QLabel *avatar = new QLabel;
+        avatar->setPixmap(QPixmap(":/Icon/Image/avatar_user_default.png").scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        QLabel *info = new QLabel;
+        info->setText("Xin chào, Nguyễn Văn A");
+        QPushButton *logOutButton = new QPushButton("Thoát");
+        logOutButton->setIcon(QIcon(":/Icon/Image/exit.svg"));
+
+        layout->addWidget(avatar, 0, Qt::AlignRight);
+        layout->addWidget(info, 0, Qt::AlignRight);
+        layout->addWidget(logOutButton, 0, Qt::AlignRight);
     }
 }
 
@@ -45,46 +69,36 @@ void SMainWindow::createMidle()
         _pvLayout->addWidget(_pMidle, 1);
     }
 
-    if (!_pMidleOption)
-    {
-        _pMidleOption = new QFrame(_pMidle);
-        _pMidleOption->move(0,0);
-        _pMidleOption->setObjectName("MidleStyleOption");
-        _pMidleOption->setFixedWidth(SIZE_WIDTH_OPTION);
-        _pMidleOption->setFixedHeight(_pMidle->height());
-
-        menu = new SConstantMenu(_pMidleOption);
-        menu->setFixedWidth(SIZE_WIDTH_OPTION);
-
-        QWidget *w = new QWidget;
-        w->setFixedSize(100,100);
-        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
-
-        QWidget *w2 = new QWidget;
-        w2->setFixedSize(100,100);
-        w2->setStyleSheet("border: 1px solid blue;");
-
-        menu->addItem("Tittle 1", w);
-        menu->addItem("Tittle 2", w2);
-        menu->move(0,0);
-        menu->show();
-    }
-
-//    if (!_pMidleSearch)
+//    if (!_pMidleOption)
 //    {
-//        _pMidleSearch = new QFrame(_pMidle);
-//        _pMidleSearch->move(SIZE_WIDTH_OPTION, 0);
-////        _pMidleSearch->setFixedHeight(SIZE_HEIGHT_SEARCH);
-//        _pMidleSearch->setFixedWidth(_pMidle->width() - _pMidleOption->width());
+//        _pMidleOption = new QFrame(_pMidle);
+//        _pMidleOption->move(0,0);
+//        _pMidleOption->setObjectName("MidleStyleOption");
+//        _pMidleOption->setFixedWidth(SIZE_WIDTH_OPTION);
+//        _pMidleOption->setFixedHeight(_pMidle->height());
 
+//        menu = new SConstantMenu(_pMidleOption);
+//        menu->setFixedWidth(SIZE_WIDTH_OPTION);
 
+//        QWidget *w = new QWidget;
+//        w->setFixedSize(100,100);
+//        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
+
+//        QWidget *w2 = new QWidget;
+//        w2->setFixedSize(100,100);
+//        w2->setStyleSheet("border: 1px solid blue;");
+
+//        menu->addItem("Tittle 1", w);
+//        menu->addItem("Tittle 2", w2);
+//        menu->move(0,0);
+//        menu->show();
 //    }
 
     if (!_pMidleResult)
     {
         _pMidleResult = new QFrame(_pMidle);
-        _pMidleResult->move(SIZE_WIDTH_OPTION, 0);
-        _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
+        _pMidleResult->move(0, 0);
+        _pMidleResult->setFixedSize(_pMidle->width()/* - _pMidleOption->width()*/, _pMidle->height());
 
 
         tab = new STabWidget(_pMidleResult);
@@ -101,19 +115,14 @@ void SMainWindow::createMidle()
 
 void SMainWindow::updateSize()
 {
-    if (_pMidleOption)
-    {
-        _pMidleOption->setFixedHeight(_pMidle->height());
-    }
-
-//    if (_pMidleSearch)
+//    if (_pMidleOption)
 //    {
-//        _pMidleSearch->setFixedWidth(_pMidle->width() - SIZE_WIDTH_OPTION);
+//        _pMidleOption->setFixedHeight(_pMidle->height());
 //    }
 
     if (_pMidleResult)
     {
-        _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
+        _pMidleResult->setFixedSize(_pMidle->width() /*- _pMidleOption->width()*/, _pMidle->height());
     }
 
     if(tab) {
