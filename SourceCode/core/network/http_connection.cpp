@@ -86,6 +86,7 @@ void HttpConnection::openGetConnection(QNetworkAccessManager *m_pNetworkManager,
     if(a_MilisecTimeOut < 1) {
         a_MilisecTimeOut = NetworkSessionManager::GET_TIMEOUT(NetworkSessionManager::TimeOutType::HTTP_TIMEOUT);
     }
+    qDebug() << "Time out" << a_MilisecTimeOut;
     m_TimeOutTimer.start(a_MilisecTimeOut);
     // Request, timer only run when this function finish
 }

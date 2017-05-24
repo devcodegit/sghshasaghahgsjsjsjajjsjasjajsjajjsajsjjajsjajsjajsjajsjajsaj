@@ -21,8 +21,7 @@ ApiRequest::ApiRequest() :
     m_pDataItem(NULL),
     m_pApiRequestListener(NULL),
     m_pHttpConnection(NULL),
-    m_pWorkerThread(NULL),
-    m_pParser(NULL)
+    m_pWorkerThread(NULL)
 {
     // connect event and moveToThread if worker thread exits
     m_pWorkerThread = new QThread();
@@ -50,7 +49,7 @@ ApiRequest::~ApiRequest()
 
 void ApiRequest::setParser(AbstractDataItem *parser)
 {
-    m_pParser = parser;
+    m_pDataItem = parser;
 }
 
 void ApiRequest::setFinishListener(IApiFinishListener *aListener)
@@ -166,7 +165,7 @@ void ApiRequest::onHttpConnectionComplete()
     }
     else
     {
-       qDebug() << "[Error-{%1}] [{%2}] Error {%3}" <<  m_iRequestId << m_iRequestType << m_iErrorCode;
+       qDebug() << "ApiRequest Error: " <<  m_iRequestId << m_iRequestType << m_iErrorCode;
         if (m_pApiRequestListener != nullptr)
         {
             m_pApiRequestListener->OnApiRequestError(this);

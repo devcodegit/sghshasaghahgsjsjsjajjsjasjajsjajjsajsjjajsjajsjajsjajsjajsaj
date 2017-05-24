@@ -80,7 +80,6 @@ namespace Core { namespace Request {
         AbstractDataItem *m_pDataItem;
         IApiRequestListener* m_pApiRequestListener;
         IApiFinishListener* m_pFinishListener;
-        AbstractDataItem *m_pParser;
 
         RequestPriority m_ePriority;
         RequestMethod m_eRequestMethod;

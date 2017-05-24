@@ -24,6 +24,15 @@ namespace Core { namespace Request {
     private:
         void ParseDataError(Value &aJsonObject);
         void ParseDataSuccess(Value &aJsonObject);
+        void ParseHead(Value &aJsonObject);
+        void ParseBody(Value &aJsonObject);
+
+    protected:
+        QString _strRequestAction;
+        QString _strResponseType;
+        QString _strRequestId;
+        QString _strTimeStamp;
+        int _iTotalCount = 0;
     };
 
 }}

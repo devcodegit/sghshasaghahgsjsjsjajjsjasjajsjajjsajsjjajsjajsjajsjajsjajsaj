@@ -20,4 +20,5 @@ void LazadaApiRequestListOrder::generateParams(QHash<QString, QString> *a_pParam
     a_pParams->insert(QString("Timestamp"), getTimestamp());
     a_pParams->insert(QString("UserID"), USEID);
     a_pParams->insert(QString("Version"), VERSION);
+    a_pParams->insert(QString("Limit"), QString::number(20));
 }

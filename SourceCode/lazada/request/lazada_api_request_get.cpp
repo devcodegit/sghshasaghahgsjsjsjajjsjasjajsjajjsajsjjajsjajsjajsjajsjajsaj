@@ -113,14 +113,16 @@ void LazadaApiRequestGET::ParseDataSuccess(Value &aJsonObject)
             {
                 qDebug() << "parse Success";
 
-                if (m_pParser)
-                {
-                    m_pParser->parseItemData(aJsonObject);
-                }
+                Value &objHead = JsonUtils::getJsonObject(objSuccess, "Head");
+                ParseHead(objHead);
+
+                Value &objBody = JsonUtils::getJsonObject(objSuccess, "Body");
+                ParseBody(objBody);
             }
             else
             {
                 qDebug() << "Parse Error";
+                m_iErrorCode = CoreErrorCode::ERROR_PARSE_JSON;
             }
         }
     }
@@ -129,4 +131,47 @@ void LazadaApiRequestGET::ParseDataSuccess(Value &aJsonObject)
         m_iErrorCode = CoreErrorCode::ERROR_PARSE_JSON;
         qDebug() << "Error = " << ex.what();
     }
+}
+
+void LazadaApiRequestGET::ParseHead(Value &aJsonObject)
+{
+    qDebug() << "LazadaApiRequestGET::ParseHead";
+    if (!aJsonObject.IsNull())
+    {
+        try
+        {
+            _strRequestId = JsonUtils::tryGetString(aJsonObject, "RequestId", "");
+            _strRequestAction = JsonUtils::tryGetString(aJsonObject, "RequestAction", "");
+            _strResponseType = JsonUtils::tryGetString(aJsonObject, "ResponseType", "");
+            _strTimeStamp = JsonUtils::tryGetString(aJsonObject, "Timestamp", "");
+            _iTotalCount = JsonUtils::tryGetInt(aJsonObject, "TotalCount", 0);
+            qDebug() << "Head: " << _strRequestId << _strRequestAction << _strResponseType << _iTotalCount;
+        }
+        catch (JsonException ex)
+        {
+            qDebug() << "Parse Json Fail: " << ex.what();
+            m_iErrorCode = CoreErrorCode::ERROR_PARSE_JSON;
+        }
+    }
+    else
+    {
+        m_iErrorCode = CoreErrorCode::ERROR_PARSE_JSON;
+    }
+}
+
+void LazadaApiRequestGET::ParseBody(Value &aJsonObject)
+{
+    qDebug() << "LazadaApiRequestGET::ParseBody";
+    if (!aJsonObject.IsNull())
+    {
+        if (m_pDataItem)
+        {
+            m_pDataItem->parseItemData(aJsonObject);
+        }
+    }
+    else
+    {
+        m_iErrorCode = CoreErrorCode::ERROR_PARSE_JSON;
+    }
+
 }
