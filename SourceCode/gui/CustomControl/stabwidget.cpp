@@ -91,7 +91,7 @@ void STabWidget::showEvent(QShowEvent *)
 
 void STabWidget::onScroll(int value)
 {
-
+    Q_UNUSED(value);
 }
 
 void STabWidget::showTab(QFrame *tab)
