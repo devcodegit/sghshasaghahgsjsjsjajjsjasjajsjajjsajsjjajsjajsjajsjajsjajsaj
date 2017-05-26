@@ -76,7 +76,8 @@ SOURCES += \
     SourceCode/uimodel.cpp \
     SourceCode/gui/CustomControl/sdialog.cpp \
     SourceCode/gui/CustomControl/svgwidget.cpp \
-    SourceCode/lazada/dataitem/lazada_data_item_order_item.cpp
+    SourceCode/lazada/dataitem/lazada_data_item_order_item.cpp \
+    SourceCode/lazada/lazada_api_command_defined.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -149,7 +150,8 @@ HEADERS += \
     SourceCode/uimodel.h \
     SourceCode/gui/CustomControl/sdialog.h \
     SourceCode/gui/CustomControl/svgwidget.h \
-    SourceCode/lazada/dataitem/lazada_data_item_order_item.h
+    SourceCode/lazada/dataitem/lazada_data_item_order_item.h \
+    SourceCode/lazada/lazada_api_command_defined.h
 
 RESOURCES += \
     Resource/resource.qrc

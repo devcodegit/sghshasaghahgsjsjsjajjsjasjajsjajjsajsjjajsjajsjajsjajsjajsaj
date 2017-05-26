@@ -3,27 +3,69 @@
 
 #include "../core/request/i_api_request_listener.h"
 #include <QMutex>
+#include <QHash>
 
 using namespace Core::Request;
 
-class LazadaHandler : public IApiRequestListener
-{
-    static LazadaHandler *Instance;
-    static QMutex mutexIns;
-    LazadaHandler();
+namespace Lazada { namespace Controls {
 
-public:
-    static LazadaHandler *instance();
+    class ResponseResult
+    {
+    public:
+        ResponseResult(int requestType, const QString strErrorMsg = "", const qint64 userIdResponse = -1)
+        {
+            _typeRequest = requestType;
+            _strErrorMsg = strErrorMsg;
+            _userIdResponse = userIdResponse;
+        }
+        ~ResponseResult(){}
 
-    void requestListOrder();
-    void requestItemOrder();
+        int getRequestType() const {return _typeRequest;}
+        QString getErrorMsg() const {return _strErrorMsg;}
+        qint64 getUserIdResponse() const {return _userIdResponse;}
 
-    void handleResponseApiListOrder();
-    void handleResponseApiItemOrder();
+    private:
+        int _typeRequest;
+        QString _strErrorMsg;
+        qint64 _userIdResponse;
+    };
 
-protected:
-    virtual void OnApiRequestComplete(IApiRequest* a_pRequest);
-    virtual void OnApiRequestError(IApiRequest* a_pRequest);
-};
+    class IObjRequestListener
+    {
+    public:
+        ~IObjRequestListener() {}
+
+        virtual void OnRequestCompleted(ResponseResult *result) = 0;
+        virtual void OnRequestFailed(ResponseResult *result) = 0;
+    };
+
+    class LazadaHandler : public IApiRequestListener
+    {
+        static LazadaHandler *Instance;
+        static QMutex mutexIns;
+        LazadaHandler();
+
+    public:
+        static LazadaHandler *instance();
+
+        void requestListOrder(IObjRequestListener *pListener);
+        void requestItemOrder();
+
+        void handleResponseApiListOrder(IApiRequest *a_pRequest);
+        void handleResponseApiItemOrder();
+
+    protected:
+        virtual void OnApiRequestComplete(IApiRequest* a_pRequest);
+        virtual void OnApiRequestError(IApiRequest* a_pRequest);
+
+    private:
+        QHash<int, IObjRequestListener*> _hashOjectListener;
+
+        int _curRequestIdGetListOrder = -1;
+    };
+
+}
+}
+
 
 #endif // LAZADA_HANDLER_H
