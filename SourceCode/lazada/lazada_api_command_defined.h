@@ -1,16 +1,18 @@
 #ifndef LAZADA_API_COMMAND_DEFINED_H
 #define LAZADA_API_COMMAND_DEFINED_H
 
+#include <QString>
+
 namespace Lazada { namespace Api {
 
     class LazadaApiCommandDefined
     {
     public:
-        static int LAZADA_REQ_GET_LIST_ORDER                                =   1;
+        static const int LAZADA_REQ_GET_LIST_ORDER                      =   1;
 
 
         // name action
-        static QString LAZADA_ACTION_GET_LIST_ORDER                         =   "GetOrders";
+        static const QString LAZADA_ACTION_GET_LIST_ORDER;
     };
 
 }
