@@ -1,14 +1,14 @@
-#ifndef LAZADA_DATA_ITEM_ORDER_ITEM_H
-#define LAZADA_DATA_ITEM_ORDER_ITEM_H
+#ifndef LAZADA_DATA_ITEM_ORDER_H
+#define LAZADA_DATA_ITEM_ORDER_H
 
 #include "../../core/dataitem/abstract_data_item.h"
 
 namespace Core { namespace DataItem {
 
-    class LazadaDataItemOrderItem : public AbstractDataItem
+    class LazadaDataItemOrder : public AbstractDataItem
     {
     public:
-        LazadaDataItemOrderItem();
+        LazadaDataItemOrder();
 
         virtual AbstractDataItem* clone() const;
         virtual void parseItemData(Value& aJsonObject);
@@ -70,4 +70,4 @@ namespace Core { namespace DataItem {
 
 }}
 
-#endif // LAZADA_DATA_ITEM_ORDER_ITEM_H
+#endif // LAZADA_DATA_ITEM_ORDER_H

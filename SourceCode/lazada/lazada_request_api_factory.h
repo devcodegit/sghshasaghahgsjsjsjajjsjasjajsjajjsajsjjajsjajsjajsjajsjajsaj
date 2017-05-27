@@ -14,6 +14,8 @@ namespace Core { namespace Lazada { namespace Request {
     {
     public:
         static ApiRequest *lazadaCreateApiRequestListOrder(IApiRequestListener *listener);
+        static ApiRequest *lazadaCreateApiRequestOrder(int orderId, IApiRequestListener *listener);
+        static ApiRequest *lazadaCreateApiRequestOrderItems(int orderId, IApiRequestListener *listener);
     };
 
 }}}

@@ -1,5 +1,5 @@
-#include "lazada_data_item_list_order.h"
-#include "lazada_data_item_order.h"
+#include "lazada_data_item_order_items.h"
+#include "lazada_data_item_bill_order.h"
 #include "../../core/jsonutil/json_utils.h"
 #include "../../core/jsonutil/json_exception.h"
 #include <QDebug>
@@ -7,20 +7,20 @@
 using namespace Core::DataItem;
 using namespace Core::Json;
 
-LazadaDataItemListOrder::LazadaDataItemListOrder()
+LazadaDataItemOrderItems::LazadaDataItemOrderItems()
 {
 
 }
 
-AbstractDataItem *LazadaDataItemListOrder::clone() const
+AbstractDataItem *LazadaDataItemOrderItems::clone() const
 {
-    return new LazadaDataItemListOrder(*this);
+    return new LazadaDataItemOrderItems(*this);
 }
 
-void LazadaDataItemListOrder::parseItemData(Value &aJsonObject)
+void LazadaDataItemOrderItems::parseItemData(Value &aJsonObject)
 {
-    qDebug() << "LazadaDataItemListOrder::parseItemData";
-    Value &aJsonArray = JsonUtils::getJsonArray(aJsonObject, "Orders");
+    qDebug() << "LazadaDataItemOrder::parseItemData";
+    Value &aJsonArray = JsonUtils::getJsonArray(aJsonObject, "OrderItems");
     if (!aJsonArray.IsNull())
     {
         for (int i = 0; i < (int)aJsonArray.Size(); i++)
@@ -30,7 +30,7 @@ void LazadaDataItemListOrder::parseItemData(Value &aJsonObject)
                 Value &itemValue = JsonUtils::tryGetJsonObject(aJsonArray, i);
                 if (!itemValue.IsNull())
                 {
-                    LazadaDataItemOrder *itemData = new LazadaDataItemOrder();
+                    LazadaDataItemBillOrder *itemData = new LazadaDataItemBillOrder();
                     itemData->parseItemData(itemValue);
                     _listData.append(itemData);
                 }
@@ -45,7 +45,7 @@ void LazadaDataItemListOrder::parseItemData(Value &aJsonObject)
     }
 }
 
-QList<LazadaDataItemOrder *> LazadaDataItemListOrder::getListData()
+QList<LazadaDataItemBillOrder *> LazadaDataItemOrderItems::getListData()
 {
     return _listData;
 }

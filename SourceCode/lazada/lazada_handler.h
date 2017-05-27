@@ -49,10 +49,12 @@ namespace Lazada { namespace Controls {
         static LazadaHandler *instance();
 
         void requestListOrder(IObjRequestListener *pListener);
-        void requestItemOrder();
+        void requestOrder(int orderId, IObjRequestListener *pListener);
+        void requestOrderItems(int orderId, IObjRequestListener *pListener);
 
         void handleResponseApiListOrder(IApiRequest *a_pRequest);
-        void handleResponseApiItemOrder();
+        void handleResponseApiOrder(IApiRequest *a_pRequest);
+        void handleResponseApiOrderItems(IApiRequest *a_pRequest);
 
     protected:
         virtual void OnApiRequestComplete(IApiRequest* a_pRequest);
@@ -62,6 +64,8 @@ namespace Lazada { namespace Controls {
         QHash<int, IObjRequestListener*> _hashOjectListener;
 
         int _curRequestIdGetListOrder = -1;
+        int _curRequestIdGetOrder = -1;
+        int _curRequestIdGetOrderItems = -1;
     };
 
 }

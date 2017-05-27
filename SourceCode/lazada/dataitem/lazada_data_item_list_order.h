@@ -6,7 +6,7 @@
 
 namespace Core { namespace DataItem {
 
-    class LazadaDataItemOrderItem;
+    class LazadaDataItemOrder;
 
     class LazadaDataItemListOrder : public AbstractDataItem
     {
@@ -16,10 +16,10 @@ namespace Core { namespace DataItem {
         virtual AbstractDataItem* clone() const;
         virtual void parseItemData(Value& aJsonObject);
 
-        QList<LazadaDataItemOrderItem *> getListData();
+        QList<LazadaDataItemOrder *> getListData();
 
     private:
-        QList<LazadaDataItemOrderItem *> _listData;
+        QList<LazadaDataItemOrder *> _listData;
     };
 
 }}

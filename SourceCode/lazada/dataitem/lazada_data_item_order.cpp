@@ -1,4 +1,4 @@
-#include "lazada_data_item_order_item.h"
+#include "lazada_data_item_order.h"
 #include "../../core/jsonutil/json_utils.h"
 #include "../../core/jsonutil/json_exception.h"
 #include <QDebug>
@@ -6,17 +6,17 @@
 using namespace Core::Json;
 using namespace Core::DataItem;
 
-LazadaDataItemOrderItem::LazadaDataItemOrderItem()
+LazadaDataItemOrder::LazadaDataItemOrder()
 {
 
 }
 
-AbstractDataItem *LazadaDataItemOrderItem::clone() const
+AbstractDataItem *LazadaDataItemOrder::clone() const
 {
-    return new LazadaDataItemOrderItem(*this);
+    return new LazadaDataItemOrder(*this);
 }
 
-void LazadaDataItemOrderItem::parseItemData(Value &aJsonObject)
+void LazadaDataItemOrder::parseItemData(Value &aJsonObject)
 {
     if (!aJsonObject.IsNull())
     {
@@ -61,7 +61,7 @@ void LazadaDataItemOrderItem::parseItemData(Value &aJsonObject)
     }
 }
 
-void LazadaDataItemOrderItem::parseValueAddress(Value &aObject, Address *address)
+void LazadaDataItemOrder::parseValueAddress(Value &aObject, Address *address)
 {
     if (!aObject.IsNull())
     {
