@@ -88,6 +88,41 @@ void LazadaDataItemOrder::parseValueAddress(Value &aObject, Address *address)
     }
 }
 
+void LazadaDataItemOrder::setStatuses(const Statuses &Statuses)
+{
+    m_Statuses = Statuses;
+}
+
+Address LazadaDataItemOrder::AddressShipping() const
+{
+    return m_AddressShipping;
+}
+
+void LazadaDataItemOrder::setAddressShipping(const Address &AddressShipping)
+{
+    m_AddressShipping = AddressShipping;
+}
+
+LazadaDataItemOrder::Statuses LazadaDataItemOrder::getStatuses() const
+{
+    return m_Statuses;
+}
+
+Address LazadaDataItemOrder::AddressBilling() const
+{
+    return m_AddressBilling;
+}
+
+void LazadaDataItemOrder::setAddressBilling(const Address &AddressBilling)
+{
+    m_AddressBilling = AddressBilling;
+}
+
+void LazadaDataItemOrder::setOrderId(const qint64 &OrderId)
+{
+    m_OrderId = OrderId;
+}
+
 qint64 LazadaDataItemOrder::OrderId() const
 {
     return m_OrderId;

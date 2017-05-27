@@ -36,6 +36,70 @@ namespace Core { namespace DataItem {
         };
 
         qint64 OrderId() const;
+        void setOrderId(const qint64 &OrderId);
+
+        Address AddressBilling() const;
+        void setAddressBilling(const Address &AddressBilling);
+
+        Address AddressShipping() const;
+        void setAddressShipping(const Address &AddressShipping);
+
+        Statuses getStatuses() const;
+        void setStatuses(const Statuses &Statuses);
+
+        QString getCustomerFirstName() const;
+        void setCustomerFirstName(const QString &CustomerFirstName);
+
+        QString getCustomerLastName() const;
+        void setCustomerLastName(const QString &CustomerLastName);
+
+        QString getPaymentMethod() const;
+        void setPaymentMethod(const QString &PaymentMethod);
+
+        QString getRemarks() const;
+        void setRemarks(const QString &Remarks);
+
+        QString getDeliveryInfo() const;
+        void setDeliveryInfo(const QString &DeliveryInfo);
+
+        QString getPrice() const;
+        void setPrice(const QString &Price);
+
+        QString getGiftMessage() const;
+        void setGiftMessage(const QString &GiftMessage);
+
+        QString getVoucherCode() const;
+        void setVoucherCode(const QString &VoucherCode);
+
+        QString getCreatedAt() const;
+        void setCreatedAt(const QString &CreatedAt);
+
+        QString getUpdatedAt() const;
+        void setUpdatedAt(const QString &UpdatedAt);
+
+        QString getNationalRegistrationNumber() const;
+        void setNationalRegistrationNumber(const QString &NationalRegistrationNumber);
+
+        QString getPromisedShippingTimes() const;
+        void setPromisedShippingTimes(const QString &PromisedShippingTimes);
+
+        QString getExtraAttributes() const;
+        void setExtraAttributes(const QString &ExtraAttributes);
+
+        qint64 getOrderNumber() const;
+        void setOrderNumber(const qint64 &OrderNumber);
+
+        bool getGiftOption() const;
+        void setGiftOption(bool GiftOption);
+
+        int getItemsCount() const;
+        void setItemsCount(int ItemsCount);
+
+        int getVoucher() const;
+        void setVoucher(int Voucher);
+
+        int getShippingFee() const;
+        void setShippingFee(int ShippingFee);
 
     private:
         void parseValueAddress(Value &aObject, Address *address);
