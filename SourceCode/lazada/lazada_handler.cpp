@@ -12,6 +12,10 @@
 #include "../lazada/dataitem/lazada_data_item_order_items.h"
 #include "../lazada/dataitem/lazada_data_item_bill_order.h"
 
+#include <QDateTime>
+
+#define TIME_NEED_REQUEST   2 * 60 * 1000 // 2'
+
 using namespace Core::Request;
 using namespace Core::Lazada::Request;
 using namespace Core::Lazada::Parser;
@@ -37,6 +41,36 @@ LazadaHandler *LazadaHandler::instance()
 LazadaHandler::LazadaHandler()
 {
 
+}
+
+QList<LazadaDataItemOrder *> LazadaHandler::getAllDataOrders(IObjRequestListener *pListener)
+{
+    if ((QDateTime::currentMSecsSinceEpoch() - _timeRequestAllListOrder) >= TIME_NEED_REQUEST)
+    {
+        _timeRequestAllListOrder = QDateTime::currentMSecsSinceEpoch();
+        requestListOrder(pListener);
+    }
+    return _listDataOrders;
+}
+
+QList<LazadaDataItemBillOrder *> LazadaHandler::getAllDataBillOrders(const qint64 orderId, IObjRequestListener *pListener)
+{
+    if ((QDateTime::currentMSecsSinceEpoch() - _timeRequestAllOrderItems) >= TIME_NEED_REQUEST)
+    {
+        _timeRequestAllOrderItems = QDateTime::currentMSecsSinceEpoch();
+        requestOrderItems(orderId, pListener);
+    }
+    return _listDataOrderItems;
+}
+
+LazadaDataItemOrder *LazadaHandler::getDataOrder(const qint64 orderId, IObjRequestListener *pListener)
+{
+    LazadaDataItemOrder *dataOrder = _hashDataOrders.value(orderId, NULL);
+    if (!dataOrder)
+    {
+        requestOrder(orderId, pListener);
+    }
+    return dataOrder;
 }
 
 void LazadaHandler::requestListOrder(IObjRequestListener *pListener)
@@ -86,7 +120,6 @@ void LazadaHandler::handleResponseApiListOrder(IApiRequest *a_pRequest)
 
         case 0:
         {
-            LazadaApiRequestListOrder *requestListOrder = (LazadaApiRequestListOrder*)a_pRequest;
             LazadaDataItemListOrder *dataItem = (LazadaDataItemListOrder*)a_pRequest->getDataItem();
             if (dataItem)
             {
@@ -96,14 +129,16 @@ void LazadaHandler::handleResponseApiListOrder(IApiRequest *a_pRequest)
                     LazadaDataItemOrder *item = listData.at(i);
                     if (item)
                     {
-
-                        //KhaTH todo:
-                        /**
-                         * @ clone data từ datajson Push data vao model mong muon.
-                        */
-
-
-                        //------------------
+                        LazadaDataItemOrder *dataOld = _hashDataOrders.value(item->OrderId(), NULL);
+                        if (!dataOld)
+                        {
+                            dataOld = (LazadaDataItemOrder*)item->clone();
+                            _hashDataOrders.insert(dataOld->OrderId(), dataOld);
+                        }
+                        else
+                        {
+                            //Todo: update data
+                        }
 
                         delete item;
                         item = NULL;
@@ -141,18 +176,19 @@ void LazadaHandler::handleResponseApiOrder(IApiRequest *a_pRequest)
 
         case 0:
         {
-            LazadaApiRequestOrder *requestListOrder = (LazadaApiRequestOrder*)a_pRequest;
             LazadaDataItemOrder *dataItem = (LazadaDataItemOrder*)a_pRequest->getDataItem();
             if (dataItem)
             {
-
-                //KhaTH todo:
-                /**
-                 * @ clone data từ datajson Push data vao model mong muon.
-                */
-
-
-                //------------------
+                LazadaDataItemOrder *dataOld = _hashDataOrders.value(dataItem->OrderId(), NULL);
+                if (!dataOld)
+                {
+                    dataOld = (LazadaDataItemOrder*)dataItem->clone();
+                    _hashDataOrders.insert(dataOld->OrderId(), dataOld);
+                }
+                else
+                {
+                    //Todo: update data
+                }
 
                 IObjRequestListener *pObjListener = _hashOjectListener.value(requestId, NULL);
                 if (pObjListener)
@@ -184,7 +220,6 @@ void LazadaHandler::handleResponseApiOrderItems(IApiRequest *a_pRequest)
 
         case 0:
         {
-            LazadaApiRequestOrderItems *requestListOrder = (LazadaApiRequestOrderItems*)a_pRequest;
             LazadaDataItemOrderItems *dataItem = (LazadaDataItemOrderItems*)a_pRequest->getDataItem();
             if (dataItem)
             {

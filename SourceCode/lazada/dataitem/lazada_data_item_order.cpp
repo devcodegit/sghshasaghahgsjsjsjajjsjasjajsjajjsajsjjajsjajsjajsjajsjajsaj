@@ -87,3 +87,8 @@ void LazadaDataItemOrder::parseValueAddress(Value &aObject, Address *address)
         }
     }
 }
+
+qint64 LazadaDataItemOrder::OrderId() const
+{
+    return m_OrderId;
+}

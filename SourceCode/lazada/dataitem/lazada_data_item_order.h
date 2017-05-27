@@ -35,6 +35,8 @@ namespace Core { namespace DataItem {
             QString m_Status;
         };
 
+        qint64 OrderId() const;
+
     private:
         void parseValueAddress(Value &aObject, Address *address);
 
