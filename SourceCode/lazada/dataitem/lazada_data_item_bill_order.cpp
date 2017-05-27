@@ -68,6 +68,48 @@ void Core::DataItem::LazadaDataItemBillOrder::parseItemData(Value &aJsonObject)
     }
 }
 
+void LazadaDataItemBillOrder::cloneData(LazadaDataItemBillOrder *dataClone)
+{
+    if (!dataClone) return;
+    dataClone->m_ShopId = this->m_ShopId;
+    dataClone->m_Sku = this->m_Sku;
+    dataClone->m_ShopSku = this->m_ShopSku;
+    dataClone->m_ShippingType = this->m_ShippingType;
+    dataClone->m_Currency = this->m_Currency;
+    dataClone->m_Name = this->m_Name;
+    dataClone->m_VoucherCode = this->m_VoucherCode;
+    dataClone->m_Status = this->m_Status;
+    dataClone->m_ShipmentProvider = this->m_ShipmentProvider;
+    dataClone->m_DigitalDeliveryInfo = this->m_DigitalDeliveryInfo;
+    dataClone->m_TrackingCode = this->m_TrackingCode;
+    dataClone->m_TrackingCodePre = this->m_TrackingCodePre;
+    dataClone->m_Reason = this->m_Reason;
+    dataClone->m_ReasonDetail = this->m_ReasonDetail;
+    dataClone->m_PurchaseOrderId = this->m_PurchaseOrderId;
+    dataClone->m_PurchaseOrderNumber = this->m_PurchaseOrderNumber;
+    dataClone->m_PackageId = this->m_PackageId;
+    dataClone->m_PromisedShippingTime = this->m_PromisedShippingTime;
+    dataClone->m_ExtraAttributes = this->m_ExtraAttributes;
+    dataClone->m_ShippingProviderType = this->m_ShippingProviderType;
+    dataClone->m_CreatedAt = this->m_CreatedAt;
+    dataClone->m_UpdatedAt = this->m_UpdatedAt;
+    dataClone->m_ReturnStatus = this->m_ReturnStatus;
+    dataClone->m_productMainImage = this->m_productMainImage;
+    dataClone->m_Variation = this->m_Variation;
+    dataClone->m_ProductDetailUrl = this->m_ProductDetailUrl;
+    dataClone->m_invoiceNumber = this->m_invoiceNumber;
+    dataClone->m_OrderId = this->m_OrderId;
+    dataClone->m_OrderItemId = this->m_OrderItemId;
+    dataClone->m_ItemPrice = this->m_ItemPrice;
+    dataClone->m_PaidPrice = this->m_PaidPrice;
+    dataClone->m_VoucherAmount = this->m_VoucherAmount;
+    dataClone->m_WalletCredits = this->m_WalletCredits;
+    dataClone->m_TaxAmount = this->m_TaxAmount;
+    dataClone->m_ShippingAmount = this->m_ShippingAmount;
+    dataClone->m_ShippingServiceCode = this->m_ShippingServiceCode;
+    dataClone->m_IsDigital = this->m_IsDigital;
+}
+
 QString LazadaDataItemBillOrder::ShopId() const
 {
     return m_ShopId;

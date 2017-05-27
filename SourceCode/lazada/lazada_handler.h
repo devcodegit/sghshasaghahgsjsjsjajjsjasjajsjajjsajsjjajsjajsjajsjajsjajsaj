@@ -56,8 +56,8 @@ namespace Lazada { namespace Controls {
         static LazadaHandler *instance();
 
         QList<LazadaDataItemOrder *> getAllDataOrders(IObjRequestListener *pListener = NULL);
-        QList<LazadaDataItemBillOrder *> getAllDataBillOrders(const qint64 orderId, IObjRequestListener *pListener = NULL);
         LazadaDataItemOrder * getDataOrder(const qint64 orderId, IObjRequestListener *pListener = NULL);
+        LazadaDataItemBillOrder *getBillOrder(const qint64 orderId, IObjRequestListener *pListener = NULL);
 
     protected:
         virtual void OnApiRequestComplete(IApiRequest* a_pRequest);

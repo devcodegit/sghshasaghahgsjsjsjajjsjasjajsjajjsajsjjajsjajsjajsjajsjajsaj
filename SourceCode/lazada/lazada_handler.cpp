@@ -53,16 +53,6 @@ QList<LazadaDataItemOrder *> LazadaHandler::getAllDataOrders(IObjRequestListener
     return _listDataOrders;
 }
 
-QList<LazadaDataItemBillOrder *> LazadaHandler::getAllDataBillOrders(const qint64 orderId, IObjRequestListener *pListener)
-{
-    if ((QDateTime::currentMSecsSinceEpoch() - _timeRequestAllOrderItems) >= TIME_NEED_REQUEST)
-    {
-        _timeRequestAllOrderItems = QDateTime::currentMSecsSinceEpoch();
-        requestOrderItems(orderId, pListener);
-    }
-    return _listDataOrderItems;
-}
-
 LazadaDataItemOrder *LazadaHandler::getDataOrder(const qint64 orderId, IObjRequestListener *pListener)
 {
     LazadaDataItemOrder *dataOrder = _hashDataOrders.value(orderId, NULL);
@@ -71,6 +61,16 @@ LazadaDataItemOrder *LazadaHandler::getDataOrder(const qint64 orderId, IObjReque
         requestOrder(orderId, pListener);
     }
     return dataOrder;
+}
+
+LazadaDataItemBillOrder *LazadaHandler::getBillOrder(const qint64 orderId, IObjRequestListener *pListener)
+{
+    LazadaDataItemBillOrder *itemdata = _hashDataOrderItems.value(orderId, NULL);
+    if ((QDateTime::currentMSecsSinceEpoch() - _timeRequestAllOrderItems) > TIME_NEED_REQUEST || !itemdata)
+    {
+        requestOrderItems(orderId, pListener);
+    }
+    return itemdata;
 }
 
 void LazadaHandler::requestListOrder(IObjRequestListener *pListener)
@@ -137,7 +137,7 @@ void LazadaHandler::handleResponseApiListOrder(IApiRequest *a_pRequest)
                         }
                         else
                         {
-                            //Todo: update data
+                            item->cloneData(dataOld);
                         }
 
                         delete item;
@@ -188,6 +188,7 @@ void LazadaHandler::handleResponseApiOrder(IApiRequest *a_pRequest)
                 else
                 {
                     //Todo: update data
+                    dataItem->cloneData(dataOld);
                 }
 
                 IObjRequestListener *pObjListener = _hashOjectListener.value(requestId, NULL);
@@ -230,13 +231,16 @@ void LazadaHandler::handleResponseApiOrderItems(IApiRequest *a_pRequest)
                     if (item)
                     {
 
-                        //KhaTH todo:
-                        /**
-                         * @ clone data từ datajson Push data vao model mong muon.
-                        */
-
-
-                        //------------------
+                        LazadaDataItemBillOrder *dataOld = _hashDataOrderItems.value(item->OrderId(), NULL);
+                        if (!dataOld)
+                        {
+                            dataOld = (LazadaDataItemBillOrder*)item->clone();
+                            _hashDataOrderItems.insert(dataOld->OrderId(), dataOld);
+                        }
+                        else
+                        {
+                            item->cloneData(dataOld);
+                        }
 
                         delete item;
                         item = NULL;

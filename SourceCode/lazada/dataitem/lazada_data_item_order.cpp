@@ -61,6 +61,33 @@ void LazadaDataItemOrder::parseItemData(Value &aJsonObject)
     }
 }
 
+void LazadaDataItemOrder::cloneData(LazadaDataItemOrder *dataClone)
+{
+    if (!dataClone) return;
+    dataClone->m_AddressBilling = this->m_AddressBilling;
+    dataClone->m_AddressShipping = this->m_AddressShipping;
+    dataClone->m_Statuses = this->m_Statuses;
+    dataClone->m_CustomerFirstName = this->m_CustomerFirstName;
+    dataClone->m_CustomerLastName = this->m_CustomerLastName;
+    dataClone->m_PaymentMethod = this->m_PaymentMethod;
+    dataClone->m_Remarks = this->m_Remarks;
+    dataClone->m_DeliveryInfo = this->m_DeliveryInfo;
+    dataClone->m_Price = this->m_Price;
+    dataClone->m_GiftMessage = this->m_GiftMessage;
+    dataClone->m_VoucherCode = this->m_VoucherCode;
+    dataClone->m_CreatedAt = this->m_CreatedAt;
+    dataClone->m_UpdatedAt = this->m_UpdatedAt;
+    dataClone->m_NationalRegistrationNumber = this->m_NationalRegistrationNumber;
+    dataClone->m_PromisedShippingTimes = this->m_PromisedShippingTimes;
+    dataClone->m_ExtraAttributes = this->m_ExtraAttributes;
+    dataClone->m_OrderNumber = this->m_OrderNumber;
+    dataClone->m_OrderId = this->m_OrderId;
+    dataClone->m_GiftOption = this->m_GiftOption;
+    dataClone->m_ItemsCount = this->m_ItemsCount;
+    dataClone->m_Voucher = this->m_Voucher;
+    dataClone->m_ShippingFee = this->m_ShippingFee;
+}
+
 void LazadaDataItemOrder::parseValueAddress(Value &aObject, Address *address)
 {
     if (!aObject.IsNull())
@@ -88,12 +115,192 @@ void LazadaDataItemOrder::parseValueAddress(Value &aObject, Address *address)
     }
 }
 
+int LazadaDataItemOrder::getShippingFee() const
+{
+    return m_ShippingFee;
+}
+
+void LazadaDataItemOrder::setShippingFee(int ShippingFee)
+{
+    m_ShippingFee = ShippingFee;
+}
+
+int LazadaDataItemOrder::getVoucher() const
+{
+    return m_Voucher;
+}
+
+void LazadaDataItemOrder::setVoucher(int Voucher)
+{
+    m_Voucher = Voucher;
+}
+
+int LazadaDataItemOrder::getItemsCount() const
+{
+    return m_ItemsCount;
+}
+
+void LazadaDataItemOrder::setItemsCount(int ItemsCount)
+{
+    m_ItemsCount = ItemsCount;
+}
+
+bool LazadaDataItemOrder::getGiftOption() const
+{
+    return m_GiftOption;
+}
+
+void LazadaDataItemOrder::setGiftOption(bool GiftOption)
+{
+    m_GiftOption = GiftOption;
+}
+
+qint64 LazadaDataItemOrder::getOrderNumber() const
+{
+    return m_OrderNumber;
+}
+
+void LazadaDataItemOrder::setOrderNumber(const qint64 &OrderNumber)
+{
+    m_OrderNumber = OrderNumber;
+}
+
+QString LazadaDataItemOrder::getExtraAttributes() const
+{
+    return m_ExtraAttributes;
+}
+
+void LazadaDataItemOrder::setExtraAttributes(const QString &ExtraAttributes)
+{
+    m_ExtraAttributes = ExtraAttributes;
+}
+
+QString LazadaDataItemOrder::getPromisedShippingTimes() const
+{
+    return m_PromisedShippingTimes;
+}
+
+void LazadaDataItemOrder::setPromisedShippingTimes(const QString &PromisedShippingTimes)
+{
+    m_PromisedShippingTimes = PromisedShippingTimes;
+}
+
+QString LazadaDataItemOrder::getNationalRegistrationNumber() const
+{
+    return m_NationalRegistrationNumber;
+}
+
+void LazadaDataItemOrder::setNationalRegistrationNumber(const QString &NationalRegistrationNumber)
+{
+    m_NationalRegistrationNumber = NationalRegistrationNumber;
+}
+
+QString LazadaDataItemOrder::getUpdatedAt() const
+{
+    return m_UpdatedAt;
+}
+
+void LazadaDataItemOrder::setUpdatedAt(const QString &UpdatedAt)
+{
+    m_UpdatedAt = UpdatedAt;
+}
+
+QString LazadaDataItemOrder::getCreatedAt() const
+{
+    return m_CreatedAt;
+}
+
+void LazadaDataItemOrder::setCreatedAt(const QString &CreatedAt)
+{
+    m_CreatedAt = CreatedAt;
+}
+
+QString LazadaDataItemOrder::getVoucherCode() const
+{
+    return m_VoucherCode;
+}
+
+void LazadaDataItemOrder::setVoucherCode(const QString &VoucherCode)
+{
+    m_VoucherCode = VoucherCode;
+}
+
+QString LazadaDataItemOrder::getGiftMessage() const
+{
+    return m_GiftMessage;
+}
+
+void LazadaDataItemOrder::setGiftMessage(const QString &GiftMessage)
+{
+    m_GiftMessage = GiftMessage;
+}
+
+QString LazadaDataItemOrder::getPrice() const
+{
+    return m_Price;
+}
+
+void LazadaDataItemOrder::setPrice(const QString &Price)
+{
+    m_Price = Price;
+}
+
+QString LazadaDataItemOrder::getDeliveryInfo() const
+{
+    return m_DeliveryInfo;
+}
+
+void LazadaDataItemOrder::setDeliveryInfo(const QString &DeliveryInfo)
+{
+    m_DeliveryInfo = DeliveryInfo;
+}
+
+QString LazadaDataItemOrder::getRemarks() const
+{
+    return m_Remarks;
+}
+
+void LazadaDataItemOrder::setRemarks(const QString &Remarks)
+{
+    m_Remarks = Remarks;
+}
+
+QString LazadaDataItemOrder::getPaymentMethod() const
+{
+    return m_PaymentMethod;
+}
+
+void LazadaDataItemOrder::setPaymentMethod(const QString &PaymentMethod)
+{
+    m_PaymentMethod = PaymentMethod;
+}
+
+QString LazadaDataItemOrder::getCustomerLastName() const
+{
+    return m_CustomerLastName;
+}
+
+void LazadaDataItemOrder::setCustomerLastName(const QString &CustomerLastName)
+{
+    m_CustomerLastName = CustomerLastName;
+}
+
+QString LazadaDataItemOrder::getCustomerFirstName() const
+{
+    return m_CustomerFirstName;
+}
+
+void LazadaDataItemOrder::setCustomerFirstName(const QString &CustomerFirstName)
+{
+    m_CustomerFirstName = CustomerFirstName;
+}
+
 void LazadaDataItemOrder::setStatuses(const Statuses &Statuses)
 {
     m_Statuses = Statuses;
 }
 
-Address LazadaDataItemOrder::AddressShipping() const
+LazadaDataItemOrder::Address LazadaDataItemOrder::AddressShipping() const
 {
     return m_AddressShipping;
 }
@@ -108,7 +315,7 @@ LazadaDataItemOrder::Statuses LazadaDataItemOrder::getStatuses() const
     return m_Statuses;
 }
 
-Address LazadaDataItemOrder::AddressBilling() const
+LazadaDataItemOrder::Address LazadaDataItemOrder::AddressBilling() const
 {
     return m_AddressBilling;
 }

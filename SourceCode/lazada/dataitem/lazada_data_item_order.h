@@ -12,6 +12,7 @@ namespace Core { namespace DataItem {
 
         virtual AbstractDataItem* clone() const;
         virtual void parseItemData(Value& aJsonObject);
+        void cloneData(LazadaDataItemOrder *dataClone);
 
         struct Address
         {
