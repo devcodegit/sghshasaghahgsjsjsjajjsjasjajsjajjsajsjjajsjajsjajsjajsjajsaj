@@ -46,11 +46,7 @@ void STableView::onPaintItem(const QStyleOptionViewItem &option, const QModelInd
 
 void STableView::onPressed(const QModelIndex &index)
 {
-    qDebug () << "Pressed" << index.data() << index.column() << index.row();
-    for(QMap<QModelIndex, QStyleOptionViewItem>::iterator it = mapIndexOption.begin(); it != mapIndexOption.end(); it++) {
-        qDebug () << "here" << it.value() << it.key();
-    }
-    emit itemClicked();
+    emit itemClicked(index.row(), index.column());
 //    int height = 0;
 //    int _index = currentValue;
 //    while(true) {

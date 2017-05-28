@@ -76,7 +76,7 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     tableView = new STableView(resultFrame);
     tableView->setModel(model);
     tableView->show();
-    connect(tableView, SIGNAL(itemClicked()), this, SLOT(onShowInfo()));
+    connect(tableView, SIGNAL(itemClicked(int,int)), this, SLOT(onShowInfo(int,int)));
 
 //    qmlTableView = new STableView;
 //    qmlTableView->show();
@@ -94,7 +94,8 @@ void PageSearch::OnRequestCompleted(ResponseResult *result)
         UIExecutor::invoke([&, requestType, errorMsg]()
         {
             //Kha todo:
-
+            listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
+            qDebug () << "OnRequestCompleted();" << requestType << errorMsg << listItem.length();
         });
     }
 }
@@ -138,29 +139,30 @@ void PageSearch::onSearch()
 void PageSearch::onJumping(int page)
 {
     if(page < 1) return;
+    currentPage = page;
     int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
     model->clear();
     model->setHorizontalHeaderLabels(header);
     for(int row = 0; row < listLen; row++){
-        QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split(",");
+        QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
         TableModel::instance()->pushItem(line);
     }
 }
 
-void PageSearch::onShowInfo()
+void PageSearch::onShowInfo(int row, int col)
 {
+    qDebug () << "onShowInfo" << row << col << "item == " << row + (currentPage - 1) * MAX_RESULT;
     if(!infoDialog) infoDialog = new DetailWidget;
-    qDebug () << "onShowInfo();" << UIModel::instance()->getMainWindow()->size() << UIModel::instance()->getMainWindow();
+    int index = row + (currentPage - 1) * MAX_RESULT;
     infoDialog->setParent(UIModel::instance()->getMainWindow());
+    infoDialog->setData(listItem.at(index));
     infoDialog->show();
     infoDialog->setFocus();
 }
 
 void PageSearch::readData()
 {
-    qDebug () << "listLenght" << listItem.length();
     for(int i = 0; i < listItem.length(); i++) {
-//        QString doc = "Hóa đơn";
         QString no_order = QString::number(listItem.at(i)->getOrderNumber());
         QString date_order = listItem.at(i)->getCreatedAt();
         QString waiting_queue = "";
@@ -168,9 +170,9 @@ void PageSearch::readData()
         QString price = listItem.at(i)->getPrice();
         QString num = listItem.at(i)->getItemsCount();
         QString status = listItem.at(i)->getStatuses().m_Status;
-        QString printed = "true";
+        QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
-        QString line = QString("Hóa đơn,%1,%2, ,%3,%4,%5,%6,true,%7").arg(no_order,date_order,waiting_queue,payment_method,price,num,status,printed,action);
+        QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order,date_order,waiting_queue,payment_method,price,num,status,printed,action);
         linesList.append(line);
     }
 

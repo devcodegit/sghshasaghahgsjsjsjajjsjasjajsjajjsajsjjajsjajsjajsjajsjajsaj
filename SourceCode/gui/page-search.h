@@ -37,7 +37,7 @@ public slots:
 private slots:
     void onSearch();
     void onJumping(int page);
-    void onShowInfo();
+    void onShowInfo(int row, int col);
 
 private:
     QFrame *resultFrame = 0;
@@ -52,6 +52,7 @@ private:
     QStringList linesList;
     QStringList header;
     QList<LazadaDataItemOrder*> listItem;
+    int currentPage = 0;
 
 private:
     void readData(); //for testing
