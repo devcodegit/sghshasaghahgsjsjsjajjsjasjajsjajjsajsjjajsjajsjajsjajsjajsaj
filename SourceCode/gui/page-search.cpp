@@ -8,6 +8,8 @@
 #include "table-model.h"
 #include "../lazada/dataitem/lazada_data_item_order.h"
 #include "../lazada/dataitem/lazada_data_item_list_order.h"
+#include "../ui_executor.h"
+
 #include <QScrollArea>
 #include <QBoxLayout>
 #include <QLineEdit>
@@ -84,17 +86,31 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
 {
-    qDebug () << "onRequestCompleted___" << result;
-    if(result) {
-        qDebug () << "errorCode = " << result->getRequestType() << result->getErrorMsg() << result->getUserIdResponse();
+    if (result)
+    {
+        int requestType = result->getRequestType();
+        QString errorMsg = result->getErrorMsg();
+
+        UIExecutor::invoke([&, requestType, errorMsg]()
+        {
+            //Kha todo:
+
+        });
     }
 }
 
 void PageSearch::OnRequestFailed(ResponseResult *result)
 {
-    qDebug () << "OnRequestFailed();" << result;
-    if(result) {
-        qDebug () << "errorCode = " << result->getRequestType() << result->getErrorMsg();
+    if (result)
+    {
+        int requestType = result->getRequestType();
+        QString errorMsg = result->getErrorMsg();
+
+        UIExecutor::invoke([&, requestType, errorMsg]()
+        {
+            //Kha todo:
+
+        });
     }
 }
 

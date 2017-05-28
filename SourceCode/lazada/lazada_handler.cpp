@@ -134,6 +134,7 @@ void LazadaHandler::handleResponseApiListOrder(IApiRequest *a_pRequest)
                         {
                             dataOld = (LazadaDataItemOrder*)item->clone();
                             _hashDataOrders.insert(dataOld->OrderId(), dataOld);
+                            _listDataOrders.append(dataOld);
                         }
                         else
                         {
@@ -184,6 +185,7 @@ void LazadaHandler::handleResponseApiOrder(IApiRequest *a_pRequest)
                 {
                     dataOld = (LazadaDataItemOrder*)dataItem->clone();
                     _hashDataOrders.insert(dataOld->OrderId(), dataOld);
+                    _listDataOrders.append(dataOld);
                 }
                 else
                 {
