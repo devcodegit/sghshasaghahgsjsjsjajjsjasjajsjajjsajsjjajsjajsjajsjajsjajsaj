@@ -16,6 +16,8 @@ public:
     void setMainWindow(QWidget *widget);
     QWidget *getMainWindow();
 
+    QStringList getDataTableHeader();
+
 private:
     QWidget *mainWindow = 0;
 };

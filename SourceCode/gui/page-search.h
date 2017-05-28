@@ -2,6 +2,7 @@
 #define PAGESEARCH_H
 
 #include <QWidget>
+#include "../lazada/lazada_handler.h"
 
 class QScrollArea;
 class QLineEdit;
@@ -14,14 +15,20 @@ class SFilterInfo;
 //class STableView;
 class DetailWidget;
 
-class PageSearch : public QWidget
+using namespace Lazada::Controls;
+
+class PageSearch : public QWidget, public IObjRequestListener
 {
     Q_OBJECT
 public:
     explicit PageSearch(QWidget *parent = 0);
 
+
+    virtual void OnRequestCompleted(ResponseResult *result);
+    virtual void OnRequestFailed(ResponseResult *result);
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual void showEvent(QShowEvent *);
 
 signals:
 
@@ -42,11 +49,13 @@ private:
     SFilterInfo *filterInfo = 0;
     DetailWidget *infoDialog  = 0;
 //    STableView *qmlTableView = 0;
-    QStringList testList;
+    QStringList linesList;
     QStringList header;
+    QList<LazadaDataItemOrder*> listItem;
 
 private:
     void readData(); //for testing
+    void preloadData();
 };
 
 #endif // PAGESEARCH_H

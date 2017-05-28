@@ -5,6 +5,9 @@
 #include "CustomControl/sfilter-info.h"
 #include "CustomControl/detailwidget.h"
 #include "../uimodel.h"
+#include "table-model.h"
+#include "../lazada/dataitem/lazada_data_item_order.h"
+#include "../lazada/dataitem/lazada_data_item_list_order.h"
 #include <QScrollArea>
 #include <QBoxLayout>
 #include <QLineEdit>
@@ -18,10 +21,13 @@
 #include <QDebug>
 #include <QVariant>
 
-
+using namespace Core::DataItem;
 #define MAX_RESULT 50
 PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 {
+    listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
+    header = UIModel::instance()->getDataTableHeader();
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(8);
     mainLayout->setMargin(0);
@@ -64,8 +70,7 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(resultFrame, 1);
 
     /*Model*/
-    model = new QStandardItemModel;
-    readData();
+    model = TableModel::instance()->getModel();
     tableView = new STableView(resultFrame);
     tableView->setModel(model);
     tableView->show();
@@ -75,6 +80,22 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 //    qmlTableView->show();
 
 
+}
+
+void PageSearch::OnRequestCompleted(ResponseResult *result)
+{
+    qDebug () << "onRequestCompleted___" << result;
+    if(result) {
+        qDebug () << "errorCode = " << result->getRequestType() << result->getErrorMsg() << result->getUserIdResponse();
+    }
+}
+
+void PageSearch::OnRequestFailed(ResponseResult *result)
+{
+    qDebug () << "OnRequestFailed();" << result;
+    if(result) {
+        qDebug () << "errorCode = " << result->getRequestType() << result->getErrorMsg();
+    }
 }
 
 bool PageSearch::eventFilter(QObject *object, QEvent *event)
@@ -87,6 +108,11 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
     return QWidget::eventFilter(object, event);
 }
 
+void PageSearch::showEvent(QShowEvent *)
+{
+    readData();
+}
+
 void PageSearch::onSearch()
 {
 
@@ -96,16 +122,12 @@ void PageSearch::onSearch()
 void PageSearch::onJumping(int page)
 {
     if(page < 1) return;
-    QStandardItem *newItem=0;
-    int listLen = qMin(testList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
+    int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
     model->clear();
     model->setHorizontalHeaderLabels(header);
     for(int row = 0; row < listLen; row++){
-        QStringList line = testList.at(row + (page-1)*MAX_RESULT).simplified().split(",");
-        for(int col = 0; col < line.length(); col++) {
-            newItem = new QStandardItem(line.at(col));
-            model->setItem(row, col, newItem);
-        }
+        QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split(",");
+        TableModel::instance()->pushItem(line);
     }
 }
 
@@ -120,24 +142,29 @@ void PageSearch::onShowInfo()
 
 void PageSearch::readData()
 {
-    QFile file("D://example//TestTable//grades.txt");
-    testList.clear();
-    if (file.open(QFile::ReadOnly)) {
-        int isHeader = true;
-        QTextStream in(&file);
-        while(!in.atEnd()){
-            QString line = file.readLine();
-            if(isHeader) {
-                header = line.simplified().split(",");
-                isHeader = false;
-            }
-            else testList.append(line);
-        }
+    qDebug () << "listLenght" << listItem.length();
+    for(int i = 0; i < listItem.length(); i++) {
+//        QString doc = "Hóa đơn";
+        QString no_order = QString::number(listItem.at(i)->getOrderNumber());
+        QString date_order = listItem.at(i)->getCreatedAt();
+        QString waiting_queue = "";
+        QString payment_method = listItem.at(i)->getPaymentMethod();
+        QString price = listItem.at(i)->getPrice();
+        QString num = listItem.at(i)->getItemsCount();
+        QString status = listItem.at(i)->getStatuses().m_Status;
+        QString printed = "true";
+        QString action = listItem.at(i)->getDeliveryInfo();
+        QString line = QString("Hóa đơn,%1,%2, ,%3,%4,%5,%6,true,%7").arg(no_order,date_order,waiting_queue,payment_method,price,num,status,printed,action);
+        linesList.append(line);
     }
-    file.close();
-    int listLen = testList.length();
-    qDebug () << "readData" << listLen;
+
+
+    int listLen = linesList.length();
     int numPage = listLen/MAX_RESULT + ((listLen%MAX_RESULT > 0) ? 1 : 0);
     pageNavigation->setRange(1,numPage,4);
     onJumping(1);
+}
+
+void PageSearch::preloadData()
+{
 }

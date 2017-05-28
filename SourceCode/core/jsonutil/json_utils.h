@@ -2,6 +2,7 @@
 #define JSON_UTILS_H
 
 #include <QString>
+#include <QMap>
 
 #include "rapidjson/document.h"
 

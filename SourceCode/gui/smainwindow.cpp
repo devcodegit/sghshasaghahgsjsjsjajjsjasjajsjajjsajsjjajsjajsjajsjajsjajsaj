@@ -5,6 +5,7 @@
 #include "CustomControl/stabwidget.h"
 #include "../uimodel.h"
 #include "page-search.h"
+#include "../lazada/lazada_handler.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
@@ -12,6 +13,8 @@
 #include <QPushButton>
 
 #define AVATAR_SIZE 30
+
+using namespace Lazada::Controls;
 
 SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 {

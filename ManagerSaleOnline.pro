@@ -81,7 +81,8 @@ SOURCES += \
     SourceCode/lazada/request/lazada_api_request_order_items.cpp \
     SourceCode/lazada/dataitem/lazada_data_item_order_items.cpp \
     SourceCode/lazada/dataitem/lazada_data_item_order.cpp \
-    SourceCode/lazada/dataitem/lazada_data_item_bill_order.cpp
+    SourceCode/lazada/dataitem/lazada_data_item_bill_order.cpp \
+    SourceCode/gui/table-model.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -159,7 +160,8 @@ HEADERS += \
     SourceCode/lazada/request/lazada_api_request_order_items.h \
     SourceCode/lazada/dataitem/lazada_data_item_order_items.h \
     SourceCode/lazada/dataitem/lazada_data_item_order.h \
-    SourceCode/lazada/dataitem/lazada_data_item_bill_order.h
+    SourceCode/lazada/dataitem/lazada_data_item_bill_order.h \
+    SourceCode/gui/table-model.h
 
 RESOURCES += \
     Resource/resource.qrc
