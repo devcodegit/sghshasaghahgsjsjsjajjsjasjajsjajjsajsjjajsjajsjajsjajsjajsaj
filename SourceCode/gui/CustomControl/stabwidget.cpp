@@ -101,6 +101,8 @@ void STabWidget::showTab(QFrame *tab)
     if(!content && currentContent == content) return;
     if(currentContent) currentContent->hide();
     currentContent = content;
-    content->show();
-    content->raise();
+    if(content->isHidden()) {
+        content->show();
+        content->raise();
+    }
 }

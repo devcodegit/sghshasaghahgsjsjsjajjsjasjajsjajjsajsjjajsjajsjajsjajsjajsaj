@@ -162,6 +162,7 @@ void PageSearch::onShowInfo(int row, int col)
 
 void PageSearch::readData()
 {
+    linesList.clear();
     for(int i = 0; i < listItem.length(); i++) {
         QString no_order = QString::number(listItem.at(i)->getOrderNumber());
         QString date_order = listItem.at(i)->getCreatedAt();

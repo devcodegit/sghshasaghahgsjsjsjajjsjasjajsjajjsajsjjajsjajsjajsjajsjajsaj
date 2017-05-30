@@ -72,36 +72,36 @@ void SMainWindow::createMidle()
         _pvLayout->addWidget(_pMidle, 1);
     }
 
-//    if (!_pMidleOption)
-//    {
-//        _pMidleOption = new QFrame(_pMidle);
-//        _pMidleOption->move(0,0);
-//        _pMidleOption->setObjectName("MidleStyleOption");
-//        _pMidleOption->setFixedWidth(SIZE_WIDTH_OPTION);
-//        _pMidleOption->setFixedHeight(_pMidle->height());
+    if (!_pMidleOption)
+    {
+        _pMidleOption = new QFrame(_pMidle);
+        _pMidleOption->move(0,0);
+        _pMidleOption->setObjectName("MidleStyleOption");
+        _pMidleOption->setFixedWidth(SIZE_WIDTH_OPTION);
+        _pMidleOption->setFixedHeight(_pMidle->height());
 
-//        menu = new SConstantMenu(_pMidleOption);
-//        menu->setFixedWidth(SIZE_WIDTH_OPTION);
+        menu = new SConstantMenu(_pMidleOption);
+        menu->setFixedWidth(SIZE_WIDTH_OPTION);
 
-//        QWidget *w = new QWidget;
-//        w->setFixedSize(100,100);
-//        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
+        QWidget *w = new QWidget;
+        w->setFixedSize(100,100);
+        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
 
-//        QWidget *w2 = new QWidget;
-//        w2->setFixedSize(100,100);
-//        w2->setStyleSheet("border: 1px solid blue;");
+        QWidget *w2 = new QWidget;
+        w2->setFixedSize(100,100);
+        w2->setStyleSheet("border: 1px solid blue;");
 
-//        menu->addItem("Tittle 1", w);
-//        menu->addItem("Tittle 2", w2);
-//        menu->move(0,0);
-//        menu->show();
-//    }
+        menu->addItem("Tittle 1", w);
+        menu->addItem("Tittle 2", w2);
+        menu->move(0,0);
+        menu->show();
+    }
 
     if (!_pMidleResult)
     {
         _pMidleResult = new QFrame(_pMidle);
-        _pMidleResult->move(0, 0);
-        _pMidleResult->setFixedSize(_pMidle->width()/* - _pMidleOption->width()*/, _pMidle->height());
+        _pMidleResult->move(_pMidleOption->width(), 0);
+        _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
 
 
         tab = new STabWidget(_pMidleResult);
@@ -118,14 +118,14 @@ void SMainWindow::createMidle()
 
 void SMainWindow::updateSize()
 {
-//    if (_pMidleOption)
-//    {
-//        _pMidleOption->setFixedHeight(_pMidle->height());
-//    }
+    if (_pMidleOption)
+    {
+        _pMidleOption->setFixedHeight(_pMidle->height());
+    }
 
     if (_pMidleResult)
     {
-        _pMidleResult->setFixedSize(_pMidle->width() /*- _pMidleOption->width()*/, _pMidle->height());
+        _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
     }
 
     if(tab) {
