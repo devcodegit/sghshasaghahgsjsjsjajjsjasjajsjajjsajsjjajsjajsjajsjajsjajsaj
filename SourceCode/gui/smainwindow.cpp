@@ -6,11 +6,15 @@
 #include "../uimodel.h"
 #include "page-search.h"
 #include "../lazada/lazada_handler.h"
+#include "leftpanel.h"
+#include "../signalsender.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QDebug>
+#include <QStackedWidget>
 
 #define AVATAR_SIZE 30
 
@@ -27,6 +31,68 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
     createMidle();
 
     UIModel::instance()->setMainWindow(this);
+    connect(SignalSender::instance(), &SignalSender::homeClicked, this, &SMainWindow::onHomeClicked);
+    connect(SignalSender::instance(), &SignalSender::managementClicked, this, &SMainWindow::onManagementClicked);
+    connect(SignalSender::instance(), &SignalSender::settingClicked, this, &SMainWindow::onSettingClicked);
+    onHomeClicked();
+}
+
+void SMainWindow::onHomeClicked()
+{
+    qDebug () << "onHomeClicked";
+    if(!homePage) {
+        homePage = new QFrame(_pMidleResult);
+        homePage->setStyleSheet("border: 2px dashed blue; background-color: white;");
+        homePage->move(0,0);
+        QLabel *label = new QLabel(homePage);
+        label->setStyleSheet("color: #111111; font: 16px;");
+        label->move(100, 100);
+        label->setText("HomePage");
+    }
+    homePage->setFixedSize(_pMidleResult->size());
+    homePage->show();
+    homePage->raise();
+    if(managementPage) managementPage->hide();
+    if(settingPage) settingPage->hide();
+}
+
+void SMainWindow::onManagementClicked()
+{
+    qDebug () << "onManagementClicked";
+    if(!managementPage) {
+        managementPage = new STabWidget(_pMidleResult);
+        QFrame *content1 = new QFrame;
+        content1->setStyleSheet("border: 2px solid blue; background-color: yellow;");
+        content1->setFixedSize(managementPage->size());
+        pageSearch = new PageSearch;
+        managementPage->addItem("Content 1", content1);
+        managementPage->addItem("Content 2", pageSearch);
+    }
+    managementPage->setFixedSize(_pMidleResult->size());
+    pageSearch->setFixedSize(managementPage->size());
+    managementPage->show();
+    managementPage->raise();
+    if(homePage) homePage->hide();
+    if(settingPage) settingPage->hide();
+}
+
+void SMainWindow::onSettingClicked()
+{
+    qDebug () << "onSettingClicked";
+    if(!settingPage) {
+        settingPage = new QFrame(_pMidleResult);
+        settingPage->setStyleSheet("border: 2px dashed red; background-color: white;");
+        settingPage->move(0,0);
+        QLabel *label = new QLabel(homePage);
+        label->setStyleSheet("color: #111111; font: 16px;");
+        label->move(100, 100);
+        label->setText("SettingPage");
+    }
+    settingPage->setFixedSize(_pMidleResult->size());
+    settingPage->show();
+    settingPage->raise();
+    if(homePage) homePage->hide();
+    if(managementPage) managementPage->hide();
 }
 
 void SMainWindow::resizeEvent(QResizeEvent *ev)
@@ -77,24 +143,28 @@ void SMainWindow::createMidle()
         _pMidleOption = new QFrame(_pMidle);
         _pMidleOption->move(0,0);
         _pMidleOption->setObjectName("MidleStyleOption");
-        _pMidleOption->setFixedWidth(SIZE_WIDTH_OPTION);
+        _pMidleOption->setFixedWidth(LEFT_PANEL_WIDTH+1);
         _pMidleOption->setFixedHeight(_pMidle->height());
 
-        menu = new SConstantMenu(_pMidleOption);
-        menu->setFixedWidth(SIZE_WIDTH_OPTION);
+//        menu = new SConstantMenu(_pMidleOption);
+//        menu->setFixedWidth(SIZE_WIDTH_OPTION);
 
-        QWidget *w = new QWidget;
-        w->setFixedSize(100,100);
-        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
+//        QWidget *w = new QWidget;
+//        w->setFixedSize(100,100);
+//        w->setStyleSheet("border: 1px solid red; background-color: yellow;");
 
-        QWidget *w2 = new QWidget;
-        w2->setFixedSize(100,100);
-        w2->setStyleSheet("border: 1px solid blue;");
+//        QWidget *w2 = new QWidget;
+//        w2->setFixedSize(100,100);
+//        w2->setStyleSheet("border: 1px solid blue;");
 
-        menu->addItem("Tittle 1", w);
-        menu->addItem("Tittle 2", w2);
-        menu->move(0,0);
-        menu->show();
+//        menu->addItem("Tittle 1", w);
+//        menu->addItem("Tittle 2", w2);
+//        menu->move(0,0);
+//        menu->show();
+        LeftPanel *lelftPanel = new LeftPanel(_pMidleOption);
+        lelftPanel->setFixedWidth(LEFT_PANEL_WIDTH);
+        lelftPanel->move(0,1);
+        lelftPanel->show();
     }
 
     if (!_pMidleResult)
@@ -102,17 +172,6 @@ void SMainWindow::createMidle()
         _pMidleResult = new QFrame(_pMidle);
         _pMidleResult->move(_pMidleOption->width(), 0);
         _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
-
-
-        tab = new STabWidget(_pMidleResult);
-        QFrame *content1 = new QFrame;
-        content1->setStyleSheet("border: 2px solid blue; background-color: yellow;");
-        content1->setFixedSize(tab->size());
-        pageSearch = new PageSearch;
-        pageSearch->setFixedSize(tab->size());
-        tab->addItem("Content 1", content1);
-        tab->addItem("Content 2", pageSearch);
-        tab->show();
     }
 }
 
@@ -128,8 +187,18 @@ void SMainWindow::updateSize()
         _pMidleResult->setFixedSize(_pMidle->width() - _pMidleOption->width(), _pMidle->height());
     }
 
-    if(tab) {
-        if(_pMidleResult) tab->setFixedSize(_pMidleResult->size());
-        if(pageSearch) pageSearch->setFixedSize(tab->size());
+    if(managementPage) {
+        if(_pMidleResult) managementPage->setFixedSize(_pMidleResult->size());
+        if(pageSearch) pageSearch->setFixedSize(managementPage->size());
+    }
+    if(homePage) {
+        if(_pMidleResult) {
+            homePage->setFixedSize(_pMidleResult->size());
+        }
+    }
+    if(settingPage) {
+        if(_pMidleResult) {
+            settingPage->setFixedSize(_pMidleResult->size());
+        }
     }
 }

@@ -13,6 +13,7 @@
         <file>Image/frame_icon_close_hover_12x10_gray.svg</file>
         <file>Image/avatar_user_default.png</file>
         <file>Image/exit.svg</file>
+        <file>Image/home.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

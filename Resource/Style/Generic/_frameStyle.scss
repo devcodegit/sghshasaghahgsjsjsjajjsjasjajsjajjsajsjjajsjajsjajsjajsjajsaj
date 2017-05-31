@@ -37,3 +37,18 @@
 #ContentDialog {
 	background-color: white;
 }
+
+#LeftPanelItem
+{
+    background-color: white;
+    border: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#LeftPanelItem[State=Hover]
+{
+    background-color: #8DD9FD;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
