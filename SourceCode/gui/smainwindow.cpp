@@ -22,6 +22,7 @@ using namespace Lazada::Controls;
 
 SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 {
+    setObjectName("MainBackground");
     setMinimumSize(800,600);
     _pvLayout = new QVBoxLayout(this);
     _pvLayout->setSpacing(0);
@@ -83,7 +84,7 @@ void SMainWindow::onSettingClicked()
         settingPage = new QFrame(_pMidleResult);
         settingPage->setStyleSheet("border: 2px dashed red; background-color: white;");
         settingPage->move(0,0);
-        QLabel *label = new QLabel(homePage);
+        QLabel *label = new QLabel(settingPage);
         label->setStyleSheet("color: #111111; font: 16px;");
         label->move(100, 100);
         label->setText("SettingPage");
@@ -126,7 +127,14 @@ void SMainWindow::createHeader()
         layout->addWidget(avatar, 0, Qt::AlignRight);
         layout->addWidget(info, 0, Qt::AlignRight);
         layout->addWidget(logOutButton, 0, Qt::AlignRight);
+        QLabel *logo = new QLabel(_pHeader);
+        logo->setFixedSize(113,30);
+        logo->setPixmap(QPixmap(":/Icon/Image/logo.png").scaled(113, 30, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+        logo->move(10,10);
+        logo->show();
+        logo->raise();
     }
+
 }
 
 void SMainWindow::createMidle()

@@ -174,7 +174,9 @@ RESOURCES += \
 
 DISTFILES += \
     Resource/Style/Generic/style.scss \
-    Resource/Style/x100/style.scss
+    Resource/Style/x100/style.scss \
+    Resource/Style/Generic/_frameStyle.scss \
+    Resource/Style/Generic/_labelStyle.scss
 
 
 #kha test

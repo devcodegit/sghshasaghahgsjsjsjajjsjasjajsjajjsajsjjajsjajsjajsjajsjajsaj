@@ -16,6 +16,7 @@ SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
     scroll->setObjectName("TransWg");
     filterItemLayout = new FlowLayout(scroll);
     scrollArea = new QScrollArea(this);
+    scrollArea->setObjectName("FilterWidget");
     scrollArea->setFocusPolicy(Qt::NoFocus);
     scrollArea->setWidget(scroll);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

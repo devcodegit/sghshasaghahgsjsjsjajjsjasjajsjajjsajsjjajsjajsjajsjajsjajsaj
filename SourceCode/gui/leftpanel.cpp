@@ -93,10 +93,10 @@ void LeftPanelItem::mouseReleaseEvent(QMouseEvent *event)
 
 void LeftPanelItem::enterEvent(QEvent *)
 {
-    StyleSheetManager::changeProperty(this, "State", "Hover");
+//    StyleSheetManager::changeProperty(this, "State", "Hover");
 }
 
 void LeftPanelItem::leaveEvent(QEvent *)
 {
-    StyleSheetManager::changeProperty(this, "State", "");
+//    StyleSheetManager::changeProperty(this, "State", "");
 }

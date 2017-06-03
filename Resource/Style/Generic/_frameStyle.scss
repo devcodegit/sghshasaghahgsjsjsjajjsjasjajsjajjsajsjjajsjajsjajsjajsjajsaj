@@ -1,3 +1,7 @@
+#MainBackground {
+    background-color: white;
+}
+
 #TabButton {
     background-color: white;
     border: none;
@@ -5,6 +9,10 @@
     border-top-right-radius: 6px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+}
+
+#TabButton:hover {
+    background-color: #8DD9FD;
 }
 
 #VerticalScroll_Thumb{
@@ -46,9 +54,14 @@
     border-bottom-left-radius: 0px;
 }
 
-#LeftPanelItem[State=Hover]
+#LeftPanelItem:hover
 {
     background-color: #8DD9FD;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
+}
+
+#FilterWidget {
+    background-color: transparent;
+    border: none;
 }

@@ -63,6 +63,7 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     for(int i = 0; i < 100; i++) {
         filterInfo->addItem(QString("Item %1").arg(i));
     }
+    filterInfo->hide();
 
     resultFrame = new QFrame(this);
     resultFrame->installEventFilter(this);
