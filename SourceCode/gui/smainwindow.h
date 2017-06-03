@@ -8,6 +8,7 @@ class QVBoxLayout;
 class STabWidget;
 class PageSearch;
 class SConstantMenu;
+class QLabel;
 
 class SMainWindow : public SWidget
 {
@@ -26,6 +27,7 @@ private slots:
 
 protected:
     virtual void resizeEvent(QResizeEvent *ev);
+    virtual bool eventFilter(QObject *object, QEvent *event);
 
 private:
     void createHeader();
@@ -44,6 +46,8 @@ private:
     STabWidget *managementPage = 0;
     PageSearch *pageSearch = 0;
     SConstantMenu *menu = 0;
+    QLabel *avatar = 0;
+    QLabel *info = 0;
 };
 
 #endif // SMAINWINDOW_H

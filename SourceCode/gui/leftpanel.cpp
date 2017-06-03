@@ -42,6 +42,7 @@ LeftPanelItem::LeftPanelItem(QWidget *parent) : QFrame(parent)
     layout->setAlignment(Qt::AlignCenter);
 
     title = new QLabel;
+    title->setObjectName("DefaultLbl");
     title->setWordWrap(true);
     title->setFixedWidth(ITEM_WIDTH - 20);
     title->setAlignment(Qt::AlignCenter);

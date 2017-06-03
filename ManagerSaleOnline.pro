@@ -85,7 +85,8 @@ SOURCES += \
     SourceCode/gui/table-model.cpp \
     SourceCode/ui_executor.cpp \
     SourceCode/gui/leftpanel.cpp \
-    SourceCode/signalsender.cpp
+    SourceCode/signalsender.cpp \
+    SourceCode/gui/suserinfo.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -167,7 +168,8 @@ HEADERS += \
     SourceCode/gui/table-model.h \
     SourceCode/ui_executor.h \
     SourceCode/gui/leftpanel.h \
-    SourceCode/signalsender.h
+    SourceCode/signalsender.h \
+    SourceCode/gui/suserinfo.h
 
 RESOURCES += \
     Resource/resource.qrc

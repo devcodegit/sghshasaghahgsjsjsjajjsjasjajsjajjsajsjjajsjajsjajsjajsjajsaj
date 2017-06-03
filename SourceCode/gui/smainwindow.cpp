@@ -8,6 +8,7 @@
 #include "../lazada/lazada_handler.h"
 #include "leftpanel.h"
 #include "../signalsender.h"
+#include "suserinfo.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
@@ -15,6 +16,7 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QStackedWidget>
+#include <QEvent>
 
 #define AVATAR_SIZE 30
 
@@ -102,6 +104,17 @@ void SMainWindow::resizeEvent(QResizeEvent *ev)
     updateSize();
 }
 
+bool SMainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if(object == avatar || object == info) {
+        if(event->type() == QEvent::MouseButtonRelease) {
+            SUserInfo::instance()->setParent(this);
+            SUserInfo::instance()->show();
+        }
+    }
+    return SWidget::eventFilter(object, event);
+}
+
 void SMainWindow::createHeader()
 {
     if (!_pHeader)
@@ -117,9 +130,13 @@ void SMainWindow::createHeader()
         layout->setMargin(0);
         layout->setAlignment(Qt::AlignRight);
 
-        QLabel *avatar = new QLabel;
+        avatar = new QLabel;
+        avatar->setCursor(Qt::PointingHandCursor);
         avatar->setPixmap(QPixmap(":/Icon/Image/avatar_user_default.png").scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        QLabel *info = new QLabel;
+        avatar->installEventFilter(this);
+        info = new QLabel;
+        info->installEventFilter(this);
+        info->setCursor(Qt::PointingHandCursor);
         info->setText("Xin chào, Nguyễn Văn A");
         QPushButton *logOutButton = new QPushButton("Thoát");
         logOutButton->setIcon(QIcon(":/Icon/Image/exit.svg"));

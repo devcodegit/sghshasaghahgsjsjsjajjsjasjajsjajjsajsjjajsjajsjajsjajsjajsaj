@@ -19,9 +19,6 @@ class DetailWidget : public SDialog
 {
     Q_OBJECT
 public:
-    struct detail_data {
-
-    };
 
     explicit DetailWidget(QWidget *parent = 0);
     void setData(LazadaDataItemOrder *data);
