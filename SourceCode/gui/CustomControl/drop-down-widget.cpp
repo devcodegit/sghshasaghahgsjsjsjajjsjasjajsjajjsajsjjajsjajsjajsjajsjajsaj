@@ -10,8 +10,11 @@
 #define ICON_WIDTH 15
 #define MARGIN 8
 
-DropdownWidget::DropdownWidget(QWidget *parent) : QWidget(parent)
+DropdownWidget::DropdownWidget(QWidget *parent) : QFrame(parent)
 {
+    setObjectName("DropDownItem");
+    this->parent = parent;
+    if(parent) parent->installEventFilter(this);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(0);
     mainLayout->setMargin(MARGIN);
@@ -56,8 +59,20 @@ void DropdownWidget::setTitle(const QString &title)
     this->title->setText(title);
 }
 
+void DropdownWidget::setParent(QWidget *parent)
+{
+    this->parent = parent;
+    if(parent) parent->installEventFilter(this);
+    QWidget::setParent(parent);
+}
+
 bool DropdownWidget::eventFilter(QObject *object, QEvent *event)
 {
+    if(object == this->parent) {
+        if(event->type() == QEvent::Resize) {
+            this->setFixedWidth(parent->width());
+        }
+    }
     return QWidget::eventFilter(object, event);
 }
 
@@ -91,4 +106,5 @@ void DropdownWidget::onDropdown()
         h = titleFrame->height() + 2 * MARGIN;
     }
     this->setFixedHeight(h);
+    emit dropDown();
 }

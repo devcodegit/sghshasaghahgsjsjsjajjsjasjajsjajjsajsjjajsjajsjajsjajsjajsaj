@@ -87,7 +87,9 @@ SOURCES += \
     SourceCode/gui/leftpanel.cpp \
     SourceCode/signalsender.cpp \
     SourceCode/gui/suserinfo.cpp \
-    SourceCode/gui/CustomControl/drop-down-widget.cpp
+    SourceCode/gui/CustomControl/drop-down-widget.cpp \
+    SourceCode/gui/navigationbar.cpp \
+    SourceCode/gui/CustomControl/page-ui-manager.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -171,7 +173,9 @@ HEADERS += \
     SourceCode/gui/leftpanel.h \
     SourceCode/signalsender.h \
     SourceCode/gui/suserinfo.h \
-    SourceCode/gui/CustomControl/drop-down-widget.h
+    SourceCode/gui/CustomControl/drop-down-widget.h \
+    SourceCode/gui/navigationbar.h \
+    SourceCode/gui/CustomControl/page-ui-manager.h
 
 RESOURCES += \
     Resource/resource.qrc

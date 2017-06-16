@@ -9,6 +9,8 @@
 #include "leftpanel.h"
 #include "../signalsender.h"
 #include "suserinfo.h"
+#include "CustomControl/drop-down-widget.h"
+#include "navigationbar.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
@@ -37,7 +39,7 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
     connect(SignalSender::instance(), &SignalSender::homeClicked, this, &SMainWindow::onHomeClicked);
     connect(SignalSender::instance(), &SignalSender::managementClicked, this, &SMainWindow::onManagementClicked);
     connect(SignalSender::instance(), &SignalSender::settingClicked, this, &SMainWindow::onSettingClicked);
-    onHomeClicked();
+    onManagementClicked();
 }
 
 void SMainWindow::onHomeClicked()
@@ -102,6 +104,7 @@ void SMainWindow::resizeEvent(QResizeEvent *ev)
 {
     Q_UNUSED(ev);
     updateSize();
+    if(_pMidleOption) NavigationBar::instance()->setFixedSize(_pMidleOption->size());
 }
 
 bool SMainWindow::eventFilter(QObject *object, QEvent *event)
@@ -186,10 +189,14 @@ void SMainWindow::createMidle()
 //        menu->addItem("Tittle 2", w2);
 //        menu->move(0,0);
 //        menu->show();
-        LeftPanel *lelftPanel = new LeftPanel(_pMidleOption);
-        lelftPanel->setFixedWidth(LEFT_PANEL_WIDTH);
-        lelftPanel->move(0,1);
-        lelftPanel->show();
+//        LeftPanel *lelftPanel = new LeftPanel(_pMidleOption);
+//        lelftPanel->setFixedWidth(LEFT_PANEL_WIDTH);
+//        lelftPanel->move(0,1);
+//        lelftPanel->show();
+
+        NavigationBar::instance()->setParent(_pMidleOption);
+        NavigationBar::instance()->move(0,1);
+        NavigationBar::instance()->show();
     }
 
     if (!_pMidleResult)

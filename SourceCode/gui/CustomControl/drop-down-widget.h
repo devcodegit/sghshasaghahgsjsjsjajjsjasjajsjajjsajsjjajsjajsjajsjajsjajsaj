@@ -1,7 +1,7 @@
 #ifndef DROPDOWNWIDGET_H
 #define DROPDOWNWIDGET_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QList>
 
 class QLabel;
@@ -9,19 +9,21 @@ class QVBoxLayout;
 class QFrame;
 class SvgWidget;
 
-class DropdownWidget : public QWidget
+class DropdownWidget : public QFrame
 {
     Q_OBJECT
 public:
     explicit DropdownWidget(QWidget *parent = 0);
     void addContent(const QString &titleContent);
     void setTitle(const QString &title);
+    void setParent(QWidget *parent);
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
 
 signals:
+    void dropDown();
 
 public slots:
 
@@ -35,6 +37,7 @@ private:
     QList<QLabel*> listContent;
     bool isDropdownShow = false;
     SvgWidget *iconDropdown = 0;
+    QWidget *parent = 0;
 
 };
 
