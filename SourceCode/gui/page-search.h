@@ -2,6 +2,7 @@
 #define PAGESEARCH_H
 
 #include <QWidget>
+#include <QTimer>
 #include "../lazada/lazada_handler.h"
 
 class QScrollArea;
@@ -38,6 +39,7 @@ private slots:
     void onSearch();
     void onJumping(int page);
     void onShowInfo(int row, int col);
+    void onCheckUpdateData();
 
 private:
     QFrame *resultFrame = 0;
@@ -53,6 +55,8 @@ private:
     QStringList header;
     QList<LazadaDataItemOrder*> listItem;
     int currentPage = 0;
+    bool needUpdate = false;
+    QTimer checkUpdateTimer;
 
 private:
     void readData(); //for testing

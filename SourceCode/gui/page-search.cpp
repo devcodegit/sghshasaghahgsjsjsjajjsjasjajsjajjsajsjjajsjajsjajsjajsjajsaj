@@ -83,6 +83,10 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 //    qmlTableView->show();
 
 
+    checkUpdateTimer.setInterval(1000);
+    connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
+    checkUpdateTimer.start();
+
 }
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
@@ -97,6 +101,7 @@ void PageSearch::OnRequestCompleted(ResponseResult *result)
             //Kha todo:
             listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
             qDebug () << "OnRequestCompleted();" << requestType << errorMsg << listItem.length();
+            needUpdate = true;
         });
     }
 }
@@ -128,13 +133,13 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
 
 void PageSearch::showEvent(QShowEvent *)
 {
-    readData();
 }
 
 void PageSearch::onSearch()
 {
+    if(tableView) {
 
-
+    }
 }
 
 void PageSearch::onJumping(int page)
@@ -152,13 +157,20 @@ void PageSearch::onJumping(int page)
 
 void PageSearch::onShowInfo(int row, int col)
 {
-    qDebug () << "onShowInfo" << row << col << "item == " << row + (currentPage - 1) * MAX_RESULT;
     if(!infoDialog) infoDialog = new DetailWidget;
     int index = row + (currentPage - 1) * MAX_RESULT;
     infoDialog->setParent(UIModel::instance()->getMainWindow());
     infoDialog->setData(listItem.at(index));
     infoDialog->show();
     infoDialog->setFocus();
+}
+
+void PageSearch::onCheckUpdateData()
+{
+    if(needUpdate) {
+        readData();
+        needUpdate = false;
+    }
 }
 
 void PageSearch::readData()
@@ -170,16 +182,15 @@ void PageSearch::readData()
         QString waiting_queue = "";
         QString payment_method = listItem.at(i)->getPaymentMethod();
         QString price = listItem.at(i)->getPrice();
-        QString num = listItem.at(i)->getItemsCount();
+        int num = listItem.at(i)->getItemsCount();
         QString status = listItem.at(i)->getStatuses().m_Status;
         QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
-        QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order,date_order,waiting_queue,payment_method,price,num,status,printed,action);
+        QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
         linesList.append(line);
     }
-
-
     int listLen = linesList.length();
+    if(listLen <= 0) return;
     int numPage = listLen/MAX_RESULT + ((listLen%MAX_RESULT > 0) ? 1 : 0);
     pageNavigation->setRange(1,numPage,4);
     onJumping(1);

@@ -21,9 +21,7 @@ signals:
 public slots:
 
 private slots:
-    void onHomeClicked();
     void onManagementClicked();
-    void onSettingClicked();
 
 protected:
     virtual void resizeEvent(QResizeEvent *ev);
@@ -32,17 +30,16 @@ protected:
 private:
     void createHeader();
     void createMidle();
+    void createNavigation();
     void updateSize();
 
 private:
     QVBoxLayout *_pvLayout = 0;
-    QFrame *_pHeader = 0;
+    QFrame *headerArea = 0;
     QFrame *_pMidle = 0;
-    QFrame *_pMidleOption = 0;
+    QFrame *navigationArea = 0;
     QFrame *_pMidleSearch = 0;
-    QFrame *_pMidleResult = 0;
-    QFrame *homePage = 0;
-    QFrame *settingPage = 0;
+    QFrame *contentArea = 0;
     STabWidget *managementPage = 0;
     PageSearch *pageSearch = 0;
     SConstantMenu *menu = 0;
