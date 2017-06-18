@@ -15,6 +15,7 @@ class PageNavigation;
 class SFilterInfo;
 //class STableView;
 class DetailWidget;
+class DateRangeWidget;
 
 using namespace Lazada::Controls;
 
@@ -43,7 +44,7 @@ private slots:
 
 private:
     QFrame *resultFrame = 0;
-    QLineEdit *line1 = 0, *line2 = 0, *line3 = 0, *line4 = 0;
+    QLineEdit *line1 = 0, *line2 = 0, *line3 = 0;
     QPushButton *searchButton = 0;
     QStandardItemModel *model = 0;
     STableView *tableView = 0;
@@ -57,6 +58,7 @@ private:
     int currentPage = 0;
     bool needUpdate = false;
     QTimer checkUpdateTimer;
+    DateRangeWidget *dateRange = 0;
 
 private:
     void readData(); //for testing

@@ -89,7 +89,8 @@ SOURCES += \
     SourceCode/gui/suserinfo.cpp \
     SourceCode/gui/CustomControl/drop-down-widget.cpp \
     SourceCode/gui/navigationbar.cpp \
-    SourceCode/gui/CustomControl/page-ui-manager.cpp
+    SourceCode/gui/CustomControl/page-ui-manager.cpp \
+    SourceCode/gui/CustomControl/date-range-widget.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -175,7 +176,8 @@ HEADERS += \
     SourceCode/gui/suserinfo.h \
     SourceCode/gui/CustomControl/drop-down-widget.h \
     SourceCode/gui/navigationbar.h \
-    SourceCode/gui/CustomControl/page-ui-manager.h
+    SourceCode/gui/CustomControl/page-ui-manager.h \
+    SourceCode/gui/CustomControl/date-range-widget.h
 
 RESOURCES += \
     Resource/resource.qrc

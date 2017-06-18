@@ -9,6 +9,7 @@
 #include "../lazada/dataitem/lazada_data_item_order.h"
 #include "../lazada/dataitem/lazada_data_item_list_order.h"
 #include "../ui_executor.h"
+#include "CustomControl/date-range-widget.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -44,15 +45,14 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     line2->setPlaceholderText("Khách hàng");
     line3 = new QLineEdit(this);
     line3->setPlaceholderText("Sản phẩm");
-    line4 = new QLineEdit(this);
-    line4->setPlaceholderText("Thanh toán");
+    dateRange = new DateRangeWidget(this);
     searchButton = new QPushButton("Tìm kiếm", this);
     searchButton->setFixedSize(100, 20);
     connect(searchButton, &QPushButton::clicked, this, &PageSearch::onSearch);
     searchLayout->addWidget(line1, 1);
     searchLayout->addWidget(line2, 1);
     searchLayout->addWidget(line3, 1);
-    searchLayout->addWidget(line4, 1);
+    searchLayout->addWidget(dateRange, 1);
     searchLayout->addWidget(searchButton, 0, Qt::AlignRight);
 
     pageNavigation = new PageNavigation(this);
@@ -125,7 +125,7 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
 {
     if(object == resultFrame) {
         if(event->type() == QEvent::Resize) {
-            tableView->setFixedSize(resultFrame->size() - QSize(0, 40));
+            tableView->setFixedSize(resultFrame->size() - QSize(0, 50));
         }
     }
     return QWidget::eventFilter(object, event);
