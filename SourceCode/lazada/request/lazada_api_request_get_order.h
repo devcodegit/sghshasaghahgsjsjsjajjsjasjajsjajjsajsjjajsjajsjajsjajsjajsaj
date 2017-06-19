@@ -5,10 +5,10 @@
 
 namespace Core { namespace Request {
 
-    class LazadaApiRequestOrder : public LazadaApiRequestGET
+    class LazadaApiRequestGetOrder : public LazadaApiRequestGET
     {
     public:
-        LazadaApiRequestOrder(int orderId, IApiRequestListener *a_pListener);
+        LazadaApiRequestGetOrder(int orderId, IApiRequestListener *a_pListener);
         virtual void generateParams(QHash<QString, QString>* a_pParams);
 
     private:

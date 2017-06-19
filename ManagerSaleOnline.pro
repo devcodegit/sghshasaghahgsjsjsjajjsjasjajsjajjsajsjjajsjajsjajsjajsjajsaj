@@ -52,7 +52,6 @@ SOURCES += \
     SourceCode/core/network/http_connection.cpp \
     SourceCode/core/request/request_utils.cpp \
     SourceCode/lazada/lazada_handler.cpp \
-    SourceCode/lazada/request/lazada_api_request_list_order.cpp \
     SourceCode/lazada/dataitem/lazada_data_item_list_order.cpp \
     SourceCode/core/utils/api_command_defined.cpp \
     SourceCode/core/service_map_manager.cpp \
@@ -77,7 +76,6 @@ SOURCES += \
     SourceCode/gui/CustomControl/sdialog.cpp \
     SourceCode/gui/CustomControl/svgwidget.cpp \
     SourceCode/lazada/lazada_api_command_defined.cpp \
-    SourceCode/lazada/request/lazada_api_request_order.cpp \
     SourceCode/lazada/request/lazada_api_request_order_items.cpp \
     SourceCode/lazada/dataitem/lazada_data_item_order_items.cpp \
     SourceCode/lazada/dataitem/lazada_data_item_order.cpp \
@@ -90,7 +88,33 @@ SOURCES += \
     SourceCode/gui/CustomControl/drop-down-widget.cpp \
     SourceCode/gui/navigationbar.cpp \
     SourceCode/gui/CustomControl/page-ui-manager.cpp \
-    SourceCode/gui/CustomControl/date-range-widget.cpp
+    SourceCode/gui/CustomControl/date-range-widget.cpp \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_canceled.cpp \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_packed_by_marketplace.cpp \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_ready_to_ship.cpp \
+    SourceCode/lazada/request/lazada_api_request_set_invoice_number.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_failure_reasons.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_document.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_shipment_providers.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_metrics.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_payout_status.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_statistics.cpp \
+    SourceCode/lazada/request/lazada_api_request_seller_update.cpp \
+    SourceCode/lazada/request/lazada_api_request_user_update.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_category_attributes.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_category_tree.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_brands.cpp \
+    SourceCode/lazada/request/lazada_api_request_remove_product.cpp \
+    SourceCode/lazada/request/lazada_api_request_update_price_quantity.cpp \
+    SourceCode/lazada/request/lazada_api_request_create_product.cpp \
+    SourceCode/lazada/request/lazada_api_request_update_product.cpp \
+    SourceCode/lazada/request/lazada_api_request_set_images.cpp \
+    SourceCode/lazada/request/lazada_api_request_migrate_image.cpp \
+    SourceCode/lazada/request/lazada_api_request_upload_image.cpp \
+    SourceCode/lazada/request/lazada_api_request_search_spus.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_products.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_orders.cpp \
+    SourceCode/lazada/request/lazada_api_request_get_order.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -140,7 +164,6 @@ HEADERS += \
     SourceCode/core/request/i_api_request_listener.h \
     SourceCode/core/request/request_utils.h \
     SourceCode/lazada/lazada_handler.h \
-    SourceCode/lazada/request/lazada_api_request_list_order.h \
     SourceCode/lazada/dataitem/lazada_data_item_list_order.h \
     SourceCode/core/utils/api_command_defined.h \
     SourceCode/core/service_map_manager.h \
@@ -164,7 +187,6 @@ HEADERS += \
     SourceCode/gui/CustomControl/sdialog.h \
     SourceCode/gui/CustomControl/svgwidget.h \
     SourceCode/lazada/lazada_api_command_defined.h \
-    SourceCode/lazada/request/lazada_api_request_order.h \
     SourceCode/lazada/request/lazada_api_request_order_items.h \
     SourceCode/lazada/dataitem/lazada_data_item_order_items.h \
     SourceCode/lazada/dataitem/lazada_data_item_order.h \
@@ -177,7 +199,33 @@ HEADERS += \
     SourceCode/gui/CustomControl/drop-down-widget.h \
     SourceCode/gui/navigationbar.h \
     SourceCode/gui/CustomControl/page-ui-manager.h \
-    SourceCode/gui/CustomControl/date-range-widget.h
+    SourceCode/gui/CustomControl/date-range-widget.h \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_canceled.h \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_packed_by_marketplace.h \
+    SourceCode/lazada/request/lazada_api_request_set_status_to_ready_to_ship.h \
+    SourceCode/lazada/request/lazada_api_request_set_invoice_number.h \
+    SourceCode/lazada/request/lazada_api_request_get_failure_reasons.h \
+    SourceCode/lazada/request/lazada_api_request_get_document.h \
+    SourceCode/lazada/request/lazada_api_request_get_shipment_providers.h \
+    SourceCode/lazada/request/lazada_api_request_get_metrics.h \
+    SourceCode/lazada/request/lazada_api_request_get_payout_status.h \
+    SourceCode/lazada/request/lazada_api_request_get_statistics.h \
+    SourceCode/lazada/request/lazada_api_request_seller_update.h \
+    SourceCode/lazada/request/lazada_api_request_user_update.h \
+    SourceCode/lazada/request/lazada_api_request_get_category_attributes.h \
+    SourceCode/lazada/request/lazada_api_request_get_category_tree.h \
+    SourceCode/lazada/request/lazada_api_request_get_brands.h \
+    SourceCode/lazada/request/lazada_api_request_remove_product.h \
+    SourceCode/lazada/request/lazada_api_request_update_price_quantity.h \
+    SourceCode/lazada/request/lazada_api_request_create_product.h \
+    SourceCode/lazada/request/lazada_api_request_update_product.h \
+    SourceCode/lazada/request/lazada_api_request_set_images.h \
+    SourceCode/lazada/request/lazada_api_request_migrate_image.h \
+    SourceCode/lazada/request/lazada_api_request_upload_image.h \
+    SourceCode/lazada/request/lazada_api_request_search_spus.h \
+    SourceCode/lazada/request/lazada_api_request_get_products.h \
+    SourceCode/lazada/request/lazada_api_request_get_orders.h \
+    SourceCode/lazada/request/lazada_api_request_get_order.h
 
 RESOURCES += \
     Resource/resource.qrc

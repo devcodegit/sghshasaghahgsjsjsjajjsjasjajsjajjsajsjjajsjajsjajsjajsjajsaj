@@ -94,6 +94,14 @@ QString LazadaApiRequestGET::getTimestamp()
     return now.toString(Qt::ISODate);
 }
 
+QString LazadaApiRequestGET::convertTimeToStringISO8601(const qint64 time)
+{
+    QDateTime now = QDateTime::fromMSecsSinceEpoch(time);
+    int offset = now.offsetFromUtc();
+    now.setOffsetFromUtc(offset);
+    return now.toString(Qt::ISODate);
+}
+
 void LazadaApiRequestGET::ParseDataError(Value &aJsonObject)
 {
     m_iErrorCode = JsonUtils::tryGetInt(aJsonObject, "ErrorCode", 0);

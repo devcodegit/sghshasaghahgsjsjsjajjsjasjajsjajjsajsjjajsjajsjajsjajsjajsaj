@@ -20,6 +20,7 @@ namespace Core { namespace Request {
 
     public:
         QString getTimestamp();
+        QString convertTimeToStringISO8601(const qint64 time);
 
     private:
         void ParseDataError(Value &aJsonObject);

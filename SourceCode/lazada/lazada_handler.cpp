@@ -4,8 +4,8 @@
 #include "../core/request/apirequest_worker.h"
 #include "../core/request/apirequest.h"
 #include "../lazada/lazada_api_command_defined.h"
-#include "../lazada/request/lazada_api_request_list_order.h"
-#include "../lazada/request/lazada_api_request_order.h"
+#include "../lazada/request/lazada_api_request_get_orders.h"
+#include "../lazada/request/lazada_api_request_get_order.h"
 #include "../lazada/request/lazada_api_request_order_items.h"
 #include "../lazada/dataitem/lazada_data_item_list_order.h"
 #include "../lazada/dataitem/lazada_data_item_order.h"
@@ -276,7 +276,7 @@ void LazadaHandler::OnApiRequestComplete(IApiRequest *a_pRequest)
     int requestType = a_pRequest->getRequestType();
     switch (requestType)
     {
-    case LazadaApiCommandDefined::LAZADA_REQ_GET_LIST_ORDER:
+    case LazadaApiCommandDefined::LAZADA_REQ_GET_ORDERS:
     {
         handleResponseApiListOrder(a_pRequest);
         break;
@@ -306,7 +306,7 @@ void LazadaHandler::OnApiRequestError(IApiRequest *a_pRequest)
     int requestType = a_pRequest->getRequestType();
     switch (requestType)
     {
-    case LazadaApiCommandDefined::LAZADA_REQ_GET_LIST_ORDER:
+    case LazadaApiCommandDefined::LAZADA_REQ_GET_ORDERS:
     {
         handleResponseApiListOrder(a_pRequest);
         break;
