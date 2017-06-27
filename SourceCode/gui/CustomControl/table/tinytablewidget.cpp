@@ -1,4 +1,7 @@
 #include "tinytablewidget.h"
+#include "../verticalscrollbar.h"
+#include "../../../style-sheet-manager.h"
+#include "../../../signalsender.h"
 #include <QBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
@@ -7,6 +10,9 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QPixmap>
+#include <QResizeEvent>
+#include <QScrollArea>
+#include <QScrollBar>
 
 #define HEADER_HEIGHT 50
 #define ROW_HEIGHT 50
@@ -15,9 +21,7 @@
 
 TinyTableWidget::TinyTableWidget(QWidget *parent) : QFrame(parent)
 {
-    setFixedHeight(HEADER_HEIGHT);
-    setStyleSheet("border: 1px dashed green;");
-    initLayout();
+    initUI();
 }
 
 void TinyTableWidget::setHeader(QStringList headers)
@@ -48,13 +52,15 @@ void TinyTableWidget::setData(DataHandler *data)
             cell->setData(_data.at(row).at(col));
             cell->setCursor(Qt::PointingHandCursor);
             cell->installEventFilter(this);
-            cell->setIndex(row, col); connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
+            cell->setFixedHeight(100);
+            cell->setIndex(row, col);
+            connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
             mainLayout->addWidget(cell, row, col, 1, 1);
             mapCols.insert(col, cell);
             height = qMax(height, cell->height());
         }
         mapCells.insert(row, mapCols);
-        this->setFixedHeight(height + this->height());
+        this->scroll->setFixedHeight(height + this->scroll->height());
     }
 }
 
@@ -97,6 +103,14 @@ bool TinyTableWidget::eventFilter(QObject *object, QEvent *event)
     return QFrame::eventFilter(object, event);
 }
 
+void TinyTableWidget::resizeEvent(QResizeEvent *event)
+{
+    scrollArea->setFixedSize(event->size());
+    scroll->setFixedWidth(event->size().width());
+    scrollBar->setSpace(0, event->size().height());
+    scrollBar->update(true);
+}
+
 void TinyTableWidget::onDataChanged()
 {
 
@@ -108,10 +122,30 @@ void TinyTableWidget::onUpdateSize(int row, int col, QSize size)
     resizeRow(row, size.height());
 }
 
-void TinyTableWidget::initLayout()
+void TinyTableWidget::onScrollValueChanged(int value)
 {
+
+}
+
+void TinyTableWidget::initUI()
+{
+    scroll = new QWidget;
+    scroll->setObjectName("TransWg");
+    scrollArea = new QScrollArea(this);
+    scrollArea->setFocusPolicy(Qt::NoFocus);
+    scrollArea->setWidget(scroll);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setWidgetResizable(true);
+    connect(scrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onScrollValueChanged(int)));
+
+    scrollBar = new VerticalScrollbar(scrollArea, scrollArea->verticalScrollBar());
+    scrollBar->setMargin(0);
+    scrollBar->update(true);
+    scrollBar->setMinHeight(30);
+
     if(!mainLayout) {
-        mainLayout = new QGridLayout(this);
+        mainLayout = new QGridLayout(scroll);
         mainLayout->setSpacing(0);
         mainLayout->setMargin(0);
     }
@@ -140,6 +174,7 @@ void TinyTableWidget::resizeRow(int index, int height)
 
 TableCell::TableCell(const QString &title, QWidget *parent) : QFrame(parent)
 {
+    setObjectName("TableCell");
     layout = new QHBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
     this->title = new QLabel;
@@ -196,6 +231,12 @@ void TableCell::setIndex(int row, int col)
 {
     this->_row = row;
     this->_col = col;
+    if(row % 2 == 0) {
+        StyleSheetManager::changeProperty(this, "row", "Event");
+    }
+    else {
+        StyleSheetManager::changeProperty(this, "row", "");
+    }
 }
 
 void TableCell::reset()
@@ -248,6 +289,7 @@ void TableCell::setMore(int moreId)
 MoreItem::MoreItem(QWidget *parent) : SvgWidget(parent, QString(":/Icon/Image/more_button.svg"))
 {
     setFixedSize(20, 20);
+    connect(this, SIGNAL(onClicked()), this, SLOT(onRequestMore()));
 }
 
 void MoreItem::setId(int id)
@@ -258,4 +300,9 @@ void MoreItem::setId(int id)
 int MoreItem::id()
 {
     return this->_id;
+}
+
+void MoreItem::onRequestMore()
+{
+    emit SignalSender::instance()->showMoreInfo(this->_id);
 }

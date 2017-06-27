@@ -13,6 +13,8 @@ class QLabel;
 class QHBoxLayout;
 class QGridLayout;
 class QCheckBox;
+class QScrollArea;
+class VerticalScrollbar;
 
 class MoreItem : public SvgWidget {
     Q_OBJECT
@@ -20,6 +22,8 @@ public:
     explicit MoreItem(QWidget *parent = 0);
     void setId(int id);
     int id();
+private slots:
+    void onRequestMore();
 private:
     int _id;
 };
@@ -63,6 +67,7 @@ public:
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
 signals:
 
@@ -71,6 +76,7 @@ public slots:
 private slots:
     void onDataChanged();
     void onUpdateSize(int row, int col, QSize size);
+    void onScrollValueChanged(int value);
 
 private:
     QList<TableCell*> listHeader;
@@ -82,8 +88,12 @@ private:
     int currentX = -1;
     int rowCount = 0;
 
+    QWidget *scroll;
+    QScrollArea *scrollArea;
+    VerticalScrollbar *scrollBar;
+
 private:
-    void initLayout();
+    void initUI();
     void resizeColumn(int index, int width);
     void resizeRow(int index, int height);
 };

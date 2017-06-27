@@ -75,3 +75,16 @@
     background-color: #8DD9FD;
     color: white;
 }
+
+#TableCell {
+    border: 1px solid gray;
+    background-color: white;
+}
+
+#TableCell[row=Event] {
+    background-color: #e2e6ea;
+}
+
+#TableCell[row=Header] {
+
+}

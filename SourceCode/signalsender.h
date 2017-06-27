@@ -17,6 +17,7 @@ signals:
     void homeClicked();
     void managementClicked();
     void settingClicked();
+    void showMoreInfo(int moreId);
 };
 
 
