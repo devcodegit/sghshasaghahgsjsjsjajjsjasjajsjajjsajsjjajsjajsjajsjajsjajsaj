@@ -114,7 +114,9 @@ SOURCES += \
     SourceCode/lazada/request/lazada_api_request_search_spus.cpp \
     SourceCode/lazada/request/lazada_api_request_get_products.cpp \
     SourceCode/lazada/request/lazada_api_request_get_orders.cpp \
-    SourceCode/lazada/request/lazada_api_request_get_order.cpp
+    SourceCode/lazada/request/lazada_api_request_get_order.cpp \
+    SourceCode/gui/CustomControl/table/datahandler.cpp \
+    SourceCode/gui/CustomControl/table/tinytablewidget.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -225,7 +227,9 @@ HEADERS += \
     SourceCode/lazada/request/lazada_api_request_search_spus.h \
     SourceCode/lazada/request/lazada_api_request_get_products.h \
     SourceCode/lazada/request/lazada_api_request_get_orders.h \
-    SourceCode/lazada/request/lazada_api_request_get_order.h
+    SourceCode/lazada/request/lazada_api_request_get_order.h \
+    SourceCode/gui/CustomControl/table/datahandler.h \
+    SourceCode/gui/CustomControl/table/tinytablewidget.h
 
 RESOURCES += \
     Resource/resource.qrc
