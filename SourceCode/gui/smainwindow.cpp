@@ -11,7 +11,6 @@
 #include "suserinfo.h"
 #include "CustomControl/drop-down-widget.h"
 #include "navigationbar.h"
-#include "CustomControl/table/tinytablewidget.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
@@ -35,27 +34,6 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 
     UIModel::instance()->setMainWindow(this);
     onManagementClicked();
-
-    TinyTableWidget *table = new TinyTableWidget;
-    table->show();
-
-
-    DataHandler *dataHandler = new DataHandler;
-    int count = 0;
-    for(int j = 0; j < 30; j++) {
-        QList<DataHandler::data_handler *> row;
-        for(int i = 0; i < 5; i++) {
-            DataHandler::data_type type = (DataHandler::data_type)i;
-
-            bool isChecked =(i % 2 == 0);
-            int id = count;
-            row.append(new DataHandler::data_handler(id, count, i, type, QString("Test %1 %2").arg(count).arg(i), "", isChecked, QMap<int,QString>(), id));
-        }
-        count++;
-        dataHandler->addRow(row);
-    }
-    table->setData(dataHandler);
-
 }
 
 void SMainWindow::onManagementClicked()

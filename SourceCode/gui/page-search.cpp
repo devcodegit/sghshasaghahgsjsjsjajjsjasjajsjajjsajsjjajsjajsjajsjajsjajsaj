@@ -10,6 +10,7 @@
 #include "../lazada/dataitem/lazada_data_item_list_order.h"
 #include "../ui_executor.h"
 #include "CustomControl/date-range-widget.h"
+#include "CustomControl/table/tinytablewidget.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -87,6 +88,23 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
     checkUpdateTimer.start();
 
+    table = new TinyTableWidget;
+    table->show();
+    dataHandler = new DataHandler;
+//    int count = 0;
+//    for(int j = 0; j < 30; j++) {
+//        QList<DataHandler::data_handler *> row;
+//        for(int i = 0; i < 5; i++) {
+//            DataHandler::data_type type = (DataHandler::data_type)i;
+
+//            bool isChecked =(i % 2 == 0);
+//            int id = count;
+//            row.append(new DataHandler::data_handler(id, count, i, type, QString("Test %1 %2").arg(count).arg(i), "", isChecked, QMap<int,QString>(), id));
+//        }
+//        count++;
+//        dataHandler->addRow(row);
+//    }
+    table->setHeader(UIModel::instance()->getDataTableHeader());
 }
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
@@ -153,6 +171,7 @@ void PageSearch::onJumping(int page)
         QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
         TableModel::instance()->pushItem(line);
     }
+    table->setData(dataHandler->getData(page));
 }
 
 void PageSearch::onShowInfo(int row, int col)
@@ -187,7 +206,21 @@ void PageSearch::readData()
         QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
         QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
+
         linesList.append(line);
+
+        QList<DataHandler::data_handler *> row;
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, "Hóa Đơn", "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, no_order, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, date_order, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, waiting_queue, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, payment_method, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, price, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, QString::number(num), "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, status, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, printed, "", false, QMap<int, QString>(), -1));
+        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, action, "", false, QMap<int, QString>(), -1));
+        dataHandler->addRow(row);
     }
     int listLen = linesList.length();
     if(listLen <= 0) return;

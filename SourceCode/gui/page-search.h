@@ -17,6 +17,9 @@ class SFilterInfo;
 class DetailWidget;
 class DateRangeWidget;
 
+class DataHandler;
+class TinyTableWidget;
+
 using namespace Lazada::Controls;
 
 class PageSearch : public QWidget, public IObjRequestListener
@@ -59,6 +62,10 @@ private:
     bool needUpdate = false;
     QTimer checkUpdateTimer;
     DateRangeWidget *dateRange = 0;
+
+
+    DataHandler *dataHandler = 0;
+    TinyTableWidget *table = 0;
 
 private:
     void readData(); //for testing

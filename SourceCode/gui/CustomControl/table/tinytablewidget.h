@@ -7,7 +7,6 @@
 #include <QFrame>
 #include <QList>
 #include "datahandler.h"
-#include "../svgwidget.h"
 
 class QLabel;
 class QHBoxLayout;
@@ -15,47 +14,7 @@ class QGridLayout;
 class QCheckBox;
 class QScrollArea;
 class VerticalScrollbar;
-
-class MoreItem : public SvgWidget {
-    Q_OBJECT
-public:
-    explicit MoreItem(QWidget *parent = 0);
-    void setId(int id);
-    int id();
-private slots:
-    void onRequestMore();
-private:
-    int _id;
-};
-
-class TableCell : public QFrame
-{
-    Q_OBJECT
-public:
-    explicit TableCell(const QString &title = "", QWidget *parent = 0);
-    void setContent(QWidget * content);
-    void setData(DataHandler::data_handler *data);
-    void setIndex(int row, int col);
-    void reset();
-    int row();
-    int col();
-
-signals:
-    void updateSize(int row, int col, QSize size);
-private:
-    int _row = -1, _col = -1;
-    QLabel *title = 0;
-    QLabel *thumb = 0;
-    QCheckBox *checkbox = 0;
-    QHBoxLayout *layout = 0;
-    MoreItem *moreItem = 0;
-private:
-    void setText(const QString &title);
-    void setImage(const QString &url);
-    void setCheckbox(bool isChecked);
-    void setDropDown(QStringList item);
-    void setMore(int moreId);
-};
+class TableCell;
 
 class TinyTableWidget : public QFrame
 {
@@ -63,7 +22,7 @@ class TinyTableWidget : public QFrame
 public:
     explicit TinyTableWidget(QWidget *parent = 0);
     void setHeader(QStringList headers);
-    void setData(DataHandler *data);
+    void setData(QList<QList<DataHandler::data_handler *> > data);
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
@@ -91,11 +50,14 @@ private:
     QWidget *scroll;
     QScrollArea *scrollArea;
     VerticalScrollbar *scrollBar;
+    QList<TableCell *> listCells;
 
 private:
     void initUI();
     void resizeColumn(int index, int width);
     void resizeRow(int index, int height);
+    void cacheCell(TableCell *cell);
+    TableCell* getCell();
 };
 
 #endif // TINYTABLEWIDGET_H

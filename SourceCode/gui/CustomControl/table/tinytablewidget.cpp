@@ -2,6 +2,7 @@
 #include "../verticalscrollbar.h"
 #include "../../../style-sheet-manager.h"
 #include "../../../signalsender.h"
+#include "tablecell.h"
 #include <QBoxLayout>
 #include <QGridLayout>
 #include <QLabel>
@@ -28,38 +29,37 @@ void TinyTableWidget::setHeader(QStringList headers)
 {
     listHeader.clear();
     for(int i = 0; i < headers.length(); i++) {
-        TableCell *headerItem = new TableCell(headers.at(i));
+        TableCell *headerItem = getCell();
         headerItem->setCursor(Qt::PointingHandCursor);
         headerItem->setMouseTracking(true);
         headerItem->installEventFilter(this);
-        headerItem->setStyleSheet("border: 1px solid red;");
         headerItem->setFixedHeight(ROW_HEIGHT);
         headerItem->setIndex(0, i);
+        headerItem->setText(headers.at(i), true);
         mainLayout->addWidget(headerItem, 0, i, 1, 1);
         listHeader.append(headerItem);
     }
 }
 
-void TinyTableWidget::setData(DataHandler *data)
+void TinyTableWidget::setData(QList<QList<DataHandler::data_handler *> > data)
 {
-    QList<QList<DataHandler::data_handler *> > _data = data->getData();
-    rowCount = _data.length();
-    for(int row = 0; row < _data.length(); row++) {
+    rowCount = data.length();
+    for(int row = 0; row < data.length(); row++) {
         QMap<int, TableCell*> mapCols;
         int height = 0;
-        for(int col = 0; col < _data.at(row).length(); col++) {
-            TableCell* cell =  new TableCell;
-            cell->setData(_data.at(row).at(col));
+        for(int col = 0; col < data.at(row).length(); col++) {
+            TableCell* cell =  getCell();
+            cell->setData(data.at(row).at(col));
             cell->setCursor(Qt::PointingHandCursor);
             cell->installEventFilter(this);
-            cell->setFixedHeight(100);
-            cell->setIndex(row, col);
+//            cell->setFixedHeight(100);
+            cell->setIndex(row+1, col);
             connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
-            mainLayout->addWidget(cell, row, col, 1, 1);
+            mainLayout->addWidget(cell, row+1, col, 1, 1);
             mapCols.insert(col, cell);
             height = qMax(height, cell->height());
         }
-        mapCells.insert(row, mapCols);
+        mapCells.insert(row+1, mapCols);
         this->scroll->setFixedHeight(height + this->scroll->height());
     }
 }
@@ -171,138 +171,23 @@ void TinyTableWidget::resizeRow(int index, int height)
     }
 }
 
-
-TableCell::TableCell(const QString &title, QWidget *parent) : QFrame(parent)
+void TinyTableWidget::cacheCell(TableCell *cell)
 {
-    setObjectName("TableCell");
-    layout = new QHBoxLayout(this);
-    layout->setAlignment(Qt::AlignCenter);
-    this->title = new QLabel;
-    this->thumb = new QLabel;
-    this->checkbox = new QCheckBox;
-    this->moreItem = new MoreItem;
-    layout->addWidget(this->checkbox);
-    layout->addWidget(this->thumb);
-    layout->addWidget(this->title);
-    layout->addWidget(this->moreItem);
-    this->title->hide();
-    this->thumb->hide();
-    this->checkbox->hide();
-    this->moreItem->hide();
+    if(listCells.contains(cell)) return;
+    listCells.append(cell);
+}
 
-    if(!title.isEmpty()) {
-        setText(title);
+TableCell *TinyTableWidget::getCell()
+{
+    TableCell *cell = 0;
+    if(!listCells.isEmpty()) {
+        cell = listCells.last();
+        listCells.removeLast();
     }
-}
-
-void TableCell::setContent(QWidget *content)
-{
-    if(!content) return;
-    content->setParent(this);
-    content->move(0,0);
-    content->show();
-    this->setFixedSize(content->size());
-}
-
-void TableCell::setData(DataHandler::data_handler *data)
-{
-    if(!data) return;
-    DataHandler::data_type type = data->type;
-    switch(type) {
-    case DataHandler::PLAINTEXT:
-        setText(data->title);
-        break;
-    case DataHandler::PHOTO:
-        setImage(data->thumbUrl);
-        break;
-    case DataHandler::CHECKBOX:
-        setCheckbox(data->isChecked);
-        break;
-    case DataHandler::DROPDOWN:
-    case DataHandler::MORE:
-        setMore(data->moreId);
-        break;
-    default:
-        break;
+    if(!cell) {
+        return new TableCell;
     }
+    return cell;
 }
 
-void TableCell::setIndex(int row, int col)
-{
-    this->_row = row;
-    this->_col = col;
-    if(row % 2 == 0) {
-        StyleSheetManager::changeProperty(this, "row", "Event");
-    }
-    else {
-        StyleSheetManager::changeProperty(this, "row", "");
-    }
-}
 
-void TableCell::reset()
-{
-    this->title->hide();
-    this->thumb->hide();
-    this->checkbox->hide();
-    this->moreItem->hide();
-}
-
-int TableCell::row()
-{
-    return _row;
-}
-
-int TableCell::col()
-{
-    return _col;
-}
-
-void TableCell::setText(const QString &title)
-{
-    this->title->setText(title);
-    this->title->show();
-}
-
-void TableCell::setImage(const QString &url)
-{
-    this->thumb->setPixmap(QPixmap(url).scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-    this->thumb->show();
-}
-
-void TableCell::setCheckbox(bool isChecked)
-{
-    this->checkbox->setChecked(isChecked);
-    this->checkbox->show();
-}
-
-void TableCell::setDropDown(QStringList item)
-{
-
-}
-
-void TableCell::setMore(int moreId)
-{
-    this->moreItem->setId(moreId);
-    this->moreItem->show();
-}
-
-MoreItem::MoreItem(QWidget *parent) : SvgWidget(parent, QString(":/Icon/Image/more_button.svg"))
-{
-    setFixedSize(20, 20);
-    connect(this, SIGNAL(onClicked()), this, SLOT(onRequestMore()));
-}
-
-void MoreItem::setId(int id)
-{
-    this->_id = id;
-}
-
-int MoreItem::id()
-{
-    return this->_id;
-}
-
-void MoreItem::onRequestMore()
-{
-    emit SignalSender::instance()->showMoreInfo(this->_id);
-}
