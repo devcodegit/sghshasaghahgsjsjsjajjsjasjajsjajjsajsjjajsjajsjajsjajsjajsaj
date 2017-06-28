@@ -76,6 +76,16 @@ int TableCell::col()
     return _col;
 }
 
+void TableCell::setActive(bool isActive)
+{
+    this->isActive = isActive;
+}
+
+bool TableCell::active()
+{
+    return this->isActive;
+}
+
 void TableCell::setText(const QString &title, bool isHeader)
 {
     if(isHeader) {

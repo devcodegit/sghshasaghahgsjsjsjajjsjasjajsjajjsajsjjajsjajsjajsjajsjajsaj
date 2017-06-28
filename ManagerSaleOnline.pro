@@ -117,7 +117,8 @@ SOURCES += \
     SourceCode/lazada/request/lazada_api_request_get_order.cpp \
     SourceCode/gui/CustomControl/table/datahandler.cpp \
     SourceCode/gui/CustomControl/table/tinytablewidget.cpp \
-    SourceCode/gui/CustomControl/table/tablecell.cpp
+    SourceCode/gui/CustomControl/table/tablecell.cpp \
+    SourceCode/gui/CustomControl/horizontalscrollbar.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -231,7 +232,8 @@ HEADERS += \
     SourceCode/lazada/request/lazada_api_request_get_order.h \
     SourceCode/gui/CustomControl/table/datahandler.h \
     SourceCode/gui/CustomControl/table/tinytablewidget.h \
-    SourceCode/gui/CustomControl/table/tablecell.h
+    SourceCode/gui/CustomControl/table/tablecell.h \
+    SourceCode/gui/CustomControl/horizontalscrollbar.h
 
 RESOURCES += \
     Resource/resource.qrc

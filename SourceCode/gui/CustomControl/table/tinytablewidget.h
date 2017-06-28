@@ -14,6 +14,7 @@ class QGridLayout;
 class QCheckBox;
 class QScrollArea;
 class VerticalScrollbar;
+class HorizontalScrollBar;
 class TableCell;
 
 class TinyTableWidget : public QFrame
@@ -35,7 +36,8 @@ public slots:
 private slots:
     void onDataChanged();
     void onUpdateSize(int row, int col, QSize size);
-    void onScrollValueChanged(int value);
+    void onVerScrollValueChanged(int value);
+    void onHorScrollValueChanged(int value);
 
 private:
     QList<TableCell*> listHeader;
@@ -49,7 +51,8 @@ private:
 
     QWidget *scroll;
     QScrollArea *scrollArea;
-    VerticalScrollbar *scrollBar;
+    VerticalScrollbar *verScrollBar;
+    HorizontalScrollBar *horScrollBar;
     QList<TableCell *> listCells;
 
 private:
@@ -57,6 +60,7 @@ private:
     void resizeColumn(int index, int width);
     void resizeRow(int index, int height);
     void cacheCell(TableCell *cell);
+    void cacheOldCells();
     TableCell* getCell();
 };
 

@@ -26,7 +26,7 @@
 #include <QVariant>
 
 using namespace Core::DataItem;
-#define MAX_RESULT 50
+#define MAX_RESULT 30
 PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 {
     listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
@@ -73,37 +73,15 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(pageNavigation);
     mainLayout->addWidget(resultFrame, 1);
 
-    /*Model*/
-    model = TableModel::instance()->getModel();
-    tableView = new STableView(resultFrame);
-    tableView->setModel(model);
-    tableView->show();
-    connect(tableView, SIGNAL(itemClicked(int,int)), this, SLOT(onShowInfo(int,int)));
-
-//    qmlTableView = new STableView;
-//    qmlTableView->show();
-
 
     checkUpdateTimer.setInterval(1000);
     connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
     checkUpdateTimer.start();
 
-    table = new TinyTableWidget;
+    table = new TinyTableWidget(resultFrame);
     table->show();
     dataHandler = new DataHandler;
-//    int count = 0;
-//    for(int j = 0; j < 30; j++) {
-//        QList<DataHandler::data_handler *> row;
-//        for(int i = 0; i < 5; i++) {
-//            DataHandler::data_type type = (DataHandler::data_type)i;
-
-//            bool isChecked =(i % 2 == 0);
-//            int id = count;
-//            row.append(new DataHandler::data_handler(id, count, i, type, QString("Test %1 %2").arg(count).arg(i), "", isChecked, QMap<int,QString>(), id));
-//        }
-//        count++;
-//        dataHandler->addRow(row);
-//    }
+    dataHandler->setMaxRowPerPage(MAX_RESULT);
     table->setHeader(UIModel::instance()->getDataTableHeader());
 }
 
@@ -143,7 +121,8 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
 {
     if(object == resultFrame) {
         if(event->type() == QEvent::Resize) {
-            tableView->setFixedSize(resultFrame->size() - QSize(0, 50));
+            table->setFixedSize(resultFrame->size() - QSize(0, 50));
+
         }
     }
     return QWidget::eventFilter(object, event);
@@ -155,22 +134,12 @@ void PageSearch::showEvent(QShowEvent *)
 
 void PageSearch::onSearch()
 {
-    if(tableView) {
-
-    }
 }
 
 void PageSearch::onJumping(int page)
 {
     if(page < 1) return;
     currentPage = page;
-    int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
-    model->clear();
-    model->setHorizontalHeaderLabels(header);
-    for(int row = 0; row < listLen; row++){
-        QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
-        TableModel::instance()->pushItem(line);
-    }
     table->setData(dataHandler->getData(page));
 }
 
@@ -194,7 +163,6 @@ void PageSearch::onCheckUpdateData()
 
 void PageSearch::readData()
 {
-    linesList.clear();
     for(int i = 0; i < listItem.length(); i++) {
         QString no_order = QString::number(listItem.at(i)->getOrderNumber());
         QString date_order = listItem.at(i)->getCreatedAt();
@@ -205,9 +173,6 @@ void PageSearch::readData()
         QString status = listItem.at(i)->getStatuses().m_Status;
         QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
-        QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
-
-        linesList.append(line);
 
         QList<DataHandler::data_handler *> row;
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, "Hóa Đơn", "", false, QMap<int, QString>(), -1));
@@ -222,7 +187,7 @@ void PageSearch::readData()
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, action, "", false, QMap<int, QString>(), -1));
         dataHandler->addRow(row);
     }
-    int listLen = linesList.length();
+    int listLen = listItem.length();
     if(listLen <= 0) return;
     int numPage = listLen/MAX_RESULT + ((listLen%MAX_RESULT > 0) ? 1 : 0);
     pageNavigation->setRange(1,numPage,4);

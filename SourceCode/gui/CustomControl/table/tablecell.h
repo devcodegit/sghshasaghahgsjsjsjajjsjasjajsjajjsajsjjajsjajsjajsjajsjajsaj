@@ -33,6 +33,8 @@ public:
     void reset();
     int row();
     int col();
+    void setActive(bool isActive);
+    bool active();
 
 signals:
     void updateSize(int row, int col, QSize size);
@@ -44,6 +46,7 @@ private:
     QHBoxLayout *layout = 0;
     MoreItem *moreItem = 0;
     QString currentState = "";
+    bool isActive = true;
 private:
     void setImage(const QString &url);
     void setCheckbox(bool isChecked);

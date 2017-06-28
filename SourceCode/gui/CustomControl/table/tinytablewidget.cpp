@@ -1,5 +1,6 @@
 #include "tinytablewidget.h"
 #include "../verticalscrollbar.h"
+#include "../horizontalscrollbar.h"
 #include "../../../style-sheet-manager.h"
 #include "../../../signalsender.h"
 #include "tablecell.h"
@@ -44,6 +45,8 @@ void TinyTableWidget::setHeader(QStringList headers)
 void TinyTableWidget::setData(QList<QList<DataHandler::data_handler *> > data)
 {
     rowCount = data.length();
+    cacheOldCells();
+    this->scroll->setFixedHeight(0);
     for(int row = 0; row < data.length(); row++) {
         QMap<int, TableCell*> mapCols;
         int height = 0;
@@ -52,10 +55,11 @@ void TinyTableWidget::setData(QList<QList<DataHandler::data_handler *> > data)
             cell->setData(data.at(row).at(col));
             cell->setCursor(Qt::PointingHandCursor);
             cell->installEventFilter(this);
-//            cell->setFixedHeight(100);
+            cell->setFixedHeight(100);
             cell->setIndex(row+1, col);
             connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
             mainLayout->addWidget(cell, row+1, col, 1, 1);
+            cell->show();
             mapCols.insert(col, cell);
             height = qMax(height, cell->height());
         }
@@ -106,9 +110,11 @@ bool TinyTableWidget::eventFilter(QObject *object, QEvent *event)
 void TinyTableWidget::resizeEvent(QResizeEvent *event)
 {
     scrollArea->setFixedSize(event->size());
-    scroll->setFixedWidth(event->size().width());
-    scrollBar->setSpace(0, event->size().height());
-    scrollBar->update(true);
+    verScrollBar->setSpace(0, scrollArea->height());
+    verScrollBar->update(true);
+
+    horScrollBar->setSpace(0, scrollArea->width());
+    horScrollBar->update(true);
 }
 
 void TinyTableWidget::onDataChanged()
@@ -122,9 +128,14 @@ void TinyTableWidget::onUpdateSize(int row, int col, QSize size)
     resizeRow(row, size.height());
 }
 
-void TinyTableWidget::onScrollValueChanged(int value)
+void TinyTableWidget::onVerScrollValueChanged(int value)
 {
+    verScrollBar->setValue(value);
+}
 
+void TinyTableWidget::onHorScrollValueChanged(int value)
+{
+    horScrollBar->setValue(value);
 }
 
 void TinyTableWidget::initUI()
@@ -132,22 +143,31 @@ void TinyTableWidget::initUI()
     scroll = new QWidget;
     scroll->setObjectName("TransWg");
     scrollArea = new QScrollArea(this);
+    scrollArea->setAlignment(Qt::AlignTop);
     scrollArea->setFocusPolicy(Qt::NoFocus);
     scrollArea->setWidget(scroll);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setWidgetResizable(true);
-    connect(scrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onScrollValueChanged(int)));
+    connect(scrollArea->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onVerScrollValueChanged(int)));
+    connect(scrollArea->horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(onHorScrollValueChanged(int)));
 
-    scrollBar = new VerticalScrollbar(scrollArea, scrollArea->verticalScrollBar());
-    scrollBar->setMargin(0);
-    scrollBar->update(true);
-    scrollBar->setMinHeight(30);
+    verScrollBar = new VerticalScrollbar(scrollArea, scrollArea->verticalScrollBar());
+    verScrollBar->setMargin(0);
+    verScrollBar->update(true);
+    verScrollBar->setMinHeight(30);
+
+    horScrollBar = new HorizontalScrollBar(scrollArea, scrollArea->horizontalScrollBar());
+    horScrollBar->setMargin(0);
+    horScrollBar->update(true);
+    horScrollBar->setMinWidth(30);
+    horScrollBar->setHeight(6);
 
     if(!mainLayout) {
         mainLayout = new QGridLayout(scroll);
         mainLayout->setSpacing(0);
         mainLayout->setMargin(0);
+        mainLayout->setAlignment(Qt::AlignTop);
     }
 }
 
@@ -175,6 +195,22 @@ void TinyTableWidget::cacheCell(TableCell *cell)
 {
     if(listCells.contains(cell)) return;
     listCells.append(cell);
+}
+
+void TinyTableWidget::cacheOldCells()
+{
+    QMap<int, QMap<int, TableCell*> >::iterator itRow;
+    for(itRow = mapCells.begin(); itRow != mapCells.end(); itRow++) {
+        QMap<int, TableCell*> rowMap = itRow.value();
+        QMap<int, TableCell*>::iterator itCol;
+        for(itCol = rowMap.begin(); itCol != rowMap.end(); itCol++) {
+            TableCell *cell = itCol.value();
+            if(cell) {
+                cacheCell(cell);
+                cell->hide();
+            }
+        }
+    }
 }
 
 TableCell *TinyTableWidget::getCell()
