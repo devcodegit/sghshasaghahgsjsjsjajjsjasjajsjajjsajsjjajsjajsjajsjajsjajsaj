@@ -18,7 +18,12 @@
         <file>Image/arrow-down.svg</file>
         <file>Image/arrow-down_2.svg</file>
         <file>Image/calendar.svg</file>
+        <file>Image/icon_back_8x14.svg</file>
+        <file>Image/icon_next_8x14.svg</file>
+        <file>Image/icon_selected_date_16x16.svg</file>
+        <file>Image/icon_today.svg</file>
         <file>Image/more_button.svg</file>
+        <file>Image/icon_today_hover.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

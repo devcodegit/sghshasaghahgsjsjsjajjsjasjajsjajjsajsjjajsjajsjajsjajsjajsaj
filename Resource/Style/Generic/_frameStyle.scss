@@ -85,15 +85,88 @@
     color: white;
 }
 
-#TableCell {
-    border: 1px solid gray;
+
+
+#DatePickerDayOfWeek {
+    background-color: transparent;
+    font: $F0 $FF2;
+    color: $C10;
+    border: none;
+}
+
+#DatePickerDayInMonth {
+    background-color: transparent;
+    font: $F3 $FF1;
+    color: $C10;
+    padding-top: -2px;
+}
+
+#DatePickerDayInMonth:hover {
+    background: url(":/Icon/Image/icon_today_hover.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    font: $F3 $FF1;
+    color: $C11;
+}
+
+#DatePickerDayInMonth[State="Not_Current_Month"] {
+    background-color: transparent;
+    font: $F3 $FF1;
+    color: $C11;
+}
+
+#DatePickerDayInMonth[State="Today"] {
+    background: url(":/Icon/Image/icon_today.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    font: $F3 $FF2;
+    color: white;
+}
+
+#DatePickerDayInMonth[State="Selected"] {
+    background: url(":/Icon/Image/icon_selected_date_16x16.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    font: $F3 $FF2;
+    color: $C10;
+}
+
+#DatePickerMonthYear {
+    background-color: transparent;
+    font: $F3 $FF1;
+    color: $C10;
+    padding-top: -2px;
+}
+
+#DatePickerMonthYear:hover {
+    background-color: $C5;
+    font: $F3 $FF1;
+    color: $C10;
+    padding-top: -2px;
+}
+
+#DatePickerMonthYear[State="Not_Current_Month"] {
+    background-color: transparent;
+    font: $F3 $FF1;
+    color: $C11;
+}
+
+#DatePickerMonthYear[State="Not_Current_Month"]:hover {
+    background-color: $C5;
+    font: $F3 $FF1;
+    color: $C11;
+}
+
+
+#DatePickerMonthYear[State="Today"] {
+    background: url(":/image/res/icon_today.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    font: $F3 $FF2;
+    color: white;
+}
+
+#DatePickerBg {
     background-color: white;
 }
 
-#TableCell[row=Event] {
-    background-color: #e2e6ea;
-}
-
-#TableCell[row=Header] {
-    background-color: #8DD9FD;
-}

@@ -118,7 +118,10 @@ SOURCES += \
     SourceCode/gui/CustomControl/table/datahandler.cpp \
     SourceCode/gui/CustomControl/table/tinytablewidget.cpp \
     SourceCode/gui/CustomControl/table/tablecell.cpp \
-    SourceCode/gui/CustomControl/horizontalscrollbar.cpp
+    SourceCode/gui/CustomControl/horizontalscrollbar.cpp \
+        SourceCode/gui/CustomControl/calendar-widget.cpp \
+    SourceCode/gui/CustomControl/zbackground-menu.cpp \
+    SourceCode/gui/CustomControl/background_menu_utils.cpp \
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -233,7 +236,10 @@ HEADERS += \
     SourceCode/gui/CustomControl/table/datahandler.h \
     SourceCode/gui/CustomControl/table/tinytablewidget.h \
     SourceCode/gui/CustomControl/table/tablecell.h \
-    SourceCode/gui/CustomControl/horizontalscrollbar.h
+    SourceCode/gui/CustomControl/horizontalscrollbar.h \
+        SourceCode/gui/CustomControl/calendar-widget.h \
+    SourceCode/gui/CustomControl/zbackground-menu.h \
+    SourceCode/gui/CustomControl/background_menu_utils.h \
 
 RESOURCES += \
     Resource/resource.qrc

@@ -11,13 +11,13 @@
 #include "suserinfo.h"
 #include "CustomControl/drop-down-widget.h"
 #include "navigationbar.h"
+#include "CustomControl/calendar-widget.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QDebug>
-#include <QStackedWidget>
 #include <QEvent>
 
 #define AVATAR_SIZE 30
@@ -34,6 +34,7 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 
     UIModel::instance()->setMainWindow(this);
     onManagementClicked();
+
 }
 
 void SMainWindow::onManagementClicked()
