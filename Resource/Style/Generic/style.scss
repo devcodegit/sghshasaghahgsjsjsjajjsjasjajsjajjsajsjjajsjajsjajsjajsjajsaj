@@ -3,9 +3,39 @@
     border: 0px;
 }
 
+/* Color defines */
+$C0: #7f8a99; /* Tab icon */
+$C1: #00a1f2; /* Icon hover */
+$C2: #a1aab2; /* Sub icon */
+$C3: #f3f6f9; /* Bg - List item */
+$C4: #cdebfc; /* Bg - List item selected */
+$C5: #e7ebef; /* Bg - List item hover */
+$C6: #ebeff3; /* Left bubble chat */
+$C7: #effafe; /* Chatbox focus */
+$C8: #e2e6ea; /* Gray line */
+$C81: #d7dbdf; /* Gray line(old) */
+$C9: #b1dcf5; /* Blue bline */
+$C10: #111111; /* Main text */
+$C11: #6d7379; /* Sub text */
+$C12: #7abfe7; /* Bg - Icon header chat */
+$C13: #bbd6e0; /* Scroll bar */
+$C14: #ffffff; /* White */
+$C15: #fc4a4a; /* Error notif */
+$C16: #feb9b9; /* Error box */
+$C17: #0070a9; /* Blue btn hover */
+$C18: #cae8f9; /*  */
+$C19: #e8eff4; /*  */
+$C20: #e0e6eb;
+
 /* Font defines */
 $FF1: "Segoe UI";
 $FF2: "Segoe UI Semibold";
+
+$F1: 16px;
+$F2: 15px;
+$F0: 14px;
+$F3: 13px;
+$F4: 12px;
 
 $cHeader: #f9f9fd;
 $cLineHeader: #ebedf0;

@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QTimer>
+#include <QFrame>
+#include <QDate>
 #include "../lazada/lazada_handler.h"
 
 class QScrollArea;
@@ -20,9 +22,11 @@ class DateRangeWidget;
 class DataHandler;
 class TinyTableWidget;
 
+class CalendarWidget;
+
 using namespace Lazada::Controls;
 
-class PageSearch : public QWidget, public IObjRequestListener
+class PageSearch : public QFrame, public IObjRequestListener
 {
     Q_OBJECT
 public:
@@ -34,6 +38,7 @@ public:
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void showEvent(QShowEvent *);
+    virtual void resizeEvent(QResizeEvent *event);
 
 signals:
 
@@ -44,20 +49,28 @@ private slots:
     void onJumping(int page);
     void onShowInfo(int row, int col);
     void onCheckUpdateData();
+    void onAddFilterItem(QDate date);
+    void onShowCalendar(bool isStart, QDate date);
 
 private:
     QFrame *resultFrame = 0;
     QLineEdit *line1 = 0, *line2 = 0, *line3 = 0;
     QPushButton *searchButton = 0;
+    QStandardItemModel *model = 0;
+    STableView *tableView = 0;
     PageNavigation *pageNavigation = 0;
     SFilterInfo *filterInfo = 0;
     DetailWidget *infoDialog  = 0;
+//    STableView *qmlTableView = 0;
+    QStringList linesList;
     QStringList header;
     QList<LazadaDataItemOrder*> listItem;
     int currentPage = 0;
     bool needUpdate = false;
+    bool isStartClicked = true;
     QTimer checkUpdateTimer;
     DateRangeWidget *dateRange = 0;
+    CalendarWidget *calendarItem = 0;
 
 
     DataHandler *dataHandler = 0;

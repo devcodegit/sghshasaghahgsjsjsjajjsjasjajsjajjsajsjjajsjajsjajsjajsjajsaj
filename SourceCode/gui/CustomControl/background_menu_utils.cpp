@@ -3,9 +3,9 @@
 #include <QPainter>
 
 #define SIZE_CORNER             8
-#define SIDE_IMG                QString(":/image/res/bg_popup_middle.png")
-#define CORNER_IMG              QString(":/image/res/bg_popup_corner.png")
-#define ARROW_IMG               QString(":/image/res/bg_popup_arrow.png")
+#define SIDE_IMG                QString(":/Icon/Image/bg_popup_middle.png")
+#define CORNER_IMG              QString(":/Icon/Image/bg_popup_corner.png")
+#define ARROW_IMG               QString(":/Icon/Image/bg_popup_arrow.png")
 
 BackgroundMenuUtils::BackgroundMenuUtils()
 {

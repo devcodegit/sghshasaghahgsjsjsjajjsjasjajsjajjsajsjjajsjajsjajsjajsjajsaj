@@ -36,11 +36,13 @@ DateRangeWidget::DateRangeWidget(QWidget *parent) : QFrame(parent)
 void DateRangeWidget::setStartDate(QDate date)
 {
     startDate = date;
+    dateStartLbl->setText(date.toString("dd/MM/yyyy"));
 }
 
 void DateRangeWidget::setEndDate(QDate date)
 {
     endDate = date;
+    dateEndLbl->setText(date.toString("dd/MM/yyyy"));
 }
 
 void DateRangeWidget::reset()
@@ -67,9 +69,11 @@ bool DateRangeWidget::eventFilter(QObject *object, QEvent *event)
 void DateRangeWidget::onStartClicked()
 {
     qDebug () << "onStartClicked();";
+    emit choose(true, QDate::currentDate());
 }
 
 void DateRangeWidget::onEndClicked()
 {
     qDebug () << "onEndClicked();";
+    emit choose(false, QDate::currentDate());
 }

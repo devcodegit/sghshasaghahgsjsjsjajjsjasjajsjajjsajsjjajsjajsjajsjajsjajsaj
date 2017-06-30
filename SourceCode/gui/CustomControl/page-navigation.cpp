@@ -32,6 +32,7 @@ PageNavigation::PageNavigation(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(prev);
     mainLayout->addWidget(next);
     mainLayout->addWidget(last);
+    setFixedHeight(ICON_SIZE);
 }
 
 void PageNavigation::setCurrentPage(int page)
@@ -50,7 +51,7 @@ void PageNavigation::setRange(int from, int to, int range)
         this->maxViewRange = this->to - this->from + 1;
     }
     else this->maxViewRange = range;
-    moveRange(this->from, qMin(this->from + maxViewRange - 1, this->to));
+    moveRange(this->from, qMin(this->from + maxViewRange - 1, this->to), false);
 }
 
 void PageNavigation::onDirectingToPage(int page)
@@ -117,7 +118,7 @@ void PageNavigation::onLastPage()
     onDirectingToPage(to);
 }
 
-void PageNavigation::moveRange(int from, int to)
+void PageNavigation::moveRange(int from, int to, bool forceJump)
 {
     int _from, _to;
     _from = qMin(from, to);
@@ -148,7 +149,7 @@ void PageNavigation::moveRange(int from, int to)
     }
     currentItem = listItem.at(currentPage - from);
     currentItem->setHighlight();
-    emit jumping(currentItem->getId());
+//    if(forceJump) emit jumping(currentItem->getId());
 }
 
 PageItem::PageItem(Type type, QWidget *parent) : type(type), QLabel(parent)

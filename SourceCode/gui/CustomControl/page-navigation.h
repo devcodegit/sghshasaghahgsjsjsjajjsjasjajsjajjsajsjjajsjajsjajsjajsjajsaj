@@ -68,7 +68,7 @@ private:
     int from, to;
 
 private:
-    void moveRange(int from, int to);
+    void moveRange(int from, int to, bool forceJump = true);
 
 };
 

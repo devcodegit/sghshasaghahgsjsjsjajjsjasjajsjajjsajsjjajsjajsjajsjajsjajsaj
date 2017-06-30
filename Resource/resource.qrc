@@ -24,6 +24,9 @@
         <file>Image/icon_today.svg</file>
         <file>Image/more_button.svg</file>
         <file>Image/icon_today_hover.svg</file>
+        <file>Image/bg_popup_arrow.png</file>
+        <file>Image/bg_popup_corner.png</file>
+        <file>Image/bg_popup_middle.png</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

@@ -85,7 +85,18 @@
     color: white;
 }
 
+#TableCell {
+    border: 1px solid gray;
+    background-color: white;
+}
 
+#TableCell[row=Event] {
+    background-color: #e2e6ea;
+}
+
+#TableCell[row=Header] {
+    background-color: #8DD9FD;
+}
 
 #DatePickerDayOfWeek {
     background-color: transparent;
@@ -159,7 +170,7 @@
 
 
 #DatePickerMonthYear[State="Today"] {
-    background: url(":/image/res/icon_today.svg");
+    background: url(":/Icon/Image/icon_today.svg");
     background-repeat: no-repeat;
     background-position: center;
     font: $F3 $FF2;
@@ -167,6 +178,8 @@
 }
 
 #DatePickerBg {
-    background-color: white;
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
 }
 

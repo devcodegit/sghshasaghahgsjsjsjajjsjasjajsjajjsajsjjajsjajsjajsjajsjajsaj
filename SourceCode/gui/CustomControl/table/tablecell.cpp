@@ -93,25 +93,41 @@ void TableCell::setText(const QString &title, bool isHeader)
     }
     StyleSheetManager::changeProperty(this, "row", currentState);
     this->ensurePolished();
+    if(!this->title) {
+        this->title = new QLabel;
+        layout->addWidget(this->title);
+    }
     this->title->setText(title);
     this->title->show();
 }
 
 void TableCell::setImage(const QString &url)
 {
+    if(!this->thumb) {
+        this->thumb = new QLabel;
+        layout->addWidget(this->thumb);
+
+    }
     this->thumb->setPixmap(QPixmap(url).scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     this->thumb->show();
 }
 
 void TableCell::setCheckbox(bool isChecked)
 {
+    if(!this->checkbox) {
+        this->checkbox = new QCheckBox;
+        layout->addWidget(this->checkbox);
+    }
     this->checkbox->setChecked(isChecked);
     this->checkbox->show();
 }
 
 void TableCell::setDropDown(QStringList item)
 {
-
+    if(!this->moreItem) {
+        this->moreItem = new MoreItem;
+        layout->addWidget(this->moreItem);
+    }
 }
 
 void TableCell::setMore(int moreId)
@@ -125,18 +141,6 @@ void TableCell::initUI()
     setObjectName("TableCell");
     layout = new QHBoxLayout(this);
     layout->setAlignment(Qt::AlignCenter);
-    this->title = new QLabel;
-    this->thumb = new QLabel;
-    this->checkbox = new QCheckBox;
-    this->moreItem = new MoreItem;
-    layout->addWidget(this->checkbox);
-    layout->addWidget(this->thumb);
-    layout->addWidget(this->title);
-    layout->addWidget(this->moreItem);
-    this->title->hide();
-    this->thumb->hide();
-    this->checkbox->hide();
-    this->moreItem->hide();
 }
 
 MoreItem::MoreItem(QWidget *parent) : SvgWidget(parent, QString(":/Icon/Image/more_button.svg"))

@@ -28,49 +28,80 @@ TinyTableWidget::TinyTableWidget(QWidget *parent) : QFrame(parent)
 
 void TinyTableWidget::setHeader(QStringList headers)
 {
-    listHeader.clear();
+    int width = 0;
     for(int i = 0; i < headers.length(); i++) {
-        TableCell *headerItem = getCell();
+        bool result = false;
+        TableCell *headerItem = getCell(i, result);
+        headerItem->setParent(this->scroll);
         headerItem->setCursor(Qt::PointingHandCursor);
         headerItem->setMouseTracking(true);
         headerItem->installEventFilter(this);
         headerItem->setFixedHeight(ROW_HEIGHT);
         headerItem->setIndex(0, i);
         headerItem->setText(headers.at(i), true);
-        mainLayout->addWidget(headerItem, 0, i, 1, 1);
-        listHeader.append(headerItem);
+        headerItem->adjustSize();
+        if(listCellWidget.isEmpty()) {
+            headerItem->move(0,0);
+        }
+        else {
+            TableCell *pre = listCellWidget.last();
+            headerItem->move(pre->x() + pre->width(), 0);
+        }
+        headerItem->show();
+        if(!result) listCellWidget.append(headerItem);
+        width += headerItem->width();
     }
+    this->scroll->setFixedSize(width, ROW_HEIGHT);
+    headerHeight = ROW_HEIGHT;
+    colCount = headers.length();
 }
 
 void TinyTableWidget::setData(QList<QList<DataHandler::data_handler *> > data)
 {
     rowCount = data.length();
-    cacheOldCells();
-    this->scroll->setFixedHeight(0);
+    int totalHeight = 0;
+    qDebug () << "setData#2";
     for(int row = 0; row < data.length(); row++) {
-        QMap<int, TableCell*> mapCols;
-        int height = 0;
         for(int col = 0; col < data.at(row).length(); col++) {
-            TableCell* cell =  getCell();
+            bool result = false;
+            TableCell* cell = getCell((row + 1) * colCount + col, result);
+            cell->setParent(this->scroll);
             cell->setData(data.at(row).at(col));
             cell->setCursor(Qt::PointingHandCursor);
             cell->installEventFilter(this);
             cell->setFixedHeight(100);
             cell->setIndex(row+1, col);
-            connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
-            mainLayout->addWidget(cell, row+1, col, 1, 1);
+//            connect(cell, SIGNAL(updateSize(int,int,QSize)), this, SLOT(onUpdateSize(int,int,QSize)));
+
+            TableCell *preTop = 0, *preLeft = 0;
+            int x = 0, y = 0;
+            if(!listCellWidget.isEmpty()) {
+                preTop = listCellWidget.at(row * colCount + col);
+                if(col <= 0) {
+                    x = 0;
+                }
+                else {
+                    preLeft = listCellWidget.at(row * colCount + col - 1);
+                    x = preLeft->x() + preLeft->width();
+//                    cell->setFixedHeight(preLeft->height());
+                }
+                y = preTop->y() + preTop->height();
+                cell->setFixedWidth(preTop->width());
+            }
+            cell->move(x, y);
             cell->show();
-            mapCols.insert(col, cell);
-            height = qMax(height, cell->height());
+            if(!result) listCellWidget.append(cell);
+
         }
-        mapCells.insert(row+1, mapCols);
-        this->scroll->setFixedHeight(height + this->scroll->height());
+        totalHeight += 100;
     }
+    this->scroll->setFixedHeight(totalHeight + headerHeight);
+    qDebug () << "setData#end" << this->scroll->size();
 }
 
 bool TinyTableWidget::eventFilter(QObject *object, QEvent *event)
 {
-    if(listHeader.contains((TableCell*)object)) {
+    if(!listCellWidget.isEmpty() && listCellWidget.contains((TableCell*)object)) {
         if(event->type() == QEvent::MouseButtonRelease) {
             startResize = -1;
         }
@@ -87,16 +118,17 @@ bool TinyTableWidget::eventFilter(QObject *object, QEvent *event)
                 currentX = pointX;
                 TableCell *resizeObject = 0;
                 resizeObject = currentHeader;
+                int oldWidth = resizeObject->width();
                 int width = resizeObject->width() + delta;
                 resizeObject->setFixedWidth(width);
-                resizeColumn(currentHeader->col(), width);
+                resizeColumn(currentHeader->col(), width, oldWidth);
                 adjustSize();
                 return QFrame::eventFilter(object, event);
             }
             QPoint currentPos = QCursor::pos() - currentHeader->mapToGlobal(QPoint(0,0));
             if(currentPos.x() > currentHeader->width() - LIMIT_RESIZE) {
                 currentHeader->setCursor(Qt::SizeHorCursor);
-                inLimitZone = listHeader.indexOf(currentHeader);
+                inLimitZone = listCellWidget.indexOf(currentHeader) % colCount;
             }
             else {
                 currentHeader->setCursor(Qt::PointingHandCursor);
@@ -124,8 +156,8 @@ void TinyTableWidget::onDataChanged()
 
 void TinyTableWidget::onUpdateSize(int row, int col, QSize size)
 {
-    resizeColumn(col, size.width());
-    resizeRow(row, size.height());
+//    resizeColumn(col, size.width());
+//    resizeRow(row, size.height());
 }
 
 void TinyTableWidget::onVerScrollValueChanged(int value)
@@ -162,68 +194,52 @@ void TinyTableWidget::initUI()
     horScrollBar->update(true);
     horScrollBar->setMinWidth(30);
     horScrollBar->setHeight(6);
-
-    if(!mainLayout) {
-        mainLayout = new QGridLayout(scroll);
-        mainLayout->setSpacing(0);
-        mainLayout->setMargin(0);
-        mainLayout->setAlignment(Qt::AlignTop);
-    }
 }
 
-void TinyTableWidget::resizeColumn(int index, int width)
+void TinyTableWidget::resizeColumn(int index, int width, int oldWidth)
 {
-    QMap<int, QMap<int, TableCell*> >::iterator it;
-    for(it = mapCells.begin(); it != mapCells.end(); it++) {
-        QMap<int, TableCell*> col = it.value();
-        TableCell *cell = col.value(index, 0);
-        if(!cell) continue;
-        cell->setFixedWidth(width);
+    if(listCellWidget.isEmpty()) return;
+    for(int i = 0; i < listCellWidget.length(); i++) {
+        TableCell *cell = listCellWidget.at(i);
+        if(cell->col()  ==  index) {
+            cell->setFixedWidth(width);
+        }
+        else if(cell->col() < index) continue;
+        else {
+            cell->move(cell->x() + (width - oldWidth), cell->y());
+        }
     }
+    this->scroll->setFixedWidth(this->scroll->width() + (width - oldWidth));
 }
 
-void TinyTableWidget::resizeRow(int index, int height)
+void TinyTableWidget::resizeRow(int index, int height, int oldHeight)
 {
-    QMap<int, TableCell*> col = mapCells.value(index);
-    QMap<int, TableCell*>::iterator it;
-    for(it = col.begin(); it != col.end(); it++) {
-        it.value()->setFixedHeight(height);
-    }
+
 }
 
 void TinyTableWidget::cacheCell(TableCell *cell)
 {
-    if(listCells.contains(cell)) return;
-    listCells.append(cell);
 }
 
 void TinyTableWidget::cacheOldCells()
 {
-    QMap<int, QMap<int, TableCell*> >::iterator itRow;
-    for(itRow = mapCells.begin(); itRow != mapCells.end(); itRow++) {
-        QMap<int, TableCell*> rowMap = itRow.value();
-        QMap<int, TableCell*>::iterator itCol;
-        for(itCol = rowMap.begin(); itCol != rowMap.end(); itCol++) {
-            TableCell *cell = itCol.value();
-            if(cell) {
-                cacheCell(cell);
-                cell->hide();
-            }
-        }
-    }
+
 }
 
-TableCell *TinyTableWidget::getCell()
+TableCell *TinyTableWidget::getCell(int index, bool &result)
 {
-    TableCell *cell = 0;
-    if(!listCells.isEmpty()) {
-        cell = listCells.last();
-        listCells.removeLast();
-    }
-    if(!cell) {
+    if(index >= listCellWidget.length()) {
+        result = false;
         return new TableCell;
     }
+    TableCell *cell = listCellWidget.at(index);
+    result = true;
     return cell;
+}
+
+void TinyTableWidget::generateCellPos()
+{
+
 }
 
 

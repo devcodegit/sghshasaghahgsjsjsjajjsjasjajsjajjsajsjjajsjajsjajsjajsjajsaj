@@ -40,28 +40,28 @@ private slots:
     void onHorScrollValueChanged(int value);
 
 private:
-    QList<TableCell*> listHeader;
-    QMap<int, QMap<int, TableCell*> > mapCells;
+    QList<TableCell*> listCellWidget;
     QFrame *headerFrame = 0;
-    QGridLayout *mainLayout = 0;
     int startResize = -1;
     int inLimitZone = -1;
     int currentX = -1;
     int rowCount = 0;
+    int colCount  = 0;
+    int headerHeight = 0;
 
     QWidget *scroll;
     QScrollArea *scrollArea;
     VerticalScrollbar *verScrollBar;
     HorizontalScrollBar *horScrollBar;
-    QList<TableCell *> listCells;
 
 private:
     void initUI();
-    void resizeColumn(int index, int width);
-    void resizeRow(int index, int height);
+    void resizeColumn(int index, int width, int oldWidth);
+    void resizeRow(int index, int height, int oldHeight);
     void cacheCell(TableCell *cell);
     void cacheOldCells();
-    TableCell* getCell();
+    TableCell* getCell(int index, bool &result);
+    void generateCellPos();
 };
 
 #endif // TINYTABLEWIDGET_H

@@ -11,6 +11,8 @@
 #include "../ui_executor.h"
 #include "CustomControl/date-range-widget.h"
 #include "CustomControl/table/tinytablewidget.h"
+#include "../uiconst.h"
+#include "CustomControl/calendar-widget.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -24,10 +26,12 @@
 #include <QFile>
 #include <QDebug>
 #include <QVariant>
+#include <QResizeEvent>
+#include <QApplication>
 
 using namespace Core::DataItem;
-#define MAX_RESULT 30
-PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
+#define MAX_RESULT 60
+PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
 {
     listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
     header = UIModel::instance()->getDataTableHeader();
@@ -47,6 +51,7 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
     line3 = new QLineEdit(this);
     line3->setPlaceholderText("Sản phẩm");
     dateRange = new DateRangeWidget(this);
+    connect(dateRange, SIGNAL(choose(bool,QDate)), this, SLOT(onShowCalendar(bool,QDate)));
     searchButton = new QPushButton("Tìm kiếm", this);
     searchButton->setFixedSize(100, 20);
     connect(searchButton, &QPushButton::clicked, this, &PageSearch::onSearch);
@@ -61,28 +66,31 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 
 
     filterInfo = new SFilterInfo;
-    for(int i = 0; i < 100; i++) {
-        filterInfo->addItem(QString("Item %1").arg(i));
-    }
     filterInfo->hide();
 
     resultFrame = new QFrame(this);
     resultFrame->installEventFilter(this);
     mainLayout->addLayout(searchLayout);
-    mainLayout->addWidget(filterInfo);
+    mainLayout->addWidget(filterInfo, 0);
     mainLayout->addWidget(pageNavigation);
     mainLayout->addWidget(resultFrame, 1);
 
+    /*Model*/
+    model = TableModel::instance()->getModel();
+    tableView = new STableView(resultFrame);
+    tableView->setModel(model);
+    tableView->show();
+    connect(tableView, SIGNAL(itemClicked(int,int)), this, SLOT(onShowInfo(int,int)));
 
     checkUpdateTimer.setInterval(1000);
     connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
     checkUpdateTimer.start();
 
-    table = new TinyTableWidget(resultFrame);
-    table->show();
-    dataHandler = new DataHandler;
-    dataHandler->setMaxRowPerPage(MAX_RESULT);
-    table->setHeader(UIModel::instance()->getDataTableHeader());
+    //table = new TinyTableWidget(resultFrame);
+    //table->show();
+    //dataHandler = new DataHandler;
+    //dataHandler->setMaxRowPerPage(MAX_RESULT);
+    //table->setHeader(UIModel::instance()->getDataTableHeader());
 }
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
@@ -121,15 +129,23 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
 {
     if(object == resultFrame) {
         if(event->type() == QEvent::Resize) {
-            table->setFixedSize(resultFrame->size() - QSize(0, 50));
-
+            //table->setFixedSize(resultFrame->size() - QSize(0, 50));
+            tableView->setFixedSize(resultFrame->size() - QSize(0, 50));
         }
     }
-    return QWidget::eventFilter(object, event);
+    return QFrame::eventFilter(object, event);
 }
 
 void PageSearch::showEvent(QShowEvent *)
 {
+}
+
+void PageSearch::resizeEvent(QResizeEvent *event)
+{
+//    if(resultFrame) {
+//        resultFrame->setFixedSize(event->size().width(), event->size().height() - 200);
+//        tableView->setFixedSize(resultFrame->size());
+//    }
 }
 
 void PageSearch::onSearch()
@@ -140,7 +156,15 @@ void PageSearch::onJumping(int page)
 {
     if(page < 1) return;
     currentPage = page;
-    table->setData(dataHandler->getData(page));
+    qDebug () << "onJumping" << page;
+    //table->setData(dataHandler->getData(page));
+    int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
+    model->clear();
+    model->setHorizontalHeaderLabels(header);
+    for(int row = 0; row < listLen; row++){
+        QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
+        TableModel::instance()->pushItem(line);
+    }
 }
 
 void PageSearch::onShowInfo(int row, int col)
@@ -161,8 +185,31 @@ void PageSearch::onCheckUpdateData()
     }
 }
 
+void PageSearch::onAddFilterItem(QDate date)
+{
+    qDebug () << "onAddFilterItem();" << date;
+    filterInfo->addItem(date.toString("dd/MM/yyyy"));
+    filterInfo->show();
+    if(isStartClicked) dateRange->setStartDate(date);
+    else dateRange->setEndDate(date);
+}
+
+void PageSearch::onShowCalendar(bool isStart, QDate date)
+{
+    QWidget * w = (QWidget*)sender();
+    if(!calendarItem) {
+        calendarItem = new CalendarWidget(this);
+        connect(calendarItem, SIGNAL(clicked(QDate)), this, SLOT(onAddFilterItem(QDate)));
+    }
+    calendarItem->move(w->x() - 44, w->y() + w->height());
+    calendarItem->show();
+    calendarItem->raise();
+    isStartClicked = isStart;
+}
+
 void PageSearch::readData()
 {
+    linesList.clear();
     for(int i = 0; i < listItem.length(); i++) {
         QString no_order = QString::number(listItem.at(i)->getOrderNumber());
         QString date_order = listItem.at(i)->getCreatedAt();
@@ -173,6 +220,8 @@ void PageSearch::readData()
         QString status = listItem.at(i)->getStatuses().m_Status;
         QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
+		QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
+        linesList.append(line);
 
         QList<DataHandler::data_handler *> row;
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, "Hóa Đơn", "", false, QMap<int, QString>(), -1));
@@ -185,12 +234,13 @@ void PageSearch::readData()
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, status, "", false, QMap<int, QString>(), -1));
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, printed, "", false, QMap<int, QString>(), -1));
         row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, action, "", false, QMap<int, QString>(), -1));
-        dataHandler->addRow(row);
+//        dataHandler->addRow(row);
     }
     int listLen = listItem.length();
     if(listLen <= 0) return;
     int numPage = listLen/MAX_RESULT + ((listLen%MAX_RESULT > 0) ? 1 : 0);
     pageNavigation->setRange(1,numPage,4);
+    qDebug () << "onJumping from start";
     onJumping(1);
 }
 

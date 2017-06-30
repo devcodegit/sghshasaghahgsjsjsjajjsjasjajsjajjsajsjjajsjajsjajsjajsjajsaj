@@ -18,8 +18,8 @@ QList<QList<DataHandler::data_handler *> > DataHandler::getData(int page)
     QList<QList<DataHandler::data_handler *> > pageData;
     int start = (page - 1) * _maxRowPerPage;
     int length = qMin(_data.length() - start, _maxRowPerPage);
-    qDebug () << "dataLENGHT = " << length;
     pageData = this->_data.mid(start, length);
+    qDebug () << "dataLENGHT = " << length << pageData.length();
     return pageData;
 }
 
