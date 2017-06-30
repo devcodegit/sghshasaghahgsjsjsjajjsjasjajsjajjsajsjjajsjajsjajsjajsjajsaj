@@ -51,6 +51,8 @@ private slots:
     void onCheckUpdateData();
     void onAddFilterItem(QDate date);
     void onShowCalendar(bool isStart, QDate date);
+    void onChangeState();
+    void onExport();
 
 private:
     QFrame *resultFrame = 0;

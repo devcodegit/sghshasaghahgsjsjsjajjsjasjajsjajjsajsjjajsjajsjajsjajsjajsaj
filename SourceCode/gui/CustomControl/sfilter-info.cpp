@@ -49,7 +49,11 @@ void SFilterInfo::resizeEvent(QResizeEvent *event)
 
 void SFilterInfo::onRemoveItem()
 {
-    filterItemLayout->removeWidget((QWidget*)sender());
+    FilterItem *w = (FilterItem*)sender();
+    filterItemLayout->removeWidget(w);
+    listItems.removeOne(w);
+    if(listItems.isEmpty()) close();
+
 }
 
 void SFilterInfo::onScrollValueChanged(int value)

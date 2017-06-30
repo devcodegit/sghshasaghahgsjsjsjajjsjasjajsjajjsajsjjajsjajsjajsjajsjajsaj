@@ -122,6 +122,7 @@ SOURCES += \
         SourceCode/gui/CustomControl/calendar-widget.cpp \
     SourceCode/gui/CustomControl/zbackground-menu.cpp \
     SourceCode/gui/CustomControl/background_menu_utils.cpp \
+    SourceCode/gui/export-page.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -240,6 +241,7 @@ HEADERS += \
         SourceCode/gui/CustomControl/calendar-widget.h \
     SourceCode/gui/CustomControl/zbackground-menu.h \
     SourceCode/gui/CustomControl/background_menu_utils.h \
+    SourceCode/gui/export-page.h
 
 RESOURCES += \
     Resource/resource.qrc

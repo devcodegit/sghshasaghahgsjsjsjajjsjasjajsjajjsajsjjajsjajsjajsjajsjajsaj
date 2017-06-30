@@ -13,6 +13,7 @@
 #include "CustomControl/table/tinytablewidget.h"
 #include "../uiconst.h"
 #include "CustomControl/calendar-widget.h"
+#include "export-page.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -68,11 +69,20 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     filterInfo = new SFilterInfo;
     filterInfo->hide();
 
+    QHBoxLayout *btnLayout = new QHBoxLayout;
+    QPushButton *btnChangeState = new QPushButton("Chuyển trạng thái");
+    connect(btnChangeState, SIGNAL(clicked(bool)), this, SLOT(onChangeState()));
+    QPushButton *btnExport = new QPushButton("Xuất dữ liệu");
+    connect(btnExport, SIGNAL(clicked(bool)), this, SLOT(onExport()));
+    btnLayout->addWidget(btnChangeState, 0, Qt::AlignLeft);
+    btnLayout->addWidget(btnExport, 0, Qt::AlignRight);
+
     resultFrame = new QFrame(this);
     resultFrame->installEventFilter(this);
     mainLayout->addLayout(searchLayout);
     mainLayout->addWidget(filterInfo, 0);
     mainLayout->addWidget(pageNavigation);
+    mainLayout->addLayout(btnLayout);
     mainLayout->addWidget(resultFrame, 1);
 
     /*Model*/
@@ -91,6 +101,7 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     //dataHandler = new DataHandler;
     //dataHandler->setMaxRowPerPage(MAX_RESULT);
     //table->setHeader(UIModel::instance()->getDataTableHeader());
+
 }
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
@@ -187,11 +198,15 @@ void PageSearch::onCheckUpdateData()
 
 void PageSearch::onAddFilterItem(QDate date)
 {
-    qDebug () << "onAddFilterItem();" << date;
-    filterInfo->addItem(date.toString("dd/MM/yyyy"));
+    if(isStartClicked) {
+        filterInfo->addItem(QString("Từ ngày: %1").arg(date.toString("dd/MM/yyyy")));
+        dateRange->setStartDate(date);
+    }
+    else {
+        filterInfo->addItem(QString("Đến ngày: %1").arg(date.toString("dd/MM/yyyy")));
+        dateRange->setEndDate(date);
+    }
     filterInfo->show();
-    if(isStartClicked) dateRange->setStartDate(date);
-    else dateRange->setEndDate(date);
 }
 
 void PageSearch::onShowCalendar(bool isStart, QDate date)
@@ -205,6 +220,18 @@ void PageSearch::onShowCalendar(bool isStart, QDate date)
     calendarItem->show();
     calendarItem->raise();
     isStartClicked = isStart;
+}
+
+void PageSearch::onChangeState()
+{
+
+}
+
+void PageSearch::onExport()
+{
+
+    ExportPage *p = new ExportPage;
+    p->show();
 }
 
 void PageSearch::readData()
