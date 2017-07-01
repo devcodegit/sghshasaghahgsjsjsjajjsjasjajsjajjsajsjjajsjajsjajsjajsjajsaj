@@ -1,19 +1,20 @@
 #include "page-search.h"
+#include "table-model.h"
+#include "export-page.h"
+#include "../lazada/dataitem/lazada_data_item_order.h"
+#include "../lazada/dataitem/lazada_data_item_list_order.h"
+#include "../ui_executor.h"
+#include "../uiconst.h"
+#include "../uimodel.h"
 #include "CustomControl/page-navigation.h"
 //#include "CustomControl/stable-view.h"
 #include "CustomControl/stableview.h"
 #include "CustomControl/sfilter-info.h"
 #include "CustomControl/detailwidget.h"
-#include "../uimodel.h"
-#include "table-model.h"
-#include "../lazada/dataitem/lazada_data_item_order.h"
-#include "../lazada/dataitem/lazada_data_item_list_order.h"
-#include "../ui_executor.h"
 #include "CustomControl/date-range-widget.h"
 #include "CustomControl/table/tinytablewidget.h"
-#include "../uiconst.h"
 #include "CustomControl/calendar-widget.h"
-#include "export-page.h"
+#include "CustomControl/toolbutton.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -29,6 +30,9 @@
 #include <QVariant>
 #include <QResizeEvent>
 #include <QApplication>
+#include <QToolButton>
+#include <QMenu>
+#include <QAction>
 
 using namespace Core::DataItem;
 #define MAX_RESULT 60
@@ -70,10 +74,29 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     filterInfo->hide();
 
     QHBoxLayout *btnLayout = new QHBoxLayout;
-    QPushButton *btnChangeState = new QPushButton("Chuyển trạng thái");
-    connect(btnChangeState, SIGNAL(clicked(bool)), this, SLOT(onChangeState()));
-    QPushButton *btnExport = new QPushButton("Xuất dữ liệu");
-    connect(btnExport, SIGNAL(clicked(bool)), this, SLOT(onExport()));
+
+    btnChangeState = new ToolButton;
+    QMenu *changeStateMenu = new QMenu;
+    actionReady = new QAction("Sẵn sàng giao nhận", this);
+    connect(actionReady, SIGNAL(triggered(bool)), this, SLOT(onReadyChangeState()));
+    actionCancel = new QAction("Hủy", this);
+    connect(actionCancel, SIGNAL(triggered(bool)), this, SLOT(onCancelChangeState()));
+    changeStateMenu->addAction(actionReady);
+    changeStateMenu->addAction(actionCancel);
+    btnChangeState->setMenu(changeStateMenu);
+    btnChangeState->setDefaultAction(actionReady);
+
+    btnExport = new ToolButton;
+    QMenu *exportMenu = new QMenu;
+    actionCsvFileExport = new QAction("Xuất file .CSV", this);
+    connect(actionCsvFileExport, SIGNAL(triggered(bool)), this, SLOT(onCsv()));
+    actionPrint = new QAction("In", this);
+    connect(actionPrint, SIGNAL(triggered(bool)), this, SLOT(onPrint()));
+    exportMenu->addAction(actionCsvFileExport);
+    exportMenu->addAction(actionPrint);
+    btnExport->setMenu(exportMenu);
+    btnExport->setDefaultAction(actionCsvFileExport);
+
     btnLayout->addWidget(btnChangeState, 0, Qt::AlignLeft);
     btnLayout->addWidget(btnExport, 0, Qt::AlignRight);
 
@@ -222,16 +245,34 @@ void PageSearch::onShowCalendar(bool isStart, QDate date)
     isStartClicked = isStart;
 }
 
-void PageSearch::onChangeState()
+void PageSearch::onReadyChangeState()
 {
+    qDebug() << "ready";
+    btnChangeState->setDefaultAction(actionReady);
+}
 
+void PageSearch::onCancelChangeState()
+{
+    qDebug () << "cancel";
+    btnChangeState->setDefaultAction(actionCancel);
 }
 
 void PageSearch::onExport()
 {
-
     ExportPage *p = new ExportPage;
     p->show();
+}
+
+void PageSearch::onPrint()
+{
+    qDebug() << "print";
+    btnExport->setDefaultAction(actionPrint);
+}
+
+void PageSearch::onCsv()
+{
+    qDebug() << "csv";
+    btnExport->setDefaultAction(actionCsvFileExport);
 }
 
 void PageSearch::readData()

@@ -27,6 +27,7 @@
         <file>Image/bg_popup_arrow.png</file>
         <file>Image/bg_popup_corner.png</file>
         <file>Image/bg_popup_middle.png</file>
+        <file>Image/arrow-down-hover.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

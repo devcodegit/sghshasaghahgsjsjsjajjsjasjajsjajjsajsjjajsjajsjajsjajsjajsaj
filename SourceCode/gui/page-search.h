@@ -23,6 +23,8 @@ class DataHandler;
 class TinyTableWidget;
 
 class CalendarWidget;
+class ToolButton;
+class QAction;
 
 using namespace Lazada::Controls;
 
@@ -51,8 +53,11 @@ private slots:
     void onCheckUpdateData();
     void onAddFilterItem(QDate date);
     void onShowCalendar(bool isStart, QDate date);
-    void onChangeState();
+    void onReadyChangeState();
+    void onCancelChangeState();
     void onExport();
+    void onPrint();
+    void onCsv();
 
 private:
     QFrame *resultFrame = 0;
@@ -77,6 +82,14 @@ private:
 
     DataHandler *dataHandler = 0;
     TinyTableWidget *table = 0;
+
+    ToolButton *btnChangeState = 0;
+    QAction *actionReady  = 0;
+    QAction *actionCancel = 0;
+
+    ToolButton *btnExport = 0;
+    QAction *actionCsvFileExport = 0;
+    QAction *actionPrint = 0;
 
 private:
     void readData(); //for testing
