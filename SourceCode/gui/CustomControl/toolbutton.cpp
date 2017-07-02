@@ -48,6 +48,7 @@ void ToolButton::setMenu(QMenu *menu)
 
 void ToolButton::setDefaultAction(QAction *action)
 {
+    if(defaultAction == action) return;
     title->setText(action->text());
     this->defaultAction = action;
 }

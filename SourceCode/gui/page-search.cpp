@@ -176,10 +176,7 @@ void PageSearch::showEvent(QShowEvent *)
 
 void PageSearch::resizeEvent(QResizeEvent *event)
 {
-//    if(resultFrame) {
-//        resultFrame->setFixedSize(event->size().width(), event->size().height() - 200);
-//        tableView->setFixedSize(resultFrame->size());
-//    }
+
 }
 
 void PageSearch::onSearch()
@@ -203,7 +200,9 @@ void PageSearch::onJumping(int page)
 
 void PageSearch::onShowInfo(int row, int col)
 {
-    if(!infoDialog) infoDialog = new DetailWidget;
+    if(!infoDialog) {
+        infoDialog = new DetailWidget;
+    }
     int index = row + (currentPage - 1) * MAX_RESULT;
     infoDialog->setParent(UIModel::instance()->getMainWindow());
     infoDialog->setData(listItem.at(index));

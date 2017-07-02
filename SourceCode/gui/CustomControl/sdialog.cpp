@@ -53,6 +53,7 @@ void SDialog::setContent(QWidget *content)
     content->show();
     this->content->setFixedSize(content->size() + QSize(0,TITLE_BAR_HEIGHT));
     this->titleBar->setFixedWidth(content->width());
+    if(this->currentContent != content) this->currentContent = content;
 }
 
 void SDialog::setWindowTitle(const QString &title)
@@ -62,7 +63,13 @@ void SDialog::setWindowTitle(const QString &title)
 
 void SDialog::updateContentSize(QSize size)
 {
-    this->content->setFixedSize(size + QSize(0, TITLE_BAR_HEIGHT));
+    currentContent->setFixedSize(size);
+    setContent(currentContent);
+}
+
+void SDialog::enableResize(bool enable)
+{
+    this->_enableResize = enable;
 }
 
 bool SDialog::eventFilter(QObject *object, QEvent *event)
@@ -70,6 +77,10 @@ bool SDialog::eventFilter(QObject *object, QEvent *event)
     if(object == parent) {
         if(event->type() == QEvent::Resize) {
             this->setFixedSize(parent->size());
+            if(this->_enableResize) {
+                QResizeEvent *re = (QResizeEvent*)event;
+                updateContentSize(re->size() - QSize(100, 100));
+            }
         }
     }
     else if(object == titleBar) {

@@ -16,6 +16,7 @@ public:
     void setContent(QWidget *content);
     void setWindowTitle(const QString &title);
     void updateContentSize(QSize size);
+    void enableResize(bool enable);
 
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
@@ -31,6 +32,8 @@ private:
     QWidget *parent = 0;
     QLabel *titleBar = 0;
     SvgWidget *closeButton = 0;
+    bool _enableResize = false;
+    QWidget *currentContent = 0;
 };
 
 #endif // SDIALOG_H
