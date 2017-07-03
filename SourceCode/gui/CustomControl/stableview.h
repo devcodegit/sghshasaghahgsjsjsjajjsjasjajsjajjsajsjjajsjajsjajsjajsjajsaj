@@ -21,6 +21,7 @@ protected slots:
 
 signals:
     void itemClicked(int row, int col);
+    void updateCheckbox(int row, int col, bool state);
 
 public slots:
 private slots:

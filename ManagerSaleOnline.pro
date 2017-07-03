@@ -123,7 +123,8 @@ SOURCES += \
     SourceCode/gui/CustomControl/zbackground-menu.cpp \
     SourceCode/gui/CustomControl/background_menu_utils.cpp \
     SourceCode/gui/export-page.cpp \
-    SourceCode/gui/CustomControl/toolbutton.cpp
+    SourceCode/gui/CustomControl/toolbutton.cpp \
+    SourceCode/gui/CustomControl/loading-control.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -243,7 +244,8 @@ HEADERS += \
     SourceCode/gui/CustomControl/zbackground-menu.h \
     SourceCode/gui/CustomControl/background_menu_utils.h \
     SourceCode/gui/export-page.h \
-    SourceCode/gui/CustomControl/toolbutton.h
+    SourceCode/gui/CustomControl/toolbutton.h \
+    SourceCode/gui/CustomControl/loading-control.h
 
 RESOURCES += \
     Resource/resource.qrc

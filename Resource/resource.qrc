@@ -28,6 +28,8 @@
         <file>Image/bg_popup_corner.png</file>
         <file>Image/bg_popup_middle.png</file>
         <file>Image/arrow-down-hover.svg</file>
+        <file>Image/loading_blue_28x28.svg</file>
+        <file>Image/loading_white_28x28.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>Fonts/segoeui.ttf</file>

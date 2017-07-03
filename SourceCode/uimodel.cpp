@@ -18,5 +18,5 @@ QWidget *UIModel::getMainWindow()
 
 QStringList UIModel::getDataTableHeader()
 {
-    return QStringList() << "Tài liệu" << "Số đơn hàng" << "Ngày đặt hàng" << "Chờ duyệt từ" << "Hình thức thanh toán" << "Giá bán lẻ" << "#" << "Tình trạng" << "Đã in" << "Hành động";
+    return QStringList() << "[]" << "Tài liệu" << "Số đơn hàng" << "Ngày đặt hàng" << "Chờ duyệt từ" << "Hình thức thanh toán" << "Giá bán lẻ" << "#" << "Tình trạng" << "Đã in" << "Hành động";
 }

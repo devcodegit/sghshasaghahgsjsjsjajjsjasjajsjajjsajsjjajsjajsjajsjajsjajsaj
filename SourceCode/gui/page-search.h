@@ -25,6 +25,7 @@ class TinyTableWidget;
 class CalendarWidget;
 class ToolButton;
 class QAction;
+class LoadingControl;
 
 using namespace Lazada::Controls;
 
@@ -50,6 +51,7 @@ private slots:
     void onSearch();
     void onJumping(int page);
     void onShowInfo(int row, int col);
+    void onUpdateCheckbox(int row, int col, bool val);
     void onCheckUpdateData();
     void onAddFilterItem(QDate date);
     void onShowCalendar(bool isStart, QDate date);
@@ -90,6 +92,8 @@ private:
     ToolButton *btnExport = 0;
     QAction *actionCsvFileExport = 0;
     QAction *actionPrint = 0;
+
+    LoadingControl *loading = 0;
 
 private:
     void readData(); //for testing

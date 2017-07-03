@@ -1,6 +1,7 @@
 #include "sitemdelegate.h"
 #include "testingcellui.h"
 #include "cache.h"
+#include "../../uiconst.h"
 #include <QWidget>
 #include <QDebug>
 #include <QPainter>
@@ -27,6 +28,30 @@ void SItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         painter->fillRect( option.rect, option.palette.highlight());
     }
     painter->fillRect(option.rect, color);
+    if(index.column() == CHECKBOX_COL) {
+        // Draw our checkbox indicator
+        bool value = index.data(Qt::EditRole).toBool();
+        QStyleOptionButton checkbox_indicator;
+
+        // Set our button state to enabled
+        checkbox_indicator.state |= QStyle::State_Enabled;
+        checkbox_indicator.state |= (value) ? QStyle::State_On : QStyle::State_Off;
+
+        // Get our deimensions
+        checkbox_indicator.rect = QApplication::style()->subElementRect( QStyle::SE_CheckBoxIndicator, &checkbox_indicator, NULL );
+
+        // Position our indicator
+        const int x = option.rect.center().x() - checkbox_indicator.rect.width() / 2;
+        const int y = option.rect.center().y() - checkbox_indicator.rect.height() / 2;
+
+        checkbox_indicator.rect.moveTo( x, y );
+
+        if (option.state & QStyle::State_Selected) {
+            painter->fillRect(option.rect, option.palette.highlight());
+        }
+
+        return QApplication::style()->drawControl( QStyle::CE_CheckBox, &checkbox_indicator, painter );
+    }
     QStyledItemDelegate::paint(painter, option, index);
 }
 
@@ -50,6 +75,6 @@ void SItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) con
 void SItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     qDebug () << "setModelData" << index.data().toString();
-    //    QStyledItemDelegate::setModelData(editor, model, index);
+    QStyledItemDelegate::setModelData(editor, model, index);
 }
 

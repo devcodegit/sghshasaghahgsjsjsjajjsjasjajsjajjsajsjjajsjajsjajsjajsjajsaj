@@ -1,6 +1,7 @@
 #include "stableview.h"
 #include "sitemdelegate.h"
 #include "cache.h"
+#include "../../uiconst.h"
 #include <QDebug>
 #include <QPushButton>
 #include <QScrollBar>
@@ -33,35 +34,19 @@ void STableView::columnResized(int column, int oldWidth, int newWidth)
 
 void STableView::onPaintItem(const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-//    QPushButton *button = Cache::instance()->getWidget(index.row());
-//    qDebug () << "paintItem" << index.data() << option.rect << index.row();
-//    button->setParent(this->viewport());
-//    button->setText(index.data().toString());
-//    button->show();
-//    button->setGeometry(option.rect);
     mapIndexOption.insert(index, option);
-//    qDebug () << "paint____" << index << option.rect;
 
 }
 
 void STableView::onPressed(const QModelIndex &index)
 {
+    qDebug () << "onPressed" << index.column() << index.data();
+    if(index.column() == CHECKBOX_COL) {
+        bool isChecked = index.data().toBool();
+        emit updateCheckbox(index.row(), index.column(), !isChecked);
+        return;
+    }
     emit itemClicked(index.row(), index.column());
-//    int height = 0;
-//    int _index = currentValue;
-//    while(true) {
-//        QModelIndex index = this->model()->index(_index, 3);
-//        if(!index.isValid()) break;
-//        QPushButton *button = Cache::instance()->getWidget(index.row());
-//        button->setParent(this->viewport());
-//        button->setText(index.data().toString());
-//        button->show();
-//        button->setGeometry(mapIndexOption.value(index).rect);
-//        height += button->height();
-//        qDebug () << _index << button->geometry() << height << index.data() << mapIndexOption.value(index).rect;
-//        if(height >= this->viewport()->size().height()) break;
-//        _index++;
-//    }
 
 }
 

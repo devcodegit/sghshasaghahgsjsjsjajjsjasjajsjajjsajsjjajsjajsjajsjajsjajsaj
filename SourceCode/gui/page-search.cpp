@@ -15,6 +15,7 @@
 #include "CustomControl/table/tinytablewidget.h"
 #include "CustomControl/calendar-widget.h"
 #include "CustomControl/toolbutton.h"
+#include "CustomControl/loading-control.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -114,6 +115,7 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     tableView->setModel(model);
     tableView->show();
     connect(tableView, SIGNAL(itemClicked(int,int)), this, SLOT(onShowInfo(int,int)));
+    connect(tableView, SIGNAL(updateCheckbox(int,int,bool)), this, SLOT(onUpdateCheckbox(int,int,bool)));
 
     checkUpdateTimer.setInterval(1000);
     connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
@@ -124,6 +126,9 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     //dataHandler = new DataHandler;
     //dataHandler->setMaxRowPerPage(MAX_RESULT);
     //table->setHeader(UIModel::instance()->getDataTableHeader());
+
+    if(!loading) loading = new LoadingControl(20, 20, true, resultFrame);
+    loading->showLoading();
 
 }
 
@@ -139,6 +144,7 @@ void PageSearch::OnRequestCompleted(ResponseResult *result)
             //Kha todo:
             listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
             qDebug () << "OnRequestCompleted();" << requestType << errorMsg << listItem.length();
+            if(loading) loading->showLoading();
             needUpdate = true;
         });
     }
@@ -186,6 +192,9 @@ void PageSearch::onSearch()
 void PageSearch::onJumping(int page)
 {
     if(page < 1) return;
+    if(loading) {
+        loading->hideLoading();
+    }
     currentPage = page;
     qDebug () << "onJumping" << page;
     //table->setData(dataHandler->getData(page));
@@ -208,6 +217,12 @@ void PageSearch::onShowInfo(int row, int col)
     infoDialog->setData(listItem.at(index));
     infoDialog->show();
     infoDialog->setFocus();
+}
+
+void PageSearch::onUpdateCheckbox(int row, int col, bool val)
+{
+    qDebug () << "onUpdateCheckbox();" << row << col << val;
+    TableModel::instance()->updateModel(row, col, QVariant(val));
 }
 
 void PageSearch::onCheckUpdateData()
@@ -287,7 +302,7 @@ void PageSearch::readData()
         QString status = listItem.at(i)->getStatuses().m_Status;
         QString printed = QString("true");
         QString action = listItem.at(i)->getDeliveryInfo();
-		QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
+        QString line = QString("[]{}Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
         linesList.append(line);
 
         QList<DataHandler::data_handler *> row;

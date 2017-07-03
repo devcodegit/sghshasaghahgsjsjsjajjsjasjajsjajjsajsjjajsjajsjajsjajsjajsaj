@@ -1,6 +1,7 @@
 #ifndef TABLEMODEL_H
 #define TABLEMODEL_H
 #include <QStringList>
+#include <QVariant>
 
 class QStandardItemModel;
 
@@ -18,6 +19,7 @@ public:
 
     QStandardItemModel *getModel();
     void pushItem(QStringList rowData);
+    void updateModel(int row, int col, QVariant data);
 
 private:
     QStandardItemModel *model = 0;

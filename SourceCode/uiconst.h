@@ -10,4 +10,6 @@
 
 #define LEFT_PANEL_WIDTH 200
 
+#define CHECKBOX_COL 0
+
 #endif // UICONST_H
