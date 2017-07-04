@@ -16,6 +16,7 @@
 #include "CustomControl/calendar-widget.h"
 #include "CustomControl/toolbutton.h"
 #include "CustomControl/loading-control.h"
+#include "switch-bills-state-page.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -129,6 +130,9 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
 
     if(!loading) loading = new LoadingControl(20, 20, true, resultFrame);
     loading->showLoading();
+
+    SwitchBillsStatePage *page = new SwitchBillsStatePage;
+    page->show();
 
 }
 

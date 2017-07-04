@@ -124,7 +124,8 @@ SOURCES += \
     SourceCode/gui/CustomControl/background_menu_utils.cpp \
     SourceCode/gui/export-page.cpp \
     SourceCode/gui/CustomControl/toolbutton.cpp \
-    SourceCode/gui/CustomControl/loading-control.cpp
+    SourceCode/gui/CustomControl/loading-control.cpp \
+    SourceCode/gui/switch-bills-state-page.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -245,7 +246,8 @@ HEADERS += \
     SourceCode/gui/CustomControl/background_menu_utils.h \
     SourceCode/gui/export-page.h \
     SourceCode/gui/CustomControl/toolbutton.h \
-    SourceCode/gui/CustomControl/loading-control.h
+    SourceCode/gui/CustomControl/loading-control.h \
+    SourceCode/gui/switch-bills-state-page.h
 
 RESOURCES += \
     Resource/resource.qrc

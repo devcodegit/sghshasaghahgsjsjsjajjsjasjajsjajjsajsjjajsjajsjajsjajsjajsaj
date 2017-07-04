@@ -28,6 +28,7 @@ void SItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         painter->fillRect( option.rect, option.palette.highlight());
     }
     painter->fillRect(option.rect, color);
+    painter->setPen(Qt::red);
     if(index.column() == CHECKBOX_COL) {
         // Draw our checkbox indicator
         bool value = index.data(Qt::EditRole).toBool();
