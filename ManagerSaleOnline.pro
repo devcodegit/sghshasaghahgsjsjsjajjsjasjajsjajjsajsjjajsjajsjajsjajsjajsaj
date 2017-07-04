@@ -1,4 +1,4 @@
-QT += core gui widgets svg network
+QT += core gui widgets svg network printsupport
 TARGET = SaleApp
 TEMPLATE = app
 CONFIG -= console
@@ -114,7 +114,14 @@ SOURCES += \
     SourceCode/lazada/request/lazada_api_request_search_spus.cpp \
     SourceCode/lazada/request/lazada_api_request_get_products.cpp \
     SourceCode/lazada/request/lazada_api_request_get_orders.cpp \
-    SourceCode/lazada/request/lazada_api_request_get_order.cpp
+    SourceCode/lazada/request/lazada_api_request_get_order.cpp \
+    SourceCode/lazada/lazada_manager.cpp \
+    SourceCode/lazada/lazada_model.cpp \
+    SourceCode/lazada/lazada_request.cpp \
+    SourceCode/lazada/lazada_data_model.cpp \
+    SourceCode/lazada/dataitem/lazada_data_item_get_document.cpp \
+    SourceCode/print_manager.cpp \
+    SourceCode/lazada/dataitem/lazada_data_item_set_status_to_packed_by_marketplace.cpp
 
 HEADERS += \
     SourceCode/gui/CustomControl/swidget.h \
@@ -225,7 +232,16 @@ HEADERS += \
     SourceCode/lazada/request/lazada_api_request_search_spus.h \
     SourceCode/lazada/request/lazada_api_request_get_products.h \
     SourceCode/lazada/request/lazada_api_request_get_orders.h \
-    SourceCode/lazada/request/lazada_api_request_get_order.h
+    SourceCode/lazada/request/lazada_api_request_get_order.h \
+    SourceCode/lazada/lazada_manager.h \
+    SourceCode/lazada/lazada_model.h \
+    SourceCode/global.h \
+    SourceCode/object_listenter.h \
+    SourceCode/lazada/lazada_request.h \
+    SourceCode/lazada/lazada_data_model.h \
+    SourceCode/lazada/dataitem/lazada_data_item_get_document.h \
+    SourceCode/print_manager.h \
+    SourceCode/lazada/dataitem/lazada_data_item_set_status_to_packed_by_marketplace.h
 
 RESOURCES += \
     Resource/resource.qrc

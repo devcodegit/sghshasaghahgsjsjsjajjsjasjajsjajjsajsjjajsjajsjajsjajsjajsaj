@@ -13,6 +13,7 @@ namespace Core { namespace Lazada { namespace Parser {
         static AbstractDataItem *lazadaCreateParserListOrder();
         static AbstractDataItem *lazadaCreateParserOrder();
         static AbstractDataItem *lazadaCreateParserOrderItems();
+        static AbstractDataItem *lazadaCreateParserGetDocument();
     };
 
 }}}

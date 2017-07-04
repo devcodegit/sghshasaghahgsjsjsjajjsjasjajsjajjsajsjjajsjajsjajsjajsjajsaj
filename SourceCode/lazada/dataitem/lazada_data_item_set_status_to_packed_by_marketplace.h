@@ -1,0 +1,11 @@
+#ifndef LAZADA_DATA_ITEM_SET_STATUS_TO_PACKED_BY_MARKETPLACE_H
+#define LAZADA_DATA_ITEM_SET_STATUS_TO_PACKED_BY_MARKETPLACE_H
+
+
+class LazadaDataItemSetStatusToPackedByMarketplace
+{
+public:
+    LazadaDataItemSetStatusToPackedByMarketplace();
+};
+
+#endif // LAZADA_DATA_ITEM_SET_STATUS_TO_PACKED_BY_MARKETPLACE_H

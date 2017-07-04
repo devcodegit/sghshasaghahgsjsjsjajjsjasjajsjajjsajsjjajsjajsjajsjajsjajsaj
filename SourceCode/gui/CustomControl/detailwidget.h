@@ -4,16 +4,14 @@
 #include <QWidget>
 #include "sdialog.h"
 
-namespace Core {
-    namespace DataItem {
-        class LazadaDataItemOrder;
-    }
-}
+namespace Lazada { namespace DataModel {
+    class DataOrder;
+}}
 class QLabel;
 class QScrollArea;
 class VerticalScrollbar;
 
-using namespace Core::DataItem;
+using namespace Lazada::DataModel;
 
 class DetailWidget : public SDialog
 {
@@ -21,7 +19,7 @@ class DetailWidget : public SDialog
 public:
 
     explicit DetailWidget(QWidget *parent = 0);
-    void setData(LazadaDataItemOrder *data);
+    void setData(DataOrder *data);
 
 signals:
 

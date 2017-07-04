@@ -102,6 +102,28 @@ QString LazadaApiRequestGET::convertTimeToStringISO8601(const qint64 time)
     return now.toString(Qt::ISODate);
 }
 
+QString LazadaApiRequestGET::convertListToString(QList<uint32_t> list)
+{
+    if (list.isEmpty()) return "";
+    QString result = QString("[%1").arg(list.at(0));
+
+    for (int i = 1; i < list.count() - 1; ++i)
+    {
+        result += QString(",%1").arg(list.at(i));
+    }
+
+    if (list.count() >= 2)
+    {
+        result += QString(",%1]").arg(list.at(list.count() - 1));
+    }
+    else
+    {
+        result += "]";
+    }
+
+    return result;
+}
+
 void LazadaApiRequestGET::ParseDataError(Value &aJsonObject)
 {
     m_iErrorCode = JsonUtils::tryGetInt(aJsonObject, "ErrorCode", 0);

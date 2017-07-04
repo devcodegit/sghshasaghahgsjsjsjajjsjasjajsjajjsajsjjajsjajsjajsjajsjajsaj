@@ -7,7 +7,7 @@ using namespace Core::Request;
 using namespace Core::Service;
 using namespace Lazada::Api;
 
-LazadaApiRequestSetStatusToReadyToShip::LazadaApiRequestSetStatusToReadyToShip(IApiRequestListener *a_pListener, QList<int> OrderItemIds, const QString &DeliveryType, const QString &ShippingProvider, const QString &TrackingNumber)
+LazadaApiRequestSetStatusToReadyToShip::LazadaApiRequestSetStatusToReadyToShip(IApiRequestListener *a_pListener, QList<uint32_t> OrderItemIds, const QString &DeliveryType, const QString &ShippingProvider, const QString &TrackingNumber, const QString &SerialNumber)
 {
     m_pApiRequestListener = a_pListener;
     m_sDomainUrl = DOMAIN_LAZADA;
@@ -17,7 +17,7 @@ LazadaApiRequestSetStatusToReadyToShip::LazadaApiRequestSetStatusToReadyToShip(I
     m_ShippingProvider = ShippingProvider;
     m_TrackingNumber = TrackingNumber;
     m_DeliveryType = DeliveryType;
-//    m_SerialNumber //chua biet support
+    m_SerialNumber = SerialNumber;
 }
 
 void LazadaApiRequestSetStatusToReadyToShip::generateParams(QHash<QString, QString> *a_pParams)
@@ -30,6 +30,6 @@ void LazadaApiRequestSetStatusToReadyToShip::generateParams(QHash<QString, QStri
     a_pParams->insert(QString("DeliveryType"), m_DeliveryType);
     a_pParams->insert(QString("ShippingProvider"), m_ShippingProvider);
     a_pParams->insert(QString("TrackingNumber"), m_TrackingNumber);
-//    a_pParams->insert(QString("SerialNumber"),);
-//    a_pParams->insert(QString("OrderItemIds"), );
+    a_pParams->insert(QString("SerialNumber"), m_SerialNumber);
+    a_pParams->insert(QString("OrderItemIds"), convertListToString(m_OrderItemIds));
 }

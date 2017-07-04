@@ -7,7 +7,7 @@ using namespace Core::Request;
 using namespace Core::Service;
 using namespace Lazada::Api;
 
-LazadaApiRequestGetDocument::LazadaApiRequestGetDocument(IApiRequestListener *a_pListener, QList<int> OrderItemIds, const QString &DocumentType)
+LazadaApiRequestGetDocument::LazadaApiRequestGetDocument(IApiRequestListener *a_pListener, QList<uint32_t> OrderItemIds, const QString &DocumentType)
 {
     m_pApiRequestListener = a_pListener;
     m_sDomainUrl = DOMAIN_LAZADA;
@@ -24,5 +24,5 @@ void LazadaApiRequestGetDocument::generateParams(QHash<QString, QString> *a_pPar
     a_pParams->insert(QString("UserID"), USEID);
     a_pParams->insert(QString("Version"), VERSION);
     a_pParams->insert(QString("DocumentType"), m_DocumentType);
-//    a_pParams->insert(QString("OrderItemIds"),) chua biet support
+    a_pParams->insert(QString("OrderItemIds"),convertListToString(m_OrderItemIds));
 }

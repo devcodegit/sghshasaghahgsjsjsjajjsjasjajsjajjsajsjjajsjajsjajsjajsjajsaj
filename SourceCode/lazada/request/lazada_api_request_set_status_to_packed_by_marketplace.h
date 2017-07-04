@@ -9,13 +9,13 @@ namespace Core { namespace Request {
     {
     public:
         LazadaApiRequestSetStatusToPackedByMarketplace(IApiRequestListener *a_pListener,
-                                                       QList<int> OrderItemIds,
+                                                       QList<uint32_t> OrderItemIds,
                                                        const QString &DeliveryType = "",
                                                        const QString &ShippingProvider = "");
         virtual void generateParams(QHash<QString, QString>* a_pParams);
 
     private:
-        QList<int> m_OrderItemIds;
+        QList<uint32_t> m_OrderItemIds;
         QString m_DeliveryType;
         QString m_ShippingProvider;
     };

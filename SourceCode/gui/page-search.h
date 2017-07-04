@@ -3,7 +3,8 @@
 
 #include <QWidget>
 #include <QTimer>
-#include "../lazada/lazada_handler.h"
+#include "../object_listenter.h"
+//#include "../lazada/lazada_handler.h"
 
 class QScrollArea;
 class QLineEdit;
@@ -17,17 +18,22 @@ class SFilterInfo;
 class DetailWidget;
 class DateRangeWidget;
 
-using namespace Lazada::Controls;
+namespace Lazada { namespace DataModel {
+    class DataOrderItem;
+    class DataOrder;
+}}
+using namespace Lazada::DataModel;
+using namespace Core::Listener;
 
-class PageSearch : public QWidget, public IObjRequestListener
+class PageSearch : public QWidget, public ObjectListenter
 {
     Q_OBJECT
 public:
     explicit PageSearch(QWidget *parent = 0);
 
 
-    virtual void OnRequestCompleted(ResponseResult *result);
-    virtual void OnRequestFailed(ResponseResult *result);
+    virtual void OnRequestCompleted(ResultListener *result);
+    virtual void OnRequestFailed(ResultListener *result);
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void showEvent(QShowEvent *);
@@ -54,7 +60,8 @@ private:
 //    STableView *qmlTableView = 0;
     QStringList linesList;
     QStringList header;
-    QList<LazadaDataItemOrder*> listItem;
+//    QList<LazadaDataItemOrder*> listItem;
+    QList<DataOrder *> listItem;
     int currentPage = 0;
     bool needUpdate = false;
     QTimer checkUpdateTimer;

@@ -2,6 +2,7 @@
 #include "dataitem/lazada_data_item_list_order.h"
 #include "dataitem/lazada_data_item_order.h"
 #include "dataitem/lazada_data_item_order_items.h"
+#include "dataitem/lazada_data_item_get_document.h"
 
 using namespace Core::Lazada::Parser;
 using namespace Core::DataItem;
@@ -21,5 +22,11 @@ AbstractDataItem *LazadaParserFactory::lazadaCreateParserOrder()
 AbstractDataItem *LazadaParserFactory::lazadaCreateParserOrderItems()
 {
     LazadaDataItemOrderItems *dataItem = new LazadaDataItemOrderItems();
+    return dataItem;
+}
+
+AbstractDataItem *LazadaParserFactory::lazadaCreateParserGetDocument()
+{
+    LazadaDataItemGetDocument *dataItem = new LazadaDataItemGetDocument();
     return dataItem;
 }

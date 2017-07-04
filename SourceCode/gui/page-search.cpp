@@ -10,6 +10,10 @@
 #include "../lazada/dataitem/lazada_data_item_list_order.h"
 #include "../ui_executor.h"
 #include "CustomControl/date-range-widget.h"
+#include "../lazada/lazada_manager.h"
+#include "../lazada/lazada_data_model.h"
+#include "../lazada/lazada_api_command_defined.h"
+#include "../print_manager.h"
 
 #include <QScrollArea>
 #include <QBoxLayout>
@@ -24,11 +28,14 @@
 #include <QDebug>
 #include <QVariant>
 
+using namespace Lazada::DataModel;
 using namespace Core::DataItem;
+using namespace Lazada::Api;
 #define MAX_RESULT 50
 PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 {
-    listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
+//    listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
+    listItem = Lazada::Control::LazadaManager::instance()->getAllOrder(this);
     header = UIModel::instance()->getDataTableHeader();
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -89,29 +96,48 @@ PageSearch::PageSearch(QWidget *parent) : QWidget(parent)
 
 }
 
-void PageSearch::OnRequestCompleted(ResponseResult *result)
+void PageSearch::OnRequestCompleted(ResultListener *result)
 {
     if (result)
     {
         int requestType = result->getRequestType();
-        QString errorMsg = result->getErrorMsg();
+        QString errorMsg = result->getErrorMessage();
+        QString data = result->getData();
 
-        UIExecutor::invoke([&, requestType, errorMsg]()
+        UIExecutor::invoke([&, requestType, errorMsg, data]()
         {
             //Kha todo:
-            listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
-            qDebug () << "OnRequestCompleted();" << requestType << errorMsg << listItem.length();
-            needUpdate = true;
+            switch (requestType)
+            {
+            case LazadaApiCommandDefined::LAZADA_REQ_GET_ORDERS:
+            {
+                listItem = Lazada::Control::LazadaManager::instance()->getAllOrder(this);
+                qDebug () << "OnRequestCompleted();" << requestType << errorMsg << listItem.length();
+                needUpdate = true;
+                break;
+            }
+
+            case LazadaApiCommandDefined::LAZADA_REQ_GET_DOCUMENT:
+            {
+                PrintManager::instance()->setFile(data);
+                PrintManager::instance()->print();
+                break;
+            }
+
+            default:
+                break;
+            }
+
         });
     }
 }
 
-void PageSearch::OnRequestFailed(ResponseResult *result)
+void PageSearch::OnRequestFailed(ResultListener *result)
 {
     if (result)
     {
         int requestType = result->getRequestType();
-        QString errorMsg = result->getErrorMsg();
+        QString errorMsg = result->getErrorMessage();
 
         UIExecutor::invoke([&, requestType, errorMsg]()
         {
@@ -137,6 +163,17 @@ void PageSearch::showEvent(QShowEvent *)
 
 void PageSearch::onSearch()
 {
+    //test
+    QList<uint32_t> orderItems;
+//    QString documentType = line2->text();
+    orderItems.append(line1->text().toInt());
+//    Lazada::Control::LazadaManager::instance()->getDocument(orderItems, documentType, this);
+//    qDebug() << "Request document: " << documentType << orderItems;
+
+    Lazada::Control::LazadaManager::instance()->requestSetStatusToPackedByMarketplace(orderItems);
+
+    //----------
+
     if(tableView) {
 
     }
@@ -182,10 +219,10 @@ void PageSearch::readData()
         QString waiting_queue = "";
         QString payment_method = listItem.at(i)->getPaymentMethod();
         QString price = listItem.at(i)->getPrice();
-        int num = listItem.at(i)->getItemsCount();
-        QString status = listItem.at(i)->getStatuses().m_Status;
+        int num = listItem.at(i)->getItemCount();
+        QString status = /*listItem.at(i)->getStatuses().m_Status*/"";
         QString printed = QString("true");
-        QString action = listItem.at(i)->getDeliveryInfo();
+        QString action = /*listItem.at(i)->getDeliveryInfo()*/"";
         QString line = QString("Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
         linesList.append(line);
     }

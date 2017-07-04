@@ -8,11 +8,11 @@ namespace Core { namespace Request {
     class LazadaApiRequestGetDocument : public LazadaApiRequestGET
     {
     public:
-        LazadaApiRequestGetDocument(IApiRequestListener *a_pListener, QList<int> OrderItemIds, const QString &DocumentType = "");
+        LazadaApiRequestGetDocument(IApiRequestListener *a_pListener, QList<uint32_t> OrderItemIds, const QString &DocumentType);
         virtual void generateParams(QHash<QString, QString>* a_pParams);
 
     private:
-        QList<int> m_OrderItemIds;
+        QList<uint32_t> m_OrderItemIds;
         QString m_DocumentType;
     };
 
