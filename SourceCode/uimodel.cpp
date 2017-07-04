@@ -20,3 +20,8 @@ QStringList UIModel::getDataTableHeader()
 {
     return QStringList() << "[]" << "Tài liệu" << "Số đơn hàng" << "Ngày đặt hàng" << "Chờ duyệt từ" << "Hình thức thanh toán" << "Giá bán lẻ" << "#" << "Tình trạng" << "Đã in" << "Hành động";
 }
+
+QStringList UIModel::getExportTableHeader()
+{
+    return QStringList() << "Số đơn hàng" << "Sản phẩm" << "Nhà cung cấp" << "Mã vận đơn" << "Số hoá đơn";
+}

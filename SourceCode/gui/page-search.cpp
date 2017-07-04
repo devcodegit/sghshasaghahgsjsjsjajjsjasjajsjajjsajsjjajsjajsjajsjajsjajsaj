@@ -111,7 +111,7 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     mainLayout->addWidget(resultFrame, 1);
 
     /*Model*/
-    model = TableModel::instance()->getModel();
+    model = TableModel::instance()->getModel(TableModel::TABLE_MAIN);
     tableView = new STableView(resultFrame);
     tableView->setModel(model);
     tableView->show();
@@ -207,7 +207,7 @@ void PageSearch::onJumping(int page)
     model->setHorizontalHeaderLabels(header);
     for(int row = 0; row < listLen; row++){
         QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
-        TableModel::instance()->pushItem(line);
+        TableModel::instance()->pushItem(line, TableModel::TABLE_MAIN);
     }
 }
 
@@ -226,7 +226,7 @@ void PageSearch::onShowInfo(int row, int col)
 void PageSearch::onUpdateCheckbox(int row, int col, bool val)
 {
     qDebug () << "onUpdateCheckbox();" << row << col << val;
-    TableModel::instance()->updateModel(row, col, QVariant(val));
+    TableModel::instance()->updateModel(row, col, QVariant(val), TableModel::TABLE_MAIN);
 }
 
 void PageSearch::onCheckUpdateData()

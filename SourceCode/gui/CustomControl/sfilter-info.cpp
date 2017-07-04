@@ -13,7 +13,7 @@
 SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
 {
     scroll = new QWidget;
-    scroll->setObjectName("TransWg");
+    scroll->setObjectName("FrameFilter");
     filterItemLayout = new FlowLayout(scroll);
     scrollArea = new QScrollArea(this);
     scrollArea->setObjectName("FilterWidget");

@@ -9,16 +9,18 @@ TableModel::TableModel()
 
 }
 
-QStandardItemModel *TableModel::getModel()
+QStandardItemModel *TableModel::getModel(int modelId)
 {
-    if(!model)
-        model = new QStandardItemModel;
+    QStandardItemModel *model = mapModel.value(modelId, 0);
+    if(model) return model;
+    model = new QStandardItemModel;
+    mapModel.insert(modelId, model);
     return model;
 }
 
-void TableModel::pushItem(QStringList rowData)
+void TableModel::pushItem(QStringList rowData, int modelId)
 {
-    getModel();
+    QStandardItemModel *model = getModel(modelId);
     int row = model->rowCount();
     for(int col = 0; col < rowData.length(); col++) {
         QStandardItem *item;
@@ -31,8 +33,9 @@ void TableModel::pushItem(QStringList rowData)
     }
 }
 
-void TableModel::updateModel(int row, int col, QVariant data)
+void TableModel::updateModel(int row, int col, QVariant data, int modelId)
 {
+    QStandardItemModel *model = getModel(modelId);
     QStandardItem *item = model->takeItem(row, col);
     if(item) {
         qDebug () << "updateModel" << row << col << data;

@@ -17,6 +17,7 @@ public:
     QWidget *getMainWindow();
 
     QStringList getDataTableHeader();
+    QStringList getExportTableHeader();
 
 private:
     QWidget *mainWindow = 0;
