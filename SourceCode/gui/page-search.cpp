@@ -164,6 +164,13 @@ void PageSearch::OnRequestFailed(ResponseResult *result)
 
 bool PageSearch::eventFilter(QObject *object, QEvent *event)
 {
+    if(event->type() == QEvent::MouseButtonPress) {
+        QRect rect = QRect(calendarWidget->mapToGlobal(QPoint(0,0)), QSize(calendarWidget->size()));
+        if(!rect.contains(QCursor::pos())) {
+            calendarWidget->close();
+            qApp->removeEventFilter(this);
+        }
+    }
     if(object == resultFrame) {
         if(event->type() == QEvent::Resize) {
             //table->setFixedSize(resultFrame->size() - QSize(0, 50));
@@ -246,13 +253,16 @@ void PageSearch::onAddFilterItem(QDate date)
 void PageSearch::onShowCalendar(bool isStart, QDate date)
 {
     QWidget * w = (QWidget*)sender();
-    if(!calendarItem) {
-        calendarItem = new CalendarWidget(this);
-        connect(calendarItem, SIGNAL(clicked(QDate)), this, SLOT(onAddFilterItem(QDate)));
+    if(!calendarWidget) {
+        calendarWidget = new CalendarWidget(this);
+        calendarWidget->installEventFilter(this);
+        connect(calendarWidget, SIGNAL(clicked(QDate)), this, SLOT(onAddFilterItem(QDate)));
     }
-    calendarItem->move(w->x() - 44, w->y() + w->height());
-    calendarItem->show();
-    calendarItem->raise();
+    calendarWidget->move(w->x() - 44, w->y() + w->height());
+    calendarWidget->show();
+    calendarWidget->raise();
+    calendarWidget->setFocus();
+    qApp->installEventFilter(this);
     isStartClicked = isStart;
 }
 

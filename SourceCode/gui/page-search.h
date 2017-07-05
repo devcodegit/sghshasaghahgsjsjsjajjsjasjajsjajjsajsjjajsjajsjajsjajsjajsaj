@@ -79,7 +79,7 @@ private:
     bool isStartClicked = true;
     QTimer checkUpdateTimer;
     DateRangeWidget *dateRange = 0;
-    CalendarWidget *calendarItem = 0;
+    CalendarWidget *calendarWidget = 0;
 
 
     DataHandler *dataHandler = 0;
