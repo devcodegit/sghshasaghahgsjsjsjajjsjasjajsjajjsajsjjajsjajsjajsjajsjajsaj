@@ -9,6 +9,7 @@
 #include <QResizeEvent>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QDebug>
 
 SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
 {
@@ -31,12 +32,22 @@ SFilterInfo::SFilterInfo(QWidget *parent) : QWidget(parent)
     scrollBar->setMinHeight(30);
 }
 
-void SFilterInfo::addItem(const QString &title)
+void SFilterInfo::addItem(const QString &title, int id)
 {
-    FilterItem *item = getItem();
+    bool isNew;
+    FilterItem *item = getItem(id, isNew);
     item->show();
     item->setTitle(title);
-    filterItemLayout->addWidget(item);
+    if(isNew) filterItemLayout->addWidget(item);
+}
+
+QStringList SFilterInfo::getFilterList()
+{
+    QStringList result;
+    for(QMap<int, FilterItem*>::iterator it = mapItems.begin(); it != mapItems.end(); it++) {
+        if(it.value()) result.append(it.value()->getTitle());
+    }
+    return result;
 }
 
 void SFilterInfo::resizeEvent(QResizeEvent *event)
@@ -51,8 +62,9 @@ void SFilterInfo::onRemoveItem()
 {
     FilterItem *w = (FilterItem*)sender();
     filterItemLayout->removeWidget(w);
-    listItems.removeOne(w);
-    if(listItems.isEmpty()) close();
+    int key = mapItems.key(w, -1);
+    if(key >= 0) mapItems.remove(key);
+    if(mapItems.isEmpty()) close();
 
 }
 
@@ -61,17 +73,16 @@ void SFilterInfo::onScrollValueChanged(int value)
     scrollBar->setValue(value);
 }
 
-FilterItem *SFilterInfo::getItem()
+FilterItem *SFilterInfo::getItem(int id, bool &isNew)
 {
-    for(int i = 0; i < listItems.length(); i++) {
-        FilterItem *item = listItems.at(i);
-        if(item && item->state() == FilterItem::NotUSING) {
-            return item;
-        }
+    FilterItem *item = mapItems.value(id, 0);
+    isNew = false;
+    if(!item) {
+        item = new FilterItem(this);
+        connect(item, SIGNAL(closeItem()), this, SLOT(onRemoveItem()));
+        mapItems.insert(id, item);
+        isNew = true;
     }
-    FilterItem *item = new FilterItem(this);
-    connect(item, SIGNAL(closeItem()), this, SLOT(onRemoveItem()));
-    listItems.append(item);
     return item;
 }
 
@@ -96,6 +107,11 @@ void FilterItem::setTitle(const QString &title)
 {
     _title->setText(title);
     _state = USING;
+}
+
+QString FilterItem::getTitle()
+{
+    return _title->text();
 }
 
 bool FilterItem::eventFilter(QObject *object, QEvent *event)

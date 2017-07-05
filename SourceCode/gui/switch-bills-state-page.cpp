@@ -1,8 +1,12 @@
 #include "switch-bills-state-page.h"
+#include "table-model.h"
+#include "CustomControl/stableview.h"
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QSpacerItem>
 #include <QLabel>
+#include <QStandardItemModel>
+#include <QStandardItem>
 
 SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
 {
@@ -15,8 +19,10 @@ SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
     btnLayout->setSpacing(8);
 
     title = new QLabel;
-    QFrame *resultFrame = new QFrame;
-    resultFrame->setStyleSheet("border: 1px solid red;");
+    model = TableModel::instance()->getModel(TableModel::TABLE_EXPORT);
+    tableView = new STableView;
+    tableView->setModel(model);
+    tableView->show();
     btnChange = new QPushButton("Thay đổi hình thức giao nhận");
     connect(btnChange, SIGNAL(clicked(bool)), this, SLOT(onChange()));
     btnClose = new QPushButton("Đóng");
@@ -39,7 +45,7 @@ SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
     btnLayout->addWidget(btnSave, 0, Qt::AlignRight);
 
     mainLayout->addWidget(title);
-    mainLayout->addWidget(resultFrame, 1);
+    mainLayout->addWidget(tableView, 1);
     mainLayout->addLayout(btnLayout);
 
     setState(INIT);

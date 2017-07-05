@@ -12,7 +12,6 @@
 #include "CustomControl/sfilter-info.h"
 #include "CustomControl/detailwidget.h"
 #include "CustomControl/date-range-widget.h"
-#include "CustomControl/table/tinytablewidget.h"
 #include "CustomControl/calendar-widget.h"
 #include "CustomControl/toolbutton.h"
 #include "CustomControl/loading-control.h"
@@ -122,12 +121,6 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     connect(&checkUpdateTimer, SIGNAL(timeout()), this, SLOT(onCheckUpdateData()));
     checkUpdateTimer.start();
 
-    //table = new TinyTableWidget(resultFrame);
-    //table->show();
-    //dataHandler = new DataHandler;
-    //dataHandler->setMaxRowPerPage(MAX_RESULT);
-    //table->setHeader(UIModel::instance()->getDataTableHeader());
-
     if(!loading) loading = new LoadingControl(20, 20, true, resultFrame);
     loading->showLoading();
 
@@ -191,6 +184,7 @@ void PageSearch::resizeEvent(QResizeEvent *event)
 
 void PageSearch::onSearch()
 {
+    qDebug () << "onSearch" << filterInfo->getFilterList();
 }
 
 void PageSearch::onJumping(int page)
@@ -201,7 +195,6 @@ void PageSearch::onJumping(int page)
     }
     currentPage = page;
     qDebug () << "onJumping" << page;
-    //table->setData(dataHandler->getData(page));
     int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
     model->clear();
     model->setHorizontalHeaderLabels(header);
@@ -240,11 +233,11 @@ void PageSearch::onCheckUpdateData()
 void PageSearch::onAddFilterItem(QDate date)
 {
     if(isStartClicked) {
-        filterInfo->addItem(QString("Từ ngày: %1").arg(date.toString("dd/MM/yyyy")));
+        filterInfo->addItem(QString("Từ ngày: %1").arg(date.toString("dd/MM/yyyy")), SFilterInfo::ID_START_DATE);
         dateRange->setStartDate(date);
     }
     else {
-        filterInfo->addItem(QString("Đến ngày: %1").arg(date.toString("dd/MM/yyyy")));
+        filterInfo->addItem(QString("Đến ngày: %1").arg(date.toString("dd/MM/yyyy")), SFilterInfo::ID_END_DATE);
         dateRange->setEndDate(date);
     }
     filterInfo->show();
@@ -309,18 +302,6 @@ void PageSearch::readData()
         QString line = QString("[]{}Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
         linesList.append(line);
 
-        QList<DataHandler::data_handler *> row;
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, "Hóa Đơn", "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, no_order, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, date_order, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, waiting_queue, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, payment_method, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, price, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, QString::number(num), "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, status, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, printed, "", false, QMap<int, QString>(), -1));
-        row.append(new DataHandler::data_handler(i, i, 0, DataHandler::PLAINTEXT, action, "", false, QMap<int, QString>(), -1));
-//        dataHandler->addRow(row);
     }
     int listLen = listItem.length();
     if(listLen <= 0) return;

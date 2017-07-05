@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QList>
+#include <QMap>
 
 class QSvgWidget;
 class QLabel;
@@ -21,6 +22,7 @@ public:
 
     explicit FilterItem(QWidget *parent = 0);
     void setTitle(const QString &title);
+    QString getTitle();
     FilterItemState state() { return _state;}
 protected:
 
@@ -40,8 +42,16 @@ class SFilterInfo : public QWidget
 {
     Q_OBJECT
 public:
+    enum {
+        ID_NUM_BILL = 0,
+        ID_NAME_CUSTOMER,
+        ID_NAME_PRODUCT,
+        ID_START_DATE,
+        ID_END_DATE
+    };
     explicit SFilterInfo(QWidget *parent = 0);
-    void addItem(const QString &title);
+    void addItem(const QString &title, int id);
+    QStringList getFilterList();
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
@@ -55,14 +65,14 @@ private slots:
     void onScrollValueChanged(int value);
 
 private:
-    QList<FilterItem*> listItems;
+    QMap<int, FilterItem*> mapItems;
     FlowLayout *filterItemLayout;
     QWidget *scroll;
     QScrollArea *scrollArea;
     VerticalScrollbar *scrollBar;
 
 private:
-    FilterItem *getItem();
+    FilterItem *getItem(int id, bool &isNew);
 };
 
 #endif // SFILTERINFO_H

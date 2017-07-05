@@ -5,6 +5,8 @@
 
 class QLabel;
 class QPushButton;
+class QStandardItemModel;
+class STableView;
 
 class SwitchBillsStatePage : public QFrame
 {
@@ -31,6 +33,8 @@ private:
     int currentState = INIT;
     QLabel *title = 0;
     QPushButton *btnChange, *btnClose, *btnSave, *btnAll, *btnBill, *btnStamp;
+    STableView *tableView = 0;
+    QStandardItemModel *model = 0;
 private:
     void uiStateInit();
     void uiStatePreview();
