@@ -94,6 +94,7 @@ private:
     QAction *actionPrint = 0;
 
     LoadingControl *loading = 0;
+    QLabel *errorLbl = 0;
 
 private:
     void readData(); //for testing
