@@ -4,11 +4,13 @@
 #include <QFrame>
 #include <QStringList>
 #include <QList>
+#include "CustomControl/drop-down-widget.h"
 
 class QVBoxLayout;
 class QFrame;
 class QScrollArea;
 class VerticalScrollbar;
+class DropdownWidget;
 
 class NavigationBar : public QFrame
 {
@@ -23,7 +25,7 @@ public:
         return Instance;
     }
 
-    void addContent(const QString &title, QStringList contents);
+    void addContent(const QString &title, QList<DropdownWidget::ContentAction *> contents);
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);

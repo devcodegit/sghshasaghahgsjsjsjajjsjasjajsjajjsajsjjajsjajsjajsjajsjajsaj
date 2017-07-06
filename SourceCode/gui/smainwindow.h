@@ -22,6 +22,7 @@ public slots:
 
 private slots:
     void onManagementClicked();
+    void onLinkActivated(QString link);
 
 protected:
     virtual void resizeEvent(QResizeEvent *ev);

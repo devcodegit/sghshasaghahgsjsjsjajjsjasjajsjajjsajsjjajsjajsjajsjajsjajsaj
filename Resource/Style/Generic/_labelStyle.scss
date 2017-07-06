@@ -42,3 +42,14 @@
 #ZFrameGiphy_Loading {
     @extend #TransWg;
 }
+
+#LeftPanelAction {
+    font: $F0 $FF1;
+    color: $C10;
+}
+
+#LeftPanelSubAction {
+    font: $F0 $FF1;
+    color: $C10;
+    padding-left: 10px;
+}

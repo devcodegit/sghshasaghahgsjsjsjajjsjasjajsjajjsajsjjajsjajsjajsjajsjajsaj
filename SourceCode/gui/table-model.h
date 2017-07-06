@@ -13,7 +13,11 @@ class TableModel
 public:
     enum {
         TABLE_MAIN = 0,
-        TABLE_EXPORT = 1
+        TABLE_EXPORT,
+        TABLE_READY,
+        TABLE_PROCESSING,
+        TABLE_TRANSMITTING,
+        TABLE_DONE
     };
     static TableModel *instance() {
         if(!Instance) {

@@ -35,11 +35,21 @@ class PageSearch : public QFrame, public IObjRequestListener
 {
     Q_OBJECT
 public:
+    enum PAGE {
+        ALL,
+        PROCESSING,
+        READY,
+        TRANSMITTING,
+        DONE
+    };
+
     explicit PageSearch(QWidget *parent = 0);
 
 
     virtual void OnRequestCompleted(ResponseResult *result);
     virtual void OnRequestFailed(ResponseResult *result);
+
+    void navigate(PAGE page);
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void showEvent(QShowEvent *);
@@ -68,6 +78,10 @@ private:
     QLineEdit *line1 = 0, *line2 = 0, *line3 = 0;
     QPushButton *searchButton = 0;
     QStandardItemModel *model = 0;
+    QStandardItemModel *modelReady = 0;
+    QStandardItemModel *modelTransmitting = 0;
+    QStandardItemModel *modelProcessing = 0;
+    QStandardItemModel *modelDone = 0;
     STableView *tableView = 0;
     PageNavigation *pageNavigation = 0;
     SFilterInfo *filterInfo = 0;
@@ -102,6 +116,12 @@ private:
     void readData(); //for testing
     void preloadData();
     void pushReadyData();
+
+    void allItems();
+    void processingItems();
+    void readyItems();
+    void transmittingItems();
+    void doneItems();
 };
 
 #endif // PAGESEARCH_H

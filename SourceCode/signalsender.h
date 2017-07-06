@@ -18,6 +18,7 @@ signals:
     void managementClicked();
     void settingClicked();
     void showMoreInfo(int moreId);
+    void linkTriggered(QString url);
 };
 
 

@@ -108,10 +108,8 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
     mainLayout->addLayout(btnLayout);
     mainLayout->addWidget(resultFrame, 1);
 
-    /*Model*/
-    model = TableModel::instance()->getModel(TableModel::TABLE_MAIN);
     tableView = new STableView(resultFrame);
-    tableView->setModel(model);
+    tableView->setModel(TableModel::instance()->getModel(TableModel::TABLE_MAIN));
     tableView->show();
     connect(tableView, SIGNAL(itemClicked(int,int)), this, SLOT(onShowInfo(int,int)));
     connect(tableView, SIGNAL(updateCheckbox(int,int,bool)), this, SLOT(onUpdateCheckbox(int,int,bool)));
@@ -161,6 +159,28 @@ void PageSearch::OnRequestFailed(ResponseResult *result)
     }
 }
 
+void PageSearch::navigate(PageSearch::PAGE page)
+{
+    switch(page) {
+    case ALL:
+        allItems();
+        break;
+    case PROCESSING:
+        processingItems();
+        break;
+    case READY:
+        readyItems();
+        break;
+    case TRANSMITTING:
+        transmittingItems();
+        break;
+    case DONE:
+        doneItems();
+        break;
+    default: break;
+    }
+}
+
 bool PageSearch::eventFilter(QObject *object, QEvent *event)
 {
     if(event->type() == QEvent::MouseButtonPress) {
@@ -202,7 +222,6 @@ void PageSearch::onJumping(int page)
     currentPage = page;
     qDebug () << "onJumping" << page;
     int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
-    model->clear();
     TableModel::instance()->setHorizontalHeaderLabels(UIModel::instance()->getDataTableHeader(), TableModel::TABLE_MAIN);
     for(int row = 0; row < listLen; row++){
         QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
@@ -330,11 +349,11 @@ void PageSearch::pushReadyData()
 {
     TableModel::instance()->getModel(TableModel::TABLE_EXPORT)->clear();
     TableModel::instance()->setHorizontalHeaderLabels(UIModel::instance()->getExportTableHeader(), TableModel::TABLE_EXPORT);
+    QStandardItemModel *model = TableModel::instance()->getModel(TableModel::TABLE_MAIN);
     for(int i = 0; i < model->rowCount(); i++) {
         QStandardItem *item = model->item(i, 0);
         if(item) {
             bool isChecked = item->data(Qt::EditRole).toBool();
-            qDebug () << "push" << isChecked << i << item->data(Qt::EditRole);
             if(isChecked) {
                 int billNo = model->item(i, 2)->data(Qt::DisplayRole).toInt();
                 LazadaDataItemOrder *order = mapItems.value(billNo, 0);
@@ -347,4 +366,29 @@ void PageSearch::pushReadyData()
             }
         }
     }
+}
+
+void PageSearch::allItems()
+{
+    tableView->setModel(TableModel::instance()->getModel(TableModel::TABLE_MAIN));
+}
+
+void PageSearch::processingItems()
+{
+
+}
+
+void PageSearch::readyItems()
+{
+    tableView->setModel(TableModel::instance()->getModel(TableModel::TABLE_READY));
+}
+
+void PageSearch::transmittingItems()
+{
+
+}
+
+void PageSearch::doneItems()
+{
+
 }

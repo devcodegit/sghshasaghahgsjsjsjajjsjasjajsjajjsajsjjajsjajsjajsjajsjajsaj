@@ -13,8 +13,17 @@ class DropdownWidget : public QFrame
 {
     Q_OBJECT
 public:
+    typedef struct _ContentAction {
+        QString title;
+        QString link; // no space character;
+        _ContentAction(QString title, QString link) {
+            this->title = title;
+            this->link = link;
+        }
+    } ContentAction;
+
     explicit DropdownWidget(QWidget *parent = 0);
-    void addContent(const QString &titleContent);
+    void addContent(ContentAction *content);
     void setTitle(const QString &title);
     void setParent(QWidget *parent);
 
@@ -29,6 +38,7 @@ public slots:
 
 private slots:
     void onDropdown();
+    void onLinkActivated(QString link);
 
 private:
     QVBoxLayout *contentLayout  = 0;

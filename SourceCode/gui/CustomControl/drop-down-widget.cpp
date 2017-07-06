@@ -1,5 +1,6 @@
 #include "drop-down-widget.h"
 #include "svgwidget.h"
+#include "../../signalsender.h"
 #include <QBoxLayout>
 #include <QLabel>
 #include <QSvgWidget>
@@ -9,6 +10,7 @@
 #define ICON_HEIGHT 7
 #define ICON_WIDTH 15
 #define MARGIN 8
+#define CONTENT_SPACING 4
 
 DropdownWidget::DropdownWidget(QWidget *parent) : QFrame(parent)
 {
@@ -28,6 +30,7 @@ DropdownWidget::DropdownWidget(QWidget *parent) : QFrame(parent)
     titleLayout->setSpacing(0);
     titleLayout->setMargin(0);
     title = new QLabel;
+    title->setObjectName("LeftPanelAction");
     iconDropdown = new SvgWidget;
     iconDropdown->setFixedSize(ICON_HEIGHT, ICON_WIDTH);
     iconDropdown->setCursor(Qt::PointingHandCursor);
@@ -40,18 +43,21 @@ DropdownWidget::DropdownWidget(QWidget *parent) : QFrame(parent)
     mainLayout->addWidget(contentFrame);
 }
 
-void DropdownWidget::addContent(const QString &titleContent)
+void DropdownWidget::addContent(ContentAction *content)
 {
     if(!contentLayout) {
         contentLayout = new QVBoxLayout(contentFrame);
-        contentLayout->setSpacing(0);
+        contentLayout->setSpacing(CONTENT_SPACING);
         contentLayout->setMargin(0);
     }
-    QLabel *content = new QLabel;
-    content->setWordWrap(true);
-    content->setText(titleContent);
-    contentLayout->addWidget(content, 0, Qt::AlignTop | Qt::AlignLeft);
-    listContent.append(content);
+    QLabel *contentLbl = new QLabel;
+    contentLbl->setObjectName("LeftPanelSubAction");
+    contentLbl->setTextFormat(Qt::RichText);
+    contentLbl->setWordWrap(true);
+    contentLbl->setText(QString("<style>a:link{color:#2398CA;text-decoration:none;}</style><a href=\"%1\">%2</a>").arg(content->link, content->title));
+    connect(contentLbl, SIGNAL(linkActivated(QString)), this, SLOT(onLinkActivated(QString)));
+    contentLayout->addWidget(contentLbl, 0, Qt::AlignTop | Qt::AlignLeft);
+    listContent.append(contentLbl);
 }
 
 void DropdownWidget::setTitle(const QString &title)
@@ -84,7 +90,7 @@ void DropdownWidget::resizeEvent(QResizeEvent *event)
         if(!contentItem) continue;
         contentItem->setFixedWidth(event->size().width());
         contentItem->adjustSize();
-        h += contentItem->height();
+        h += contentItem->height() + CONTENT_SPACING ;
     }
     contentFrame->setFixedHeight(h);
 }
@@ -107,4 +113,9 @@ void DropdownWidget::onDropdown()
     }
     this->setFixedHeight(h);
     emit dropDown();
+}
+
+void DropdownWidget::onLinkActivated(QString link)
+{
+    emit SignalSender::instance()->linkTriggered(link);
 }

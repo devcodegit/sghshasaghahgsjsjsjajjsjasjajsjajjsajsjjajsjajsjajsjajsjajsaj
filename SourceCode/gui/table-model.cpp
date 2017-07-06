@@ -46,5 +46,6 @@ void TableModel::updateModel(int row, int col, QVariant data, int modelId)
 void TableModel::setHorizontalHeaderLabels(QStringList headerList, int modelId)
 {
     QStandardItemModel *model = getModel(modelId);
+    model->clear();
     model->setHorizontalHeaderLabels(headerList);
 }

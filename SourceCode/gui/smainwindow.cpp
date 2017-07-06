@@ -12,6 +12,7 @@
 #include "CustomControl/drop-down-widget.h"
 #include "navigationbar.h"
 #include "CustomControl/calendar-widget.h"
+#include "../signalsender.h"
 
 #include <QFrame>
 #include <QVBoxLayout>
@@ -34,6 +35,7 @@ SMainWindow::SMainWindow(QWidget *parent) : SWidget(parent)
 
     UIModel::instance()->setMainWindow(this);
     onManagementClicked();
+    connect(SignalSender::instance(), SIGNAL(linkTriggered(QString)), this, SLOT(onLinkActivated(QString)));
 
 }
 
@@ -43,6 +45,26 @@ void SMainWindow::onManagementClicked()
         pageSearch = new PageSearch(contentArea);
     }
     pageSearch->show();
+}
+
+void SMainWindow::onLinkActivated(QString link)
+{
+    qDebug () << "onLinkActivated" << link;
+    if(link == "all") {
+        pageSearch->navigate(PageSearch::ALL);
+    }
+    else if(link == "processing") {
+        pageSearch->navigate(PageSearch::PROCESSING);
+    }
+    else if(link == "ready") {
+        pageSearch->navigate(PageSearch::READY);
+    }
+    else if(link == "transmitting") {
+        pageSearch->navigate(PageSearch::TRANSMITTING);
+    }
+    else if(link == "done") {
+        pageSearch->navigate(PageSearch::DONE);
+    }
 }
 
 void SMainWindow::resizeEvent(QResizeEvent *ev)

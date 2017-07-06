@@ -1,5 +1,4 @@
 #include "navigationbar.h"
-#include "CustomControl/drop-down-widget.h"
 #include "CustomControl/verticalscrollbar.h"
 #include <QBoxLayout>
 #include <QResizeEvent>
@@ -58,14 +57,15 @@ NavigationBar::NavigationBar(QWidget *parent) : QFrame(parent)
     mainLayout->addWidget(avatarHeader, 0, Qt::AlignTop);
     mainLayout->addWidget(scrollArea, 0, Qt::AlignTop);
 
-    addContent("Tổng quan đơn hàng", QStringList() << "Tất cả" << "Đang xử lý" << "Sẵn sàng giao đi" << "Đang giao hàng" << "Hoàn thành");
-    addContent("Quản lý giao nhận", QStringList() << "Option 1" << "Option 2");
-    addContent("Quản lý nhân viên",  QStringList() << "Option 1" << "Option 2");
-    addContent("Cài đặt",  QStringList() << "Option 1" << "Option 2" << "Option 3" << "Option 4");
+//    addContent("Quản lý giao nhận", QStringList() << "Option 1" << "Option 2");
+//    addContent("Quản lý nhân viên",  QStringList() << "Option 1" << "Option 2");
+//    addContent("Cài đặt",  QStringList() << "Option 1" << "Option 2" << "Option 3" << "Option 4");
+
+    addContent("Tổng quan đơn hàng", QList<DropdownWidget::ContentAction*>() << new DropdownWidget::ContentAction("Tất cả", "all") << new DropdownWidget::ContentAction("Đang xử lý", "processing") << new DropdownWidget::ContentAction("Sẵn sàng giao đi", "ready") << new DropdownWidget::ContentAction("Đang giao hàng", "transmitting") << new DropdownWidget::ContentAction("Hoàn thành", "done"));
 
 }
 
-void NavigationBar::addContent(const QString &title, QStringList contents)
+void NavigationBar::addContent(const QString &title, QList<DropdownWidget::ContentAction*> contents)
 {
     DropdownWidget *item = new DropdownWidget(contentFrame);
     connect(item, SIGNAL(dropDown()), this, SLOT(onItemDropDown()));
