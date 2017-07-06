@@ -23,12 +23,13 @@ void TableModel::pushItem(QStringList rowData, int modelId)
     QStandardItemModel *model = getModel(modelId);
     int row = model->rowCount();
     for(int col = 0; col < rowData.length(); col++) {
-        QStandardItem *item;
+        QStandardItem *item = new QStandardItem;
         if(rowData.at(col) == "[]") {
-            item = new QStandardItem;
             item->setData(QVariant(false), Qt::EditRole);
         }
-        else item = new QStandardItem(rowData.at(col));
+        else {
+            item->setData(QVariant(rowData.at(col)), Qt::DisplayRole);
+        }
         model->setItem(row, col, item);
     }
 }
@@ -40,4 +41,10 @@ void TableModel::updateModel(int row, int col, QVariant data, int modelId)
     if(item) {
         item->setData(data, Qt::EditRole);
     }
+}
+
+void TableModel::setHorizontalHeaderLabels(QStringList headerList, int modelId)
+{
+    QStandardItemModel *model = getModel(modelId);
+    model->setHorizontalHeaderLabels(headerList);
 }

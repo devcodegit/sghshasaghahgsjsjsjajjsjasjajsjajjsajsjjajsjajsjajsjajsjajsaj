@@ -86,8 +86,9 @@ FilterItem *SFilterInfo::getItem(int id, bool &isNew)
     return item;
 }
 
-FilterItem::FilterItem(QWidget *parent) : QWidget(parent)
+FilterItem::FilterItem(QWidget *parent) : QFrame(parent)
 {
+    setObjectName("FilterItem");
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setSpacing(8);
     layout->setMargin(2);

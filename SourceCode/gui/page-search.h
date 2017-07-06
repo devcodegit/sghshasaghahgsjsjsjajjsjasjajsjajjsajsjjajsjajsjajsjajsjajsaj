@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QFrame>
 #include <QDate>
+#include <QMap>
 #include "../lazada/lazada_handler.h"
 
 class QScrollArea;
@@ -26,6 +27,7 @@ class CalendarWidget;
 class ToolButton;
 class QAction;
 class LoadingControl;
+class QLabel;
 
 using namespace Lazada::Controls;
 
@@ -72,8 +74,8 @@ private:
     DetailWidget *infoDialog  = 0;
 //    STableView *qmlTableView = 0;
     QStringList linesList;
-    QStringList header;
     QList<LazadaDataItemOrder*> listItem;
+    QMap<int, LazadaDataItemOrder*> mapItems;
     int currentPage = 0;
     bool needUpdate = false;
     bool isStartClicked = true;
@@ -99,6 +101,7 @@ private:
 private:
     void readData(); //for testing
     void preloadData();
+    void pushReadyData();
 };
 
 #endif // PAGESEARCH_H

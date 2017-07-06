@@ -1,6 +1,7 @@
 #include "switch-bills-state-page.h"
 #include "table-model.h"
 #include "CustomControl/stableview.h"
+#include "../uimodel.h"
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QSpacerItem>
@@ -21,6 +22,7 @@ SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
     title = new QLabel;
     model = TableModel::instance()->getModel(TableModel::TABLE_EXPORT);
     tableView = new STableView;
+    tableView->setNoCheckCol();
     tableView->setModel(model);
     tableView->show();
     btnChange = new QPushButton("Thay đổi hình thức giao nhận");

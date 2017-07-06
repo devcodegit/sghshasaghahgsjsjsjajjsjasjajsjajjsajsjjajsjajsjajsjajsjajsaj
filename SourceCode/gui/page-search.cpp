@@ -40,7 +40,6 @@ using namespace Core::DataItem;
 PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
 {
     listItem = Lazada::Controls::LazadaHandler::instance()->getAllDataOrders(this);
-    header = UIModel::instance()->getDataTableHeader();
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setSpacing(8);
@@ -204,7 +203,7 @@ void PageSearch::onJumping(int page)
     qDebug () << "onJumping" << page;
     int listLen = qMin(linesList.length() - (page-1)*MAX_RESULT, MAX_RESULT);
     model->clear();
-    model->setHorizontalHeaderLabels(header);
+    TableModel::instance()->setHorizontalHeaderLabels(UIModel::instance()->getDataTableHeader(), TableModel::TABLE_MAIN);
     for(int row = 0; row < listLen; row++){
         QStringList line = linesList.at(row + (page-1)*MAX_RESULT).simplified().split("{}");
         TableModel::instance()->pushItem(line, TableModel::TABLE_MAIN);
@@ -270,6 +269,7 @@ void PageSearch::onReadyChangeState()
 {
     qDebug() << "ready";
     btnChangeState->setDefaultAction(actionReady);
+    pushReadyData();
 }
 
 void PageSearch::onCancelChangeState()
@@ -300,7 +300,7 @@ void PageSearch::readData()
 {
     linesList.clear();
     for(int i = 0; i < listItem.length(); i++) {
-        QString no_order = QString::number(listItem.at(i)->getOrderNumber());
+        QString no_order = QString::number(listItem.at(i)->OrderId());
         QString date_order = listItem.at(i)->getCreatedAt();
         QString waiting_queue = "";
         QString payment_method = listItem.at(i)->getPaymentMethod();
@@ -311,6 +311,7 @@ void PageSearch::readData()
         QString action = listItem.at(i)->getDeliveryInfo();
         QString line = QString("[]{}Hóa đơn{}%1{}%2{}%3{}%4{}%5{}%6{}%7{}%8{}%9").arg(no_order, date_order, waiting_queue, payment_method, price, QString::number(num), status, printed, action);
         linesList.append(line);
+        mapItems.insert(listItem.at(i)->OrderId(), listItem.at(i));
 
     }
     int listLen = listItem.length();
@@ -323,4 +324,27 @@ void PageSearch::readData()
 
 void PageSearch::preloadData()
 {
+}
+
+void PageSearch::pushReadyData()
+{
+    TableModel::instance()->getModel(TableModel::TABLE_EXPORT)->clear();
+    TableModel::instance()->setHorizontalHeaderLabels(UIModel::instance()->getExportTableHeader(), TableModel::TABLE_EXPORT);
+    for(int i = 0; i < model->rowCount(); i++) {
+        QStandardItem *item = model->item(i, 0);
+        if(item) {
+            bool isChecked = item->data(Qt::EditRole).toBool();
+            qDebug () << "push" << isChecked << i << item->data(Qt::EditRole);
+            if(isChecked) {
+                int billNo = model->item(i, 2)->data(Qt::DisplayRole).toInt();
+                LazadaDataItemOrder *order = mapItems.value(billNo, 0);
+                if(order) {
+                    QString provider = "";
+                    QString transCode = "";
+                    int orderedNo = order->getOrderNumber();
+                    TableModel::instance()->pushItem(QStringList() << QString::number(billNo) << "1/1" << provider << transCode << QString::number(orderedNo), TableModel::TABLE_EXPORT);
+                }
+            }
+        }
+    }
 }

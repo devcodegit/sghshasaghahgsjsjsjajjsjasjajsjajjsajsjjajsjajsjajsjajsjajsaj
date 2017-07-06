@@ -25,6 +25,7 @@ public:
     QStandardItemModel *getModel(int modelId);
     void pushItem(QStringList rowData, int modelId);
     void updateModel(int row, int col, QVariant data, int modelId);
+    void setHorizontalHeaderLabels(QStringList headerList, int modelId);
 
 private:
     QMap<int, QStandardItemModel*> mapModel;

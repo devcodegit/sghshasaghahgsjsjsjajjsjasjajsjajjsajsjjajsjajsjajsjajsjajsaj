@@ -28,7 +28,7 @@ void SItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
         painter->fillRect( option.rect, option.palette.highlight());
     }
     painter->fillRect(option.rect, color);
-    if(index.column() == CHECKBOX_COL) {
+    if(index.column() == CHECKBOX_COL && !noCheckCol) {
         // Draw our checkbox indicator
         bool value = index.data(Qt::EditRole).toBool();
         QStyleOptionButton checkbox_indicator;
@@ -76,5 +76,10 @@ void SItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, con
 {
     qDebug () << "setModelData" << index.data().toString();
     //    QStyledItemDelegate::setModelData(editor, model, index);
+}
+
+void SItemDelegate::setNoCheckCol()
+{
+    this->noCheckCol = true;
 }
 

@@ -1,7 +1,7 @@
 #ifndef SFILTERINFO_H
 #define SFILTERINFO_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QList>
 #include <QMap>
 
@@ -11,7 +11,7 @@ class FlowLayout;
 class QScrollArea;
 class VerticalScrollbar;
 
-class FilterItem : public QWidget
+class FilterItem : public QFrame
 {
     Q_OBJECT
 public:

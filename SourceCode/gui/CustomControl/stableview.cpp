@@ -32,6 +32,11 @@ void STableView::columnResized(int column, int oldWidth, int newWidth)
     qDebug () << "columnResize" << column << oldWidth << newWidth;
 }
 
+void STableView::setNoCheckCol()
+{
+    this->delegate->setNoCheckCol();
+}
+
 void STableView::onPaintItem(const QStyleOptionViewItem &option, const QModelIndex &index)
 {
     mapIndexOption.insert(index, option);

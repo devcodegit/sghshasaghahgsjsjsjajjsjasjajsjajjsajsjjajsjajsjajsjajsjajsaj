@@ -17,8 +17,13 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const Q_DECL_OVERRIDE;
 
+    void setNoCheckCol();
+
 signals:
     void paintItem(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+private:
+    bool noCheckCol = false;
 
 };
 
