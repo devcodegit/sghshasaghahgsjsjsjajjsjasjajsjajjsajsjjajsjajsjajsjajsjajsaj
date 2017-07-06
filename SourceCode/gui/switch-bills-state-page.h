@@ -2,13 +2,14 @@
 #define SWITCHBILLSSTATEPAGE_H
 
 #include <QFrame>
+#include "CustomControl/sdialog.h"
 
 class QLabel;
 class QPushButton;
 class QStandardItemModel;
 class STableView;
 
-class SwitchBillsStatePage : public QFrame
+class SwitchBillsStatePage : public SDialog
 {
     Q_OBJECT
 public:
@@ -28,6 +29,9 @@ private slots:
     void onAllDocs();
     void onBills();
     void onStamp();
+
+signals:
+    void updateModelReady();
 
 private:
     int currentState = INIT;

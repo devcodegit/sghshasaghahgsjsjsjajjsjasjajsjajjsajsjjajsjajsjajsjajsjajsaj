@@ -5,6 +5,7 @@
 #include <QMap>
 
 class QStandardItemModel;
+class QStandardItem;
 
 class TableModel
 {

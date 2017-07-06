@@ -32,9 +32,9 @@ void STableView::columnResized(int column, int oldWidth, int newWidth)
     qDebug () << "columnResize" << column << oldWidth << newWidth;
 }
 
-void STableView::setNoCheckCol()
+void STableView::setShowCheckCol(bool isShowChecked)
 {
-    this->delegate->setNoCheckCol();
+    this->delegate->setShowCheckCol(isShowChecked);
 }
 
 void STableView::onPaintItem(const QStyleOptionViewItem &option, const QModelIndex &index)

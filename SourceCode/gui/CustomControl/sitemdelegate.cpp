@@ -78,8 +78,8 @@ void SItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, con
     //    QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-void SItemDelegate::setNoCheckCol()
+void SItemDelegate::setShowCheckCol(bool isShowChecked)
 {
-    this->noCheckCol = true;
+    this->noCheckCol = !isShowChecked;
 }
 

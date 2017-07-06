@@ -9,9 +9,14 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 
-SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
+#define BG_WIDTH 600
+#define BG_HEIGHT 500
+
+SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : SDialog(parent)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QFrame *bg = new QFrame;
+    bg->setFixedSize(BG_WIDTH, BG_HEIGHT);
+    QVBoxLayout *mainLayout = new QVBoxLayout(bg);
     mainLayout->setSpacing(8);
     mainLayout->setMargin(8);
 
@@ -22,7 +27,7 @@ SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
     title = new QLabel;
     model = TableModel::instance()->getModel(TableModel::TABLE_EXPORT);
     tableView = new STableView;
-    tableView->setNoCheckCol();
+    tableView->setShowCheckCol(true);
     tableView->setModel(model);
     tableView->show();
     btnChange = new QPushButton("Thay đổi hình thức giao nhận");
@@ -51,6 +56,7 @@ SwitchBillsStatePage::SwitchBillsStatePage(QWidget *parent) : QFrame(parent)
     mainLayout->addLayout(btnLayout);
 
     setState(INIT);
+    setContent(bg);
 }
 
 void SwitchBillsStatePage::setState(int state)
@@ -78,6 +84,8 @@ void SwitchBillsStatePage::nextState()
 
 void SwitchBillsStatePage::onSave()
 {
+    nextState();
+    if(currentState == PREVIEW) emit updateModelReady();
 }
 
 void SwitchBillsStatePage::onChange()

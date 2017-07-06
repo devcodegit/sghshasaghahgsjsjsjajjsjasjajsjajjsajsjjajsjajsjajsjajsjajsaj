@@ -28,6 +28,7 @@ class ToolButton;
 class QAction;
 class LoadingControl;
 class QLabel;
+class SwitchBillsStatePage;
 
 using namespace Lazada::Controls;
 
@@ -49,7 +50,7 @@ public:
     virtual void OnRequestCompleted(ResponseResult *result);
     virtual void OnRequestFailed(ResponseResult *result);
 
-    void navigate(PAGE page);
+    void navigate(PAGE switchPage);
 protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void showEvent(QShowEvent *);
@@ -61,7 +62,7 @@ public slots:
 
 private slots:
     void onSearch();
-    void onJumping(int page);
+    void onJumping(int switchPage);
     void onShowInfo(int row, int col);
     void onUpdateCheckbox(int row, int col, bool val);
     void onCheckUpdateData();
@@ -72,6 +73,8 @@ private slots:
     void onExport();
     void onPrint();
     void onCsv();
+
+    void onUpdateModelReady();
 
 private:
     QFrame *resultFrame = 0;
@@ -111,6 +114,8 @@ private:
 
     LoadingControl *loading = 0;
     QLabel *errorLbl = 0;
+
+    SwitchBillsStatePage *switchPage = 0;
 
 private:
     void readData(); //for testing

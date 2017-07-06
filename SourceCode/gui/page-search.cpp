@@ -120,10 +120,6 @@ PageSearch::PageSearch(QWidget *parent) : QFrame(parent)
 
     if(!loading) loading = new LoadingControl(20, 20, true, resultFrame);
     loading->showLoading();
-
-    SwitchBillsStatePage *page = new SwitchBillsStatePage;
-    page->show();
-
 }
 
 void PageSearch::OnRequestCompleted(ResponseResult *result)
@@ -192,7 +188,6 @@ bool PageSearch::eventFilter(QObject *object, QEvent *event)
     }
     if(object == resultFrame) {
         if(event->type() == QEvent::Resize) {
-            //table->setFixedSize(resultFrame->size() - QSize(0, 50));
             tableView->setFixedSize(resultFrame->size() - QSize(0, 50));
         }
     }
@@ -315,6 +310,19 @@ void PageSearch::onCsv()
     btnExport->setDefaultAction(actionCsvFileExport);
 }
 
+void PageSearch::onUpdateModelReady()
+{
+    QStandardItemModel *exportModel = TableModel::instance()->getModel(TableModel::TABLE_EXPORT);
+    for(int row = 0; row < exportModel->rowCount(); row++) {
+        QStringList strData;
+        for(int col = 0; col < exportModel->columnCount(); col++) {
+            qDebug () << "onUPdate" << row << col << exportModel->item(row, col)->data(Qt::EditRole);
+            strData.append(exportModel->item(row, col)->data(Qt::EditRole).toString());
+        }
+        TableModel::instance()->pushItem(strData, TableModel::TABLE_READY);
+    }
+}
+
 void PageSearch::readData()
 {
     linesList.clear();
@@ -366,10 +374,18 @@ void PageSearch::pushReadyData()
             }
         }
     }
+
+    if(!switchPage) {
+        switchPage = new SwitchBillsStatePage;
+        connect(switchPage, &SwitchBillsStatePage::updateModelReady, this, &PageSearch::onUpdateModelReady);
+    }
+    switchPage->setParent(UIModel::instance()->getMainWindow());
+    switchPage->show();
 }
 
 void PageSearch::allItems()
 {
+    tableView->setShowCheckCol(true);
     tableView->setModel(TableModel::instance()->getModel(TableModel::TABLE_MAIN));
 }
 
@@ -380,6 +396,7 @@ void PageSearch::processingItems()
 
 void PageSearch::readyItems()
 {
+    tableView->setShowCheckCol(false);
     tableView->setModel(TableModel::instance()->getModel(TableModel::TABLE_READY));
 }
 

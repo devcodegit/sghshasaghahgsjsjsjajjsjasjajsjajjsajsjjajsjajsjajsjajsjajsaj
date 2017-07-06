@@ -17,7 +17,7 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index) const Q_DECL_OVERRIDE;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const Q_DECL_OVERRIDE;
 
-    void setNoCheckCol();
+    void setShowCheckCol(bool isShowChecked);
 
 signals:
     void paintItem(const QStyleOptionViewItem &option, const QModelIndex &index) const;

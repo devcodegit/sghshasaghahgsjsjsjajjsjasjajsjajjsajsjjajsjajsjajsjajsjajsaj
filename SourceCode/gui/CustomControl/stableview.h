@@ -14,7 +14,7 @@ class STableView : public QTableView
     Q_OBJECT
 public:
     explicit STableView(QWidget *parent = 0);
-    void setNoCheckCol();
+    void setShowCheckCol(bool isShowChecked);
 
 protected slots:
     void rowResized(int row,  int oldHeight, int newHeight);
